@@ -540,15 +540,16 @@ export function defineTmuxContract(makeHarness: () => TmuxHarness): void {
     it('death by signal reports SIGTERM', async () => {
       const { server, exitLog } = await newServer();
       const pane = await server.spawnPane(opts(SIGTERM_SELF));
-      const st = await waitFor(
-        () => pane.status(),
-        (s) => s.dead,
-        h.ceilingMs,
-        'dead',
-      );
       // pane_dead_signal exists from tmux 3.3; 3.2a reports no signal at all (documented in KNOWN-LIMITATIONS).
       const v = parseTmuxVersion(`tmux ${h.version}`);
       const hasSignal = v !== undefined && versionAtLeast(v, 3, 3);
+      // tmux 3.4 can report the pane dead one poll before pane_dead_signal is filled in (CI, Linux): wait for both
+      const st = await waitFor(
+        () => pane.status(),
+        (s) => s.dead && (!hasSignal || s.exitSignal !== null),
+        h.ceilingMs,
+        'dead',
+      );
       expect(st).toMatchObject({ dead: true, exitStatus: null, exitSignal: hasSignal ? 'SIGTERM' : null });
       const lines = await waitFor(
         () => h.readExitLog(exitLog),
