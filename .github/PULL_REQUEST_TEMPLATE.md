@@ -15,4 +15,4 @@
 - [ ] Spec deviations or `src/model/**` interface changes have a `docs/icr/` record
 - [ ] New fixtures were run through `scripts/fixtures-depersonalize.mjs`; no personal data or secrets
 - [ ] `CHANGELOG.md` updated under *Unreleased* (if user-visible)
-- [ ] Docs updated (`docs/USAGE.md`, `ARCHITECTURE.md`) where behaviour changed
+- [ ] Every affected doc updated in this PR (checklist in `CLAUDE.md`: USAGE, README, CHANGELOG, KNOWN-LIMITATIONS, ARCHITECTURE, ICR)

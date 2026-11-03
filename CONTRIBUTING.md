@@ -88,6 +88,12 @@ the PR and in `CHANGELOG.md` under *Unreleased*.
 - Tests name the behaviour they prove; rows of the design's transition tables are referenced as `§4.4#7` in test
   titles (`pnpm check:tables` enforces coverage).
 
+## Docs stay in sync
+
+A change is not finished until every doc it affects is updated in the same pull request. `CLAUDE.md` has the
+checklist of which doc covers what. `test/arch/docs-sync.test.ts` fails `pnpm test` when a public member, event, status
+kind, option or export is missing from `docs/USAGE.md`, or when a code example in the docs no longer compiles.
+
 ## Commits and pull requests
 
 - Use [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `docs:`, `test:`, `refactor:`,
