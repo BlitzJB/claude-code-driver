@@ -14,7 +14,7 @@
 import type { Intent } from '../model/intents.js';
 import type { Logger } from '../model/logger.js';
 import type { Cancel, Clock } from '../model/time.js';
-import type { RawHookEvent, TailEvent, TranscriptTail } from '../platform/ports.js';
+import type { RawHookEvent, TailCheckpoint, TailEvent, TranscriptTail } from '../platform/ports.js';
 import type { ClaudeProfile } from '../channels/profiles/index.js';
 import { createTranscriptNormalizer } from '../channels/transcript/normalize.js';
 import type { TranscriptNormalizer } from '../channels/transcript/normalize.js';
@@ -33,6 +33,12 @@ export interface TailDriverOptions {
   /** Override the normalizer (tests); default `createTranscriptNormalizer(profile, {now: clock})`. */
   normalizer?: TranscriptNormalizer;
   logger?: Logger;
+  /**
+   * ICR 0041: a resumed session continues the transcript where the suspend stopped. When the core asks to follow a main
+   * file from the beginning and a checkpoint exists for that session, the tail starts at the checkpoint instead (a stale
+   * checkpoint falls back to the beginning inside the tail, marked as history).
+   */
+  resumeCheckpoint?: TailCheckpoint;
 }
 
 export interface TailDriver {
@@ -107,7 +113,10 @@ export function createTailDriver(o: TailDriverOptions): TailDriver {
       switch (intent.kind) {
         case 'tail.followMain':
           paths.set(intent.sessionId, intent.path);
-          o.tail.followMain(intent.sessionId, intent.path, { startAt: intent.startAt });
+          o.tail.followMain(intent.sessionId, intent.path, {
+            startAt:
+              intent.startAt === 'beginning' && o.resumeCheckpoint !== undefined ? { checkpoint: o.resumeCheckpoint } : intent.startAt,
+          });
           return;
         case 'tail.observePath':
           paths.set(intent.sessionId, intent.path);

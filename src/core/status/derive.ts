@@ -47,6 +47,7 @@ function startingPhase(d: SessionState): 'launching' | 'gated' | 'waitingForSess
     case 'ready':
     case 'closing':
     case 'exited':
+    case 'suspended':
       return 'launching';
   }
 }
@@ -68,6 +69,14 @@ export function deriveStatus(d: SessionState, x: DeriveExtras): AgentStatus {
   // 1 exited
   if (d.lifecycle === 'exited' || d.exit !== undefined) {
     return { kind: 'exited', since: sinceOf(prev, 'exited', now), exitStatus: d.exit?.exitStatus ?? null, signal: d.exit?.signal ?? null };
+  }
+  // 1b suspended (ICR 0041): Claude stopped on idle; the next call that needs it resumes the session
+  if (d.lifecycle === 'suspended') {
+    return {
+      kind: 'suspended',
+      since: d.suspended?.since ?? sinceOf(prev, 'suspended', now),
+      claudeSessionId: d.suspended?.claudeSessionId ?? d.claude.sessionId ?? '',
+    };
   }
   // 2 starting
   if (d.lifecycle !== 'ready' && d.lifecycle !== 'closing') {

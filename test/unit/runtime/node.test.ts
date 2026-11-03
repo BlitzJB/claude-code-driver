@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import { createKernel, createNodePorts, defaultLogger, silentLogger } from '../../../src/runtime/node.js';
 import * as entry from '../../../src/runtime/kernel-entry.js';
 
@@ -115,7 +115,7 @@ describe('createKernel', () => {
     } catch (e) {
       err = e;
     }
-    expect(isCctError(err)).toBe(true);
+    expect(isCcdError(err)).toBe(true);
     expect((err as { code: string }).code).toBe('E_CONFIG_INVALID');
   });
 

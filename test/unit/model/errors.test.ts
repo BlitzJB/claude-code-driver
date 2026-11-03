@@ -4,7 +4,7 @@ import {
   CCD_ERROR_CODES,
   CcdError,
   ERROR_META,
-  isCctError,
+  isCcdError,
   PUBLIC_CODE_OF,
   PUBLIC_ERROR_CODES,
   type CcdErrorCode,
@@ -128,20 +128,20 @@ describe('CcdError', () => {
   });
 });
 
-describe('isCctError (duck-typed, P-API-12)', () => {
+describe('isCcdError (duck-typed, P-API-12)', () => {
   it('accepts a CcdError and filters by code', () => {
     const e = new CcdError('E_BUSY', 'busy');
-    expect(isCctError(e)).toBe(true);
-    expect(isCctError(e, 'E_BUSY')).toBe(true);
-    expect(isCctError(e, 'E_INVARIANT')).toBe(false);
+    expect(isCcdError(e)).toBe(true);
+    expect(isCcdError(e, 'E_BUSY')).toBe(true);
+    expect(isCcdError(e, 'E_INVARIANT')).toBe(false);
   });
 
   it('accepts an error from another package copy (same shape, different class)', () => {
-    class OtherCopyCctError extends Error {
+    class OtherCopyCcdError extends Error {
       readonly code = 'E_USAGE_LIMIT';
     }
-    expect(isCctError(new OtherCopyCctError('limited'), 'E_USAGE_LIMIT')).toBe(true);
-    expect(isCctError({ code: 'E_USAGE_LIMIT', message: 'plain object from a worker' })).toBe(true);
+    expect(isCcdError(new OtherCopyCcdError('limited'), 'E_USAGE_LIMIT')).toBe(true);
+    expect(isCcdError({ code: 'E_USAGE_LIMIT', message: 'plain object from a worker' })).toBe(true);
   });
 
   it.each([
@@ -154,6 +154,6 @@ describe('isCctError (duck-typed, P-API-12)', () => {
     { code: 'E_BUSY' },
     Object.assign(new Error('x'), { code: 'ENOENT' }),
   ])('rejects %o', (v) => {
-    expect(isCctError(v)).toBe(false);
+    expect(isCcdError(v)).toBe(false);
   });
 });

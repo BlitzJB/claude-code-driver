@@ -34,6 +34,21 @@ describe('toSessionSpec', () => {
     ).toMatchObject({ path: 'permissions.policy', detail: 'invalidValue' });
   });
 
+  it('ICR 0041: idle.suspendAfterMs maps to the spec and is validated', () => {
+    expect(toSessionSpec({ cwd: '/w', permissions: 'deny', idle: { suspendAfterMs: 600_000 } }).spec).toMatchObject({
+      idle: { suspendAfterMs: 600_000 },
+    });
+    expect(configError(() => toSessionSpec({ cwd: '/w', permissions: 'deny', idle: { suspendAfterMs: 999 } }))).toMatchObject({
+      path: 'idle.suspendAfterMs',
+    });
+    expect(configError(() => toSessionSpec({ cwd: '/w', permissions: 'deny', idle: { suspendAfterMs: 1.5e3 + 0.5 } }))).toMatchObject({
+      path: 'idle.suspendAfterMs',
+    });
+    expect(
+      configError(() => toSessionSpec({ cwd: '/w', permissions: 'deny', idle: { after: 5 } } as unknown as ClaudeSessionOptions)),
+    ).toMatchObject({ path: 'idle.after' });
+  });
+
   it('maps the minimal options to the minimal spec', () => {
     const m = toSessionSpec({ cwd: '/w', permissions: 'deny' });
     expect(m.spec).toEqual({ cwd: '/w', permissions: { policy: 'deny' } });

@@ -40,7 +40,7 @@ export const emptyPass = (over: Partial<ReapPassResult> = {}): ReapPassResult =>
   reaped: [],
   skippedLive: [],
   socketsUnlinked: [],
-  unknownCctSockets: 0,
+  unknownCcdSockets: 0,
   sweptDirs: [],
   prunedArchive: [],
   ownersRemoved: [],

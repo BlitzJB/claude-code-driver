@@ -774,3 +774,41 @@ describe('ClaudeSession.usage (ICR 0040)', () => {
     await expect(s.usage()).rejects.toMatchObject({ code: 'E_SESSION_CLOSED' });
   });
 });
+
+describe('ClaudeSession suspend/resume (ICR 0041)', () => {
+  it('suspend() and resume() delegate to the kernel; kernel errors become public errors', async () => {
+    const { k, s } = setup();
+    await s.suspend();
+    await s.resume();
+    expect(k.lifecycleCalls).toEqual(['suspend', 'resume']);
+    k.suspendImpl = () => Promise.reject(new CcdError('E_BUSY', 'busy', { details: { blocker: 'permission', blockers: ['permission'] } }));
+    const e: unknown = await s.suspend().catch((x: unknown) => x);
+    expect(isClaudeSessionError(e, 'E_BUSY')).toBe(true);
+    expect(e).toMatchObject({ name: 'ClaudeSessionError', details: { reason: 'E_BUSY', blocker: 'permission' } });
+  });
+
+  it('a suspended session maps to status suspended and satisfies waitForIdle / waitForQuiescence', async () => {
+    const { s } = setup(
+      {},
+      readyState({ lifecycle: 'suspended', status: { kind: 'suspended', since: 1000 as MonoMs, claudeSessionId: 'c-9' } }),
+    );
+    expect(s.status).toMatchObject({ kind: 'suspended', claudeSessionId: 'c-9' });
+    await expect(s.waitForIdle({ timeoutMs: 50 })).resolves.toMatchObject({ status: { kind: 'suspended' } });
+    await expect(s.waitForQuiescence({ timeoutMs: 50 })).resolves.toMatchObject({ status: { kind: 'suspended' } });
+  });
+
+  it('refuses suspend() and resume() after close', async () => {
+    const { s } = setup();
+    await s.close();
+    await expect(s.suspend()).rejects.toMatchObject({ code: 'E_SESSION_CLOSED' });
+    await expect(s.resume()).rejects.toMatchObject({ code: 'E_SESSION_CLOSED' });
+  });
+});
+
+describe('toPublicError: internal errors with public codes (regression)', () => {
+  it('maps a CcdError whose code is also public and whose details carry `reason` (details.reason = internal code)', async () => {
+    const { toPublicError } = await import('../../../src/api/map-errors.js');
+    const e = toPublicError(new CcdError('E_USAGE_LIMIT', 'limited', { details: { reason: 'rate_limit' } }));
+    expect(e).toMatchObject({ name: 'ClaudeSessionError', code: 'E_USAGE_LIMIT', details: { reason: 'E_USAGE_LIMIT' } });
+  });
+});

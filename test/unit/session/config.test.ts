@@ -1,7 +1,7 @@
 // session/config.ts — resolveConfig + DEFAULTS (DESIGN.md §2.11, §3.1 step 1, §3.3; P-API-19, P-TMUX-56, P-REV-03,
 // P-REV-04, P-REV-42).
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import type { SessionSpec } from '../../../src/model/spec.js';
 import { FakeEnv } from '../../../src/platform/env/fake-env.js';
 import { DEFAULT_TEST_CORE_CONFIG } from '../../../src/testing/core-config.js';
@@ -36,7 +36,7 @@ function errOf(f: () => unknown): { code: string; details: Record<string, unknow
   try {
     f();
   } catch (e) {
-    if (!isCctError(e)) throw e;
+    if (!isCcdError(e)) throw e;
     return { code: e.code, details: e.details ?? {} };
   }
   throw new Error('expected a CcdError');

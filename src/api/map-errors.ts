@@ -2,7 +2,7 @@
 // Internal codes never leave the library as `code`; they travel as `details.reason`. Matching is by duck-typed `code`, never by
 // `instanceof` alone, so two installed package copies agree (P-API-12).
 
-import { ERROR_META, PUBLIC_CODE_OF, PUBLIC_ERROR_CODES, isCctError, type CcdErrorCode, type CcdErrorData } from '../model/errors.js';
+import { ERROR_META, PUBLIC_CODE_OF, PUBLIC_ERROR_CODES, isCcdError, type CcdErrorCode, type CcdErrorData } from '../model/errors.js';
 import type { PublicErrorCode } from '../model/errors.js';
 import type { ClaudeSessionErrorData } from './public-types.js';
 
@@ -79,9 +79,11 @@ export function publicError(reason: CcdErrorCode, message: string, details: Reco
  * `cause` (never copied into details: it may carry a child-process command line, SEC §8.2).
  */
 export function toPublicError(e: unknown): ClaudeSessionError | DOMException {
-  if (isClaudeSessionError(e)) return e;
+  // An internal CcdError whose code is also a public code (E_BUSY, E_USAGE_LIMIT, …) and whose details carry a `reason`
+  // is shaped like a public error; it must still be mapped so `details.reason` is the internal code (D-40).
+  if (isClaudeSessionError(e) && (e as { name?: unknown }).name !== 'CcdError') return e;
   if (e instanceof DOMException && (e.name === 'AbortError' || e.name === 'TimeoutError')) return e;
-  if (isCctError(e)) return new ClaudeSessionError(PUBLIC_CODE_OF[e.code], e.message, publicDetails(e.code, e.details), { cause: e });
+  if (isCcdError(e)) return new ClaudeSessionError(PUBLIC_CODE_OF[e.code], e.message, publicDetails(e.code, e.details), { cause: e });
   const message = e instanceof Error ? e.message : String(e);
   return new ClaudeSessionError('E_INTERNAL', `internal error: ${message}`, { reason: 'E_INVARIANT' }, { cause: e });
 }

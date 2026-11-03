@@ -9,7 +9,7 @@ import type { AgentStatus } from '../model/state.js';
 import type { MonoMs, WallMs } from '../model/time.js';
 import { onClaimDeadline } from './claims.js';
 import { closeProcess, onDrainDeadline, runClosing } from './closing.js';
-import { apply, arm, cfg, diag, dom, emit, newCtx, nowOf, publish, recon, setInputBlocked, setInputState, updRecon } from './ctx.js';
+import { apply, arm, cfg, diag, dom, emit, newCtx, nowOf, patch, publish, recon, setInputBlocked, setInputState, updRecon } from './ctx.js';
 import type { Ctx } from './ctx.js';
 import {
   onAgentFileMissing,
@@ -58,6 +58,7 @@ import {
   onModeObserved,
   onModelSwitched,
   onProcessExited,
+  onSessionSuspended,
   onProcessLaunched,
   onReadyStable,
   onRegistry,
@@ -281,6 +282,9 @@ function applyObservation(ctx: Ctx, o: Observation): void {
     case 'process.exited':
       onProcessExited(ctx, o);
       return;
+    case 'session.suspended':
+      onSessionSuspended(ctx, o);
+      return;
     case 'process.identityMismatch':
       onIdentityMismatch(ctx, o);
       return;
@@ -330,6 +334,8 @@ function applyObservation(ctx: Ctx, o: Observation): void {
       onPromptBlocked(ctx, o);
       return;
     case 'turn.stopped':
+      if (o.p.sessionCrons !== undefined && o.p.sessionCrons !== dom(ctx).scheduledTasks)
+        patch(ctx, ['scheduledTasks'], o.p.sessionCrons, 'session crons'); // ICR 0041
       upsertBgTasks(ctx, o.p.backgroundTasks);
       onStopForDrain(ctx, o);
       onTurnStopped(ctx, o);

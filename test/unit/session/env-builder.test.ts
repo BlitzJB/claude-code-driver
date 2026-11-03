@@ -1,6 +1,6 @@
 // WP-12 env-builder (DESIGN.md §3.2, D-22, D-25, §3.10 env).
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import {
   argvLeaksEnvSecret,
   BASE_ALLOWLIST,
@@ -40,7 +40,7 @@ function code(fn: () => unknown): string | undefined {
   try {
     fn();
   } catch (e) {
-    if (!isCctError(e)) return 'non-ccd';
+    if (!isCcdError(e)) return 'non-ccd';
     const r = e.details?.['reason'];
     return `${e.code}:${typeof r === 'string' ? r : ''}`;
   }

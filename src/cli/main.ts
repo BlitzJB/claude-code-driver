@@ -69,7 +69,7 @@ async function recordHostFailure(deps: CliDeps, stateDir: string, e: unknown): P
       libVersion: LIB_VERSION,
       distPath: h.distPath,
       actions: [],
-      unknownCctSockets: 0,
+      unknownCcdSockets: 0,
       sessions: [],
       errors: [error],
       error,

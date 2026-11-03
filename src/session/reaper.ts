@@ -196,7 +196,7 @@ interface ReapedSession {
 export interface ReapReport {
   reaped: ReapedSession[];
   skippedLive: SessionKey[];
-  sockets: { unlinked: string[]; alive: string[]; unknownCctSockets: number };
+  sockets: { unlinked: string[]; alive: string[]; unknownCcdSockets: number };
   sweptDirs: string[];
   prunedArchive: SessionKey[];
   ownersRemoved: number[];
@@ -212,7 +212,7 @@ async function reapLocked(d: ReaperDeps, o: ReapOptions): Promise<ReapReport> {
   const report: ReapReport = {
     reaped: [],
     skippedLive: [],
-    sockets: { unlinked: [], alive: [], unknownCctSockets: 0 },
+    sockets: { unlinked: [], alive: [], unknownCcdSockets: 0 },
     sweptDirs: [],
     prunedArchive: [],
     ownersRemoved: [],
@@ -431,7 +431,7 @@ async function unlinkSocket(d: ReaperDeps, path: string): Promise<boolean> {
 
 /** Socket sweep (rev 2 §10 G21): registry-named sockets only; two failed probes 5 s apart; unknown `ccd-*` only counted. */
 async function sweepSockets(d: ReaperDeps, o: ReapOptions, live: ReadonlyMap<SessionKey, boolean>): Promise<ReapReport['sockets']> {
-  const out: ReapReport['sockets'] = { unlinked: [], alive: [], unknownCctSockets: 0 };
+  const out: ReapReport['sockets'] = { unlinked: [], alive: [], unknownCcdSockets: 0 };
   const candidates = new Map<string, { bin: string; target: string[] }>();
   const named = new Set<string>();
   const add = (r: SessionRecord): void => {
@@ -463,7 +463,7 @@ async function sweepSockets(d: ReaperDeps, o: ReapOptions, live: ReadonlyMap<Ses
 
   // Count (never touch) ccd-* sockets that no registry entry names.
   const dir = o.socketDir ?? defaultSocketDir(d.env);
-  out.unknownCctSockets = (await listSocketDir(d, dir)).filter((n) => CCD_SOCKET.test(n) && !named.has(`${dir}/${n}`)).length;
+  out.unknownCcdSockets = (await listSocketDir(d, dir)).filter((n) => CCD_SOCKET.test(n) && !named.has(`${dir}/${n}`)).length;
   return out;
 }
 

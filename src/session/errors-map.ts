@@ -5,7 +5,7 @@
 // unknown error, never from `err.cmd`/`err.spawnargs` (Node puts the full argv there, SEC §7.1) and never from a raw stderr
 // (it can echo argv or paths). A known L0 error's message is rebuilt here from its typed fields.
 
-import { CcdError, isCctError } from '../model/errors.js';
+import { CcdError, isCcdError } from '../model/errors.js';
 import type { CcdErrorCode, CcdErrorData } from '../model/errors.js';
 import type { JsonValue } from '../model/json.js';
 
@@ -57,7 +57,7 @@ function mk(code: CcdErrorCode, message: string, details: Details, cause: unknow
 }
 
 /** Map any thrown value to a CcdError. A CcdError passes through unchanged. Total: never throws. */
-export function toCctError(e: unknown, ctx: MapContext = {}): CcdError {
+export function toCcdError(e: unknown, ctx: MapContext = {}): CcdError {
   try {
     return mapUnsafe(e, ctx);
   } catch {
@@ -67,7 +67,7 @@ export function toCctError(e: unknown, ctx: MapContext = {}): CcdError {
 
 function mapUnsafe(e: unknown, ctx: MapContext): CcdError {
   if (e instanceof CcdError) return e;
-  if (isCctError(e)) {
+  if (isCcdError(e)) {
     // a CcdError from another package copy (duck-typed, P-API-12): rebuild from its typed fields
     const r = e as unknown as Rec;
     const details = rec(r['details']);
@@ -248,5 +248,5 @@ export function fromErrorData(data: CcdErrorData): CcdError {
 
 /** CcdError → plain data (for events, the trace and the registry). */
 export function toErrorData(e: unknown, ctx?: MapContext): CcdErrorData {
-  return toCctError(e, ctx).toJSON();
+  return toCcdError(e, ctx).toJSON();
 }

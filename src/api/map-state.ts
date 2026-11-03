@@ -137,6 +137,8 @@ export function toStatus(s: InternalStatus, t: TimeBase): AgentStatus {
       return { kind: 'authRequired', since, message: s.message };
     case 'exited':
       return { kind: 'exited', since, exitStatus: s.exitStatus, signal: s.signal };
+    case 'suspended':
+      return { kind: 'suspended', since, claudeSessionId: s.claudeSessionId };
     default:
       return assertNever(s);
   }

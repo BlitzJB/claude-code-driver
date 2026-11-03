@@ -70,7 +70,7 @@ describe('ccd main dispatch', () => {
       'libVersion',
       'ranAt',
       'sessions',
-      'unknownCctSockets',
+      'unknownCcdSockets',
     ]);
     expect(j['ranAt']).toBe(NOW);
     expect(j['sessions']).toEqual([expect.objectContaining({ key: 's1', classification: 'orphan', claudeSessionId: 'uuid-s1' })]);

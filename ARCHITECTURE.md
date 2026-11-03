@@ -448,6 +448,13 @@ error and tears down everything created so far, in reverse order:
   while Claude runs.
 - **Reaping.** The registry in the state dir records every session; `start()` and `ccd lifecheck` reap orphans from
   crashed owners. Pid identity is checked by start time and command line (macOS reuses pids).
+- **Idle suspend and resume** (ICR 0041). The kernel can stop Claude and keep everything else: the step loop, the event
+  log, subscribers and the conversation history. It suspends only when `core/selectors.ts suspendBlockers()` is empty
+  (no turn, job, model call, open prompt of any kind, background work, scheduled task, limit, auth or compaction),
+  checked and committed in one synchronous block. While the old launch is stopped its observations are gated off, so its
+  exit never reaches the core as `session.exited`; the core moves to lifecycle `suspended` instead. A resume swaps in
+  `core/resume.ts resumeCore()` (every counter and the history kept, everything per-process reset) and relaunches with
+  `--resume`, the current mode and model, and the tail checkpoint. A failed resume returns to `suspended`.
 - **Usage limits.** Claude's built-in auto-continue is disabled; the core owns a wall-clock `usageWake` deadline with
   jitter and resumes with a configurable prompt.
 

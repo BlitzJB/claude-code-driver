@@ -122,6 +122,17 @@ export class FakeKernel implements SessionKernel {
     credits: 'off',
     readAt: 1234,
   };
+  readonly lifecycleCalls: ('suspend' | 'resume')[] = [];
+  suspendImpl: () => Promise<void> = () => Promise.resolve();
+  resumeImpl: () => Promise<void> = () => Promise.resolve();
+  suspend(): Promise<void> {
+    this.lifecycleCalls.push('suspend');
+    return this.suspendImpl();
+  }
+  resume(): Promise<void> {
+    this.lifecycleCalls.push('resume');
+    return this.resumeImpl();
+  }
   queryUsage(): Promise<UsageReport> {
     return this.usageReport instanceof Error ? Promise.reject(this.usageReport) : Promise.resolve(this.usageReport);
   }

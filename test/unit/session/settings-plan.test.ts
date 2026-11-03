@@ -1,6 +1,6 @@
 // WP-12 settings-plan (DESIGN.md §3.4, D-13, D-14, D-34, D-36).
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import type { HookEndpoint } from '../../../src/platform/ports.js';
 import {
   buildSettingsPlan,
@@ -160,7 +160,7 @@ describe('validation (P-HOOK-03/22, P-SEC-32/33/39)', () => {
     try {
       fn();
     } catch (e) {
-      return isCctError(e) ? e.code : 'other';
+      return isCcdError(e) ? e.code : 'other';
     }
     return undefined;
   };

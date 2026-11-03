@@ -95,6 +95,8 @@ const SAMPLES: Record<DomainEvent['type'], [DomainEvent, SessionEvent['type'][]]
   'session.authRestored': [ev('session.authRestored', {}), ['authRestored']],
   'session.closing': [ev('session.closing', { reason: 'host' }), []],
   'session.exited': [ev('session.exited', { exitStatus: 0, signal: null, reason: 'closed', finalScreen: 'secret screen' }), ['exited']],
+  'session.suspended': [ev('session.suspended', { claudeSessionId: 'c1', reason: 'idle', interrupted: false }), ['suspended']],
+  'session.resumed': [ev('session.resumed', { claudeSessionId: 'c1', durationMs: 1800 }), ['resumed']],
   'status.changed': [
     ev('status.changed', { from: { kind: 'compacting', since: M(1) }, to: { kind: 'compacting', since: M(2) } }),
     ['status'],

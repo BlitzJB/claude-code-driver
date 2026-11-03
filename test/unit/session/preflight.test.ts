@@ -1,7 +1,7 @@
 // WP-12 preflight (DESIGN.md §3.1 steps 1–7 + the tmux probe; P-TMUX-41/50, P-INPUT-37, P-HOOK-04, P-LIFE-02/18/41,
 // P-SEC-15/29, P-REV-04/12/37).
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import { TmuxNotFound } from '../../../src/platform/tmux/errors.js';
 import { RegistryStore } from '../../../src/session/registry-store.js';
 import {
@@ -30,7 +30,7 @@ async function rejection(p: Promise<unknown>): Promise<{ code: string; details: 
   try {
     await p;
   } catch (e) {
-    if (isCctError(e)) return { code: e.code, details: e.details as Record<string, unknown> | undefined };
+    if (isCcdError(e)) return { code: e.code, details: e.details as Record<string, unknown> | undefined };
     throw e;
   }
   throw new Error('expected a rejection');
@@ -100,7 +100,7 @@ describe('step 5: Claude binary and version (K-03)', () => {
   it('the version check runs with env₁ and before any tmux call', async () => {
     const f = ports({ claude: { version: '9.9.9' } });
     const r = await launchWorld({ fakes: f }).catch((e: unknown) => e);
-    expect(isCctError(r, 'E_CLAUDE_VERSION_MISMATCH')).toBe(true);
+    expect(isCcdError(r, 'E_CLAUDE_VERSION_MISMATCH')).toBe(true);
     expect(f.tmux.invocations).toEqual([]);
     const call = f.claude.calls.find((c) => c.op === 'version');
     expect(call?.env?.['DISABLE_AUTOUPDATER']).toBe('1');

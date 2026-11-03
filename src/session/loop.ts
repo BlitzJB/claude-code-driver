@@ -88,6 +88,8 @@ export interface StepLoop {
   /** Publish an L3-originated event (a warning, or an L0 security alert) through the core's event seq. */
   publishLocal(type: 'warning', payload: { code: CcdErrorCode; message: string; detail?: JsonValue }): DomainEvent | undefined;
   publishLocal(type: 'security.alert', payload: SecurityAlertPayload): DomainEvent | undefined;
+  /** ICR 0041: the kernel relaunched a suspended session (an L3 fact, like the two above). */
+  publishLocal(type: 'session.resumed', payload: { claudeSessionId: string; durationMs: number }): DomainEvent | undefined;
   /** Schedule a drain (normally automatic). */
   kick(): void;
   /** Resolves when the queue is empty and no drain is scheduled (tests, close). */
@@ -272,9 +274,11 @@ export function createStepLoop(o: StepLoopOptions): StepLoop {
 
   function publishLocal(type: 'warning', payload: { code: CcdErrorCode; message: string; detail?: JsonValue }): DomainEvent | undefined;
   function publishLocal(type: 'security.alert', payload: SecurityAlertPayload): DomainEvent | undefined;
+  function publishLocal(type: 'session.resumed', payload: { claudeSessionId: string; durationMs: number }): DomainEvent | undefined;
   function publishLocal(
-    type: 'warning' | 'security.alert',
-    payload: { code: CcdErrorCode; message: string; detail?: JsonValue } | SecurityAlertPayload,
+    type: 'warning' | 'security.alert' | 'session.resumed',
+    payload:
+      { code: CcdErrorCode; message: string; detail?: JsonValue } | SecurityAlertPayload | { claudeSessionId: string; durationMs: number },
   ): DomainEvent | undefined {
     if (closed) return undefined;
     const seq = (core.counters.event + 1) as EventSeq;

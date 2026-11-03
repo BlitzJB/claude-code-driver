@@ -106,16 +106,24 @@ export declare class ClaudeSession implements AsyncDisposable {
         timeoutMs?: number;
         signal?: AbortSignal;
     }): Promise<SessionSnapshot>;
-    /** Idle with an empty library queue; rejects E_SESSION_EXITED if the session exits first. */
+    /** Idle with an empty library queue (a suspended session counts); rejects E_SESSION_EXITED if the session exits first. */
     waitForIdle(opts?: {
         timeoutMs?: number;
         signal?: AbortSignal;
     }): Promise<SessionSnapshot>;
-    /** Idle, nothing queued, no background agents or tasks (P-LIFE-21: quiescence is separate from idle). */
+    /** Idle, nothing queued, no background agents or tasks (P-LIFE-21; a suspended session counts). */
     waitForQuiescence(opts?: {
         timeoutMs?: number;
         signal?: AbortSignal;
     }): Promise<SessionSnapshot>;
+    /**
+     * Stop Claude now and keep the session (ICR 0041). The next `send`, `command`, `usage` or `setMode` resumes the same
+     * conversation. Rejects `E_BUSY` (`details.blocker` names the first blocker, e.g. `permission`; `details.blockers` lists all)
+     * when anything is in progress or waiting for an answer; a suspend never denies or drops a prompt.
+     */
+    suspend(): Promise<void>;
+    /** Resume a suspended session now (resolves at ready; no-op when live). Rejects with the start error and stays suspended. */
+    resume(): Promise<void>;
     turn(key: TurnKey): Turn | undefined;
     turns(): readonly TurnSnapshot[];
     /** Idempotent; a `kill` while a graceful close is still running escalates it. */
@@ -259,6 +267,13 @@ export interface ClaudeSessionOptions {
     usageLimit?: {
         autoResume?: boolean;
         resumePrompt?: string;
+    };
+    /**
+     * Stop Claude after the session has been idle (quiescent, no open prompt of any kind) for `suspendAfterMs` (≥ 1000).
+     * The next `send`, `command`, `usage` or `setMode` resumes the same conversation first (ICR 0041).
+     */
+    idle?: {
+        suspendAfterMs?: number;
     };
     debug?: {
         trace?: string;
@@ -412,6 +427,12 @@ export type AgentStatus = {
     since: number;
     exitStatus: number | null;
     signal: string | null;
+}
+/** Claude was stopped on idle; the next `send`, `command`, `usage` or `setMode` resumes this conversation (ICR 0041). */
+ | {
+    kind: 'suspended';
+    since: number;
+    claudeSessionId: string;
 };
 export interface ToolRunSnapshot {
     readonly key: ToolKey;
@@ -536,7 +557,16 @@ export type SessionEvent = Ev<'ready', {
 }> | Ev<'gap', {
     from: number;
     to: number;
-}> | Ev<'exited', SessionExitInfo>;
+}> | Ev<'exited', SessionExitInfo>
+/** `interrupted`: work that started in the last moment before the stop was cut off (a `warning` names it). */
+ | Ev<'suspended', {
+    claudeSessionId: string;
+    reason: 'idle' | 'manual';
+    interrupted: boolean;
+}> | Ev<'resumed', {
+    claudeSessionId: string;
+    durationMs: number;
+}>;
 export type SessionEventType = SessionEvent['type'];
 export type SessionEventOf<T extends SessionEventType> = Extract<SessionEvent, {
     type: T;
@@ -639,7 +669,7 @@ export declare class CcdError extends Error {
     toJSON(): CcdErrorData;
 }
 /** Duck-typed on `code`, not instanceof, so two installed package copies agree (P-API-12). */
-export declare function isCctError(e: unknown, code?: CcdErrorCode): e is CcdError;
+export declare function isCcdError(e: unknown, code?: CcdErrorCode): e is CcdError;
 
 // ===== model/json.d.ts =====
 export type JsonValue = null | boolean | number | string | JsonValue[] | {

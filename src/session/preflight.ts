@@ -28,12 +28,12 @@ import type {
   SettingsLayers,
   TmuxServerFactory,
 } from '../platform/ports.js';
-import { CcdError, isCctError, type CcdErrorCode } from '../model/errors.js';
+import { CcdError, isCcdError, type CcdErrorCode } from '../model/errors.js';
 import type { JsonValue } from '../model/json.js';
 import { SUPPORTED_CLAUDE_VERSION } from '../model/version.js';
 import { checkExtraArgFiles, validateExtraArgs } from './argv-builder.js';
 import { checkSettingsEnv, type EnvWarning } from './env-builder.js';
-import { toCctError } from './errors-map.js';
+import { toCcdError } from './errors-map.js';
 import type { RegistryStore } from './registry-store.js';
 
 const MIN_NODE_MAJOR = 20;
@@ -55,8 +55,8 @@ export interface PreflightWarning {
  * through. An error errors-map cannot classify (E_INVARIANT) takes the step's `fallback` code instead.
  */
 export function mapPortError(e: unknown, fallback: CcdErrorCode, message: string): CcdError {
-  if (isCctError(e)) return toCctError(e);
-  const m = toCctError(e, { op: message });
+  if (isCcdError(e)) return toCcdError(e);
+  const m = toCcdError(e, { op: message });
   if (m.code !== 'E_INVARIANT' || fallback === 'E_INVARIANT') return m;
   const details: Record<string, JsonValue> = { ...(m.details ?? {}) };
   const name = typeof e === 'object' && e !== null ? (e as { name?: unknown }).name : undefined;

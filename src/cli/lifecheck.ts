@@ -48,7 +48,7 @@ export interface LifecheckReport {
   libVersion: string;
   distPath: string;
   actions: LifecheckAction[];
-  unknownCctSockets: number;
+  unknownCcdSockets: number;
   sessions: LifecheckSessionLine[];
   durationMs: number;
   errors: string[];
@@ -86,7 +86,7 @@ export async function runLifecheck(host: LifecheckHost, o: RunLifecheckOptions):
     libVersion: host.libVersion,
     distPath: host.distPath,
     actions: [],
-    unknownCctSockets: 0,
+    unknownCcdSockets: 0,
     sessions: [],
     durationMs: 0,
     errors: [],
@@ -159,7 +159,7 @@ export async function runLifecheck(host: LifecheckHost, o: RunLifecheckOptions):
       } else report.actions.push({ ...base, detail: reapDetail(r) });
     }
     for (const s of pass.socketsUnlinked) report.actions.push({ kind: 'socketSwept', detail: s });
-    report.unknownCctSockets = pass.unknownCctSockets;
+    report.unknownCcdSockets = pass.unknownCcdSockets;
     for (const e of pass.errors) {
       report.lastRunOk = false;
       report.errors.push(`reap: ${e}`);
@@ -212,7 +212,7 @@ export function formatLifecheckReport(r: LifecheckReport): string {
       `  action ${a.kind}${a.sessionKey ? ` ${a.sessionKey}` : ''}${a.claudeSessionId ? ` (resume: ${a.claudeSessionId})` : ''}${a.detail ? `: ${a.detail}` : ''}`,
     );
   }
-  if (r.unknownCctSockets > 0) out.push(`  ${r.unknownCctSockets} ccd-* socket(s) not named by the registry (left alone)`);
+  if (r.unknownCcdSockets > 0) out.push(`  ${r.unknownCcdSockets} ccd-* socket(s) not named by the registry (left alone)`);
   for (const e of r.errors) out.push(`  error ${e}`);
   return out.join('\n') + '\n';
 }

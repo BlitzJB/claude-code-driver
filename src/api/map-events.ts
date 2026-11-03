@@ -87,6 +87,10 @@ export function toPublicEvents(e: DomainEvent, d: SessionState, ctx: EventCtx): 
       return one('authRestored', {});
     case 'session.exited':
       return one('exited', { exitStatus: e.payload.exitStatus, signal: e.payload.signal, reason: e.payload.reason });
+    case 'session.suspended':
+      return one('suspended', { claudeSessionId: e.payload.claudeSessionId, reason: e.payload.reason, interrupted: e.payload.interrupted });
+    case 'session.resumed':
+      return one('resumed', { claudeSessionId: e.payload.claudeSessionId, durationMs: e.payload.durationMs });
     case 'status.changed':
       return one('status', { from: toStatus(e.payload.from, t), to: toStatus(e.payload.to, t) });
     case 'turn.queued': {

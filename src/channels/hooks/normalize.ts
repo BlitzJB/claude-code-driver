@@ -225,6 +225,9 @@ function mapEvent(
       const pl: PayloadOf<'turn.stopped'> = { backgroundTasks: tasks, stopHookActive: bool(p, F.stopHookActive) ?? false };
       put(pl, 'promptId', c.promptId);
       put(pl, 'lastAssistantMessage', str(p, F.lastAssistantMessage));
+      // ICR 0041: in-session scheduled tasks (/loop, cron) live inside the Claude process; a suspend would cancel them
+      const crons = arr(p, F.sessionCrons);
+      if (crons !== undefined) pl.sessionCrons = crons.length;
       return { obs: [mk('turn.stopped', meta, pl), ...teammateTasks(tasks, meta, x)] };
     }
     case 'StopFailure': {

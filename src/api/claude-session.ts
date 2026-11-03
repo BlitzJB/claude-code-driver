@@ -11,7 +11,7 @@
 // without types), so the public `.d.ts` graph stays free of internal names.
 
 import type { Command, CommandResult } from '../model/commands.js';
-import { isCctError } from '../model/errors.js';
+import { isCcdError } from '../model/errors.js';
 import type { DomainEvent } from '../model/events.js';
 import type { EventSeq } from '../model/ids.js';
 import type { KernelListener, PermissionAsk, SessionKernel } from '../model/kernel.js';
@@ -419,19 +419,51 @@ export class ClaudeSession implements AsyncDisposable {
       // the kernel may have wrapped a non-Error value (session/kernel.ts asError): hand back the host's own values, not the wrap
       if (hostThrew !== undefined) throw hostThrew.error;
       const sig = opts.signal;
-      if (sig?.aborted === true && !isCctError(e) && !isClaudeSessionError(e)) throw sig.reason;
+      if (sig?.aborted === true && !isCcdError(e) && !isClaudeSessionError(e)) throw sig.reason;
       throw toPublicError(e);
     }
   }
 
-  /** Idle with an empty library queue; rejects E_SESSION_EXITED if the session exits first. */
+  /** Idle with an empty library queue (a suspended session counts); rejects E_SESSION_EXITED if the session exits first. */
   waitForIdle(opts: { timeoutMs?: number; signal?: AbortSignal } = {}): Promise<SessionSnapshot> {
-    return this.waitSettled((s) => s.status.kind === 'idle' && s.status.queued === 0 && s.queuedTurns.length === 0, opts);
+    return this.waitSettled(
+      (s) => s.status.kind === 'suspended' || (s.status.kind === 'idle' && s.status.queued === 0 && s.queuedTurns.length === 0),
+      opts,
+    );
   }
 
-  /** Idle, nothing queued, no background agents or tasks (P-LIFE-21: quiescence is separate from idle). */
+  /** Idle, nothing queued, no background agents or tasks (P-LIFE-21; a suspended session counts). */
   waitForQuiescence(opts: { timeoutMs?: number; signal?: AbortSignal } = {}): Promise<SessionSnapshot> {
-    return this.waitSettled((s) => s.status.kind === 'idle' && s.status.quiescent && s.queuedTurns.length === 0, opts);
+    return this.waitSettled(
+      (s) => s.status.kind === 'suspended' || (s.status.kind === 'idle' && s.status.quiescent && s.queuedTurns.length === 0),
+      opts,
+    );
+  }
+
+  /**
+   * Stop Claude now and keep the session (ICR 0041). The next `send`, `command`, `usage` or `setMode` resumes the same
+   * conversation. Rejects `E_BUSY` (`details.blocker` names the first blocker, e.g. `permission`; `details.blockers` lists all)
+   * when anything is in progress or waiting for an answer; a suspend never denies or drops a prompt.
+   */
+  async suspend(): Promise<void> {
+    const blocked = this.blocked();
+    if (blocked !== undefined) throw blocked;
+    try {
+      await this.kernel.suspend();
+    } catch (e) {
+      throw toPublicError(e);
+    }
+  }
+
+  /** Resume a suspended session now (resolves at ready; no-op when live). Rejects with the start error and stays suspended. */
+  async resume(): Promise<void> {
+    const blocked = this.blocked();
+    if (blocked !== undefined) throw blocked;
+    try {
+      await this.kernel.resume();
+    } catch (e) {
+      throw toPublicError(e);
+    }
   }
 
   turn(key: TurnKey): Turn | undefined {

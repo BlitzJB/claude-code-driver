@@ -1,6 +1,6 @@
 // WP-12 launcher (DESIGN.md §3.1 steps 1–13) against the fake ports and the FakeClaude world.
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import type { ObservationInput } from '../../../src/model/observation.js';
 import { TmuxUnsupported } from '../../../src/platform/tmux/errors.js';
 import { expectedTranscriptPath, launchSession, projectSlug, type LaunchWarning } from '../../../src/session/launcher.js';
@@ -13,7 +13,7 @@ async function failure(p: Promise<unknown>): Promise<{ code: string; details: Re
   try {
     await p;
   } catch (e) {
-    if (isCctError(e)) return { code: e.code, details: e.details as Record<string, unknown> | undefined };
+    if (isCcdError(e)) return { code: e.code, details: e.details as Record<string, unknown> | undefined };
     throw e;
   }
   throw new Error('expected launch to fail');

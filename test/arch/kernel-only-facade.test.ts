@@ -43,6 +43,12 @@ class ScriptedKernel implements SessionKernel {
   subscribeDebug(): () => void {
     return () => undefined;
   }
+  suspend(): Promise<void> {
+    return Promise.resolve();
+  }
+  resume(): Promise<void> {
+    return Promise.resolve();
+  }
   queryUsage(): Promise<UsageReport> {
     return Promise.resolve({ meters: [], readAt: 0 });
   }

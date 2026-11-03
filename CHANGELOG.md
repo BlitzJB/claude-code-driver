@@ -6,8 +6,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- Internal errors whose code is also a public code (`E_BUSY`, `E_USAGE_LIMIT`, …) are now mapped to `ClaudeSessionError`,
+  so `details.reason` is always the internal code.
+
 ### Added
 
+- Idle suspend and transparent resume: `idle: { suspendAfterMs }`, `session.suspend()`, `session.resume()`, status
+  `suspended`, events `suspended` and `resumed`. A suspend never answers or drops a prompt (ICR 0041).
 - First public version of `claude-code-driver`: drive the interactive Claude Code TUI (pinned to **2.1.316**) inside a
   private tmux server from Node.js, on a Claude subscription.
 - `ClaudeSession` API: `start`, `send` (returns a `Turn` with events and a `done` result), `command`, `interrupt`,

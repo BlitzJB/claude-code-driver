@@ -330,6 +330,8 @@ function stubModules(o: { failStart?: string } = {}): SessionModules {
         },
         subscribeDebug: () => () => undefined,
         queryUsage: () => Promise.resolve({ meters: [], readAt: 0 }),
+        suspend: () => Promise.resolve(),
+        resume: () => Promise.resolve(),
         setPermissionHandler: () => undefined,
         waitFor: (pred) => (pred(state()) ? Promise.resolve(state()) : Promise.reject(new Error('E_WAIT_TIMEOUT'))),
         diagnostics: { viewCommand: () => 'tmux -L ccd-stub attach -r -t =ccd-s:', captureScreen: () => Promise.resolve('') },

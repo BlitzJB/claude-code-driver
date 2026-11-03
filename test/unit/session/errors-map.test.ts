@@ -28,11 +28,11 @@ import {
   TmuxUnsupported,
   TmuxVersionUnsupported,
 } from '../../../src/platform/tmux/errors.js';
-import { fromErrorData, toCctError, toErrorData } from '../../../src/session/errors-map.js';
+import { fromErrorData, toCcdError, toErrorData } from '../../../src/session/errors-map.js';
 
 const SECRET = 'HTTPS_PROXY=http://ccd:deadbeefdeadbeef@127.0.0.1:9';
 
-describe('toCctError: every L0 error family maps to a typed code', () => {
+describe('toCcdError: every L0 error family maps to a typed code', () => {
   it.each([
     [new TmuxNotFound(['/usr/bin']), 'E_TMUX_NOT_FOUND', { searched: ['/usr/bin'] }],
     [new TmuxVersionUnsupported('3.1', '3.2'), 'E_TMUX_UNSUPPORTED', { reason: 'version', found: '3.1', min: '3.2' }],
@@ -75,7 +75,7 @@ describe('toCctError: every L0 error family maps to a typed code', () => {
     [new HookTransportError('EADDRINUSE', 'x'), 'E_HOOKS_UNAVAILABLE', { reason: 'EADDRINUSE' }],
     [new NetSidecarError('exited', 'x'), 'E_NETWORK_UNAVAILABLE', { reason: 'exited' }],
   ])('%s → %s', (err, code, details) => {
-    const c = toCctError(err);
+    const c = toCcdError(err);
     expect(c).toBeInstanceOf(CcdError);
     expect(c.code).toBe(code);
     expect(c.details).toMatchObject(details);
@@ -91,10 +91,10 @@ describe('toCctError: every L0 error family maps to a typed code', () => {
       path: '/Users/someone/secret',
     });
     const all = [
-      toCctError(nodeErr),
-      toCctError(new TmuxCommandFailed(1, SECRET, ['x'])),
-      toCctError(new TmuxServerGone(SECRET)),
-      toCctError(new TypeError(SECRET)),
+      toCcdError(nodeErr),
+      toCcdError(new TmuxCommandFailed(1, SECRET, ['x'])),
+      toCcdError(new TmuxServerGone(SECRET)),
+      toCcdError(new TypeError(SECRET)),
     ];
     for (const c of all) {
       const text = JSON.stringify(c.toJSON()) + c.message;
@@ -107,26 +107,26 @@ describe('toCctError: every L0 error family maps to a typed code', () => {
 
   it('CcdError passes through; a foreign-copy CcdError is rebuilt from its typed fields', () => {
     const own = new CcdError('E_BUSY', 'busy', { details: { reason: 'activeTurn' } });
-    expect(toCctError(own)).toBe(own);
+    expect(toCcdError(own)).toBe(own);
     const foreign = { name: 'CcdError', code: 'E_TRUST_REQUIRED', message: 'trust it', details: { gate: 'trust' }, cmd: SECRET };
-    const c = toCctError(foreign);
+    const c = toCcdError(foreign);
     expect(c).toBeInstanceOf(CcdError);
     expect(c.code).toBe('E_TRUST_REQUIRED');
     expect(c.details).toEqual({ gate: 'trust' });
   });
 
   it('non-errors, AbortError, odd names and the op context', () => {
-    expect(toCctError('boom').details).toEqual({ reason: 'nonError', type: 'string' });
-    expect(toCctError(null).code).toBe('E_INVARIANT');
-    expect(toCctError(new DOMException('aborted', 'AbortError')).code).toBe('E_TURN_ABORTED');
-    expect(toCctError({ name: 'weird name with spaces' }).details).toEqual({ reason: 'unexpected', name: 'Error' });
-    const c = toCctError(new TmuxNotFound([]), { op: 'tmux.probe' });
+    expect(toCcdError('boom').details).toEqual({ reason: 'nonError', type: 'string' });
+    expect(toCcdError(null).code).toBe('E_INVARIANT');
+    expect(toCcdError(new DOMException('aborted', 'AbortError')).code).toBe('E_TURN_ABORTED');
+    expect(toCcdError({ name: 'weird name with spaces' }).details).toEqual({ reason: 'unexpected', name: 'Error' });
+    const c = toCcdError(new TmuxNotFound([]), { op: 'tmux.probe' });
     expect(c.details).toMatchObject({ op: 'tmux.probe' });
     expect(c.message).toMatch(/^tmux\.probe: /);
   });
 
   it('long typed fields are clipped', () => {
-    const c = toCctError(new UnsafeRuntimeDir(`/${'x'.repeat(1000)}`, 'owner'));
+    const c = toCcdError(new UnsafeRuntimeDir(`/${'x'.repeat(1000)}`, 'owner'));
     expect((c.details?.['path'] as string).length).toBeLessThanOrEqual(257);
   });
 
@@ -139,7 +139,7 @@ describe('toCctError: every L0 error family maps to a typed code', () => {
         },
       },
     );
-    expect(toCctError(evil).code).toBe('E_INVARIANT');
+    expect(toCcdError(evil).code).toBe('E_INVARIANT');
   });
 
   it('fromErrorData / toErrorData round-trip', () => {

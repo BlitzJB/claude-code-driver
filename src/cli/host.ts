@@ -55,7 +55,7 @@ export interface ReapPassResult {
   reaped: ReapedLine[];
   skippedLive: string[];
   socketsUnlinked: string[];
-  unknownCctSockets: number;
+  unknownCcdSockets: number;
   sweptDirs: string[];
   prunedArchive: string[];
   ownersRemoved: number[];

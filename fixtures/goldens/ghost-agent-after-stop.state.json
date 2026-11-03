@@ -662,6 +662,7 @@
       "toolName": "Write"
     }
   },
+  "scheduledTasks": 0,
   "selfTest": {
     "state": "skipped"
   },

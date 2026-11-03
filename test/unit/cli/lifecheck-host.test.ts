@@ -137,11 +137,11 @@ describe('lifecheck host over the reaper (fakes)', () => {
     expect((await store.listSessions()).map((s) => s.sessionKey)).toEqual(['s00000003']);
     expect((await store.listArchive()).map((s) => s.sessionKey).sort()).toEqual(['s00000001', 's00000002']);
     // unknown ccd-* sockets are counted, never touched (P-REV-33)
-    expect(r.unknownCctSockets).toBe(2);
+    expect(r.unknownCcdSockets).toBe(2);
     expect(p.execCalls.some((c) => c.file === '/bin/rm')).toBe(false);
     // lifecheck.json in the state dir
     const w = JSON.parse(fp.state.files.get('lifecheck.json') ?? '{}') as Record<string, unknown>;
-    expect(w).toMatchObject({ lastRunOk: true, libVersion: '0.0.0', distPath: '/pkg/dist/cli/main.js', unknownCctSockets: 2 });
+    expect(w).toMatchObject({ lastRunOk: true, libVersion: '0.0.0', distPath: '/pkg/dist/cli/main.js', unknownCcdSockets: 2 });
     expect(logs.some((l) => l.includes('looks hung'))).toBe(true);
   });
 

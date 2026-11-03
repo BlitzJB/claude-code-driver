@@ -117,6 +117,8 @@ export interface ResolvedConfig {
     runtimeRoot: string;
     ownerWatchPollMs: number; /* 1000 */
   };
+  /** ICR 0041: absent = never suspend on idle. */
+  idle?: { suspendAfterMs: number };
   debug: {
     tracePath?: string;
     raw: 'none' | 'meta' | 'full';

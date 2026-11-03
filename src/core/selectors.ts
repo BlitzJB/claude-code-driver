@@ -3,6 +3,7 @@
 import type { AgentKey } from '../model/ids.js';
 import type { PermissionRecord, SessionState, ToolRun, ToolState, TurnRecord } from '../model/state.js';
 import type { MonoMs } from '../model/time.js';
+import { isCallOpen, isToolTerminal } from './lattice.js';
 import type { CoreState } from './types.js';
 
 export interface CanSubmitOpts {
@@ -119,4 +120,32 @@ export function awaitedNotifications(d: SessionState, now: number, graceMs: numb
 /** quiescent = no active turn ∧ libraryQueue empty ∧ no running background agents/tasks ∧ no pending task notifications. */
 export function isQuiescent(d: SessionState, pendingNotifications = 0): boolean {
   return d.activeTurn === undefined && d.libraryQueue.length === 0 && backgroundCount(d) === 0 && pendingNotifications <= 0;
+}
+
+/**
+ * ICR 0041: why the session may not be suspended right now (empty = suspendable). A suspend must never cut off work or
+ * leave a prompt unanswered, so every open record counts, background agents' permissions and questions included (the
+ * derived status skips those). Order is stable; `E_BUSY{reason}` names the first entry.
+ */
+export function suspendBlockers(c: CoreState): string[] {
+  const d = c.domain;
+  const out: string[] = [];
+  if (d.lifecycle !== 'ready') out.push('notReady');
+  if (d.exit !== undefined) out.push('exited');
+  if (d.status.kind !== 'idle') out.push(d.status.kind);
+  else if (!d.status.quiescent) out.push('notQuiescent');
+  if (d.activeTurn !== undefined || d.libraryQueue.length > 0) out.push('turn');
+  if (pendingPermissions(d).length > 0) out.push('permission');
+  if (Object.keys(d.pendingInputs).length > 0) out.push('awaitingInput');
+  if (c.input.current !== undefined || c.input.order.length > 0) out.push('inputJob');
+  const b = d.inputBlocked;
+  if (b.permission || b.dialog || b.startup || b.copyMode || b.input || b.editor === true) out.push('composerBlocked');
+  if (Object.values(d.calls).some((x) => isCallOpen(x.state.value))) out.push('modelCall');
+  if (Object.values(d.tools).some((x) => !isToolTerminal(x.state.value))) out.push('tool');
+  if (backgroundCount(d) > 0) out.push('background');
+  if ((d.scheduledTasks ?? 0) > 0) out.push('scheduledTasks');
+  if (d.usage.limit !== undefined && d.usage.limit.state !== 'cleared') out.push('usageLimited');
+  if (d.auth.state !== 'ok') out.push('authRequired');
+  if (d.compacting !== undefined) out.push('compacting');
+  return [...new Set(out)];
 }

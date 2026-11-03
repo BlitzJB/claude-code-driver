@@ -38,7 +38,9 @@ export interface EntityProvenance {
   lastSeq: ObsSeq;
 }
 
-export type LifecyclePhase = 'preflight' | 'launching' | 'awaitingReady' | 'gated' | 'selfTest' | 'ready' | 'closing' | 'exited';
+// ICR 0041: 'suspended' = Claude stopped on idle, the session (core, keys, history, subscribers) kept; a resume relaunches it.
+export type LifecyclePhase =
+  'preflight' | 'launching' | 'awaitingReady' | 'gated' | 'selfTest' | 'ready' | 'closing' | 'exited' | 'suspended';
 export type TurnState =
   | 'queued'
   | 'submitting'
@@ -249,7 +251,8 @@ export type AgentStatus =
   | { kind: 'compacting'; since: MonoMs }
   | { kind: 'usageLimited'; since: MonoMs; resetsAtWall?: WallMs; autoResume: boolean; nextWakeAtWall?: WallMs }
   | { kind: 'authRequired'; since: MonoMs; message: string }
-  | { kind: 'exited'; since: MonoMs; exitStatus: number | null; signal: string | null };
+  | { kind: 'exited'; since: MonoMs; exitStatus: number | null; signal: string | null }
+  | { kind: 'suspended'; since: MonoMs; claudeSessionId: string }; // ICR 0041
 
 export interface SessionState {
   v: 1;
@@ -295,5 +298,9 @@ export interface SessionState {
   };
   selfTest: { state: 'idle' | 'armed' | 'passed' | 'failed' | 'cached' | 'skipped'; nonce?: string };
   exit?: { exitStatus: number | null; signal: string | null; reason: string };
+  /** ICR 0041: in-session scheduled tasks (`session_crons` of the last Stop/SubagentStop); they die with the process. */
+  scheduledTasks?: number;
+  /** ICR 0041: set while lifecycle is `suspended`. */
+  suspended?: { since: MonoMs; claudeSessionId: string; reason: 'idle' | 'manual' };
   lastEventSeq: EventSeq;
 }

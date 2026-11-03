@@ -299,6 +299,7 @@ const SPEC_SCHEMA: Schema = {
       k: { closeGraceMs: MS(600_000), killAfterMs: MS(600_000), stateDir: ABS, runtimeRoot: ABS },
     },
     selfTest: { t: 'enum', v: ['once', 'always', 'off'] },
+    idle: { t: 'obj', k: { suspendAfterMs: { t: 'int', min: 1000, max: 7 * 86_400_000 } } },
     debug: {
       t: 'obj',
       k: {
@@ -577,6 +578,7 @@ export function resolveConfigPure(spec: SessionSpec, facts: ConfigFacts, default
     core,
   };
   if (spec.resume !== undefined) out.resume = spec.resume;
+  if (spec.idle?.suspendAfterMs !== undefined) out.idle = { suspendAfterMs: spec.idle.suspendAfterMs };
   if (spec.model !== undefined) out.model = spec.model;
   if (spec.effort !== undefined) out.effort = spec.effort;
   if (spec.claude?.bin !== undefined) out.claude.bin = spec.claude.bin;

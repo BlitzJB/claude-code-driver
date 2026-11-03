@@ -203,6 +203,15 @@ describe('rev 2 §10 A5: session ids are never filtered', () => {
   });
 });
 
+describe('ICR 0041: session_crons', () => {
+  it('Stop carries the number of in-session scheduled tasks; absent stays absent', () => {
+    const withCrons = normalizeHook(raw('Stop', ev('Stop', { stop_hook_active: false, session_crons: [{ id: 'a' }, { id: 'b' }] })), ctx);
+    expect(one(withCrons.observations, 'turn.stopped').sessionCrons).toBe(2);
+    const without = normalizeHook(raw('Stop', ev('Stop', { stop_hook_active: false })), ctx);
+    expect('sessionCrons' in one(without.observations, 'turn.stopped')).toBe(false);
+  });
+});
+
 describe('P-HOOK-44: untrusted payloads', () => {
   it('rejects a hook_event_name that differs from the routed event, with no observation', () => {
     const r = normalizeHook(raw('Stop', ev('PreToolUse', { tool_name: 'Bash', tool_use_id: 'toolu_1' })), ctx);

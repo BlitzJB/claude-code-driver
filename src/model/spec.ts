@@ -59,4 +59,6 @@ export interface SessionSpec {
     captureLimitFixtures?: boolean;
   };
   timeouts?: Partial<CoreConfig['timeouts']>;
+  /** ICR 0041: stop Claude after this long continuously suspendable; resume on the next call that needs it. */
+  idle?: { suspendAfterMs?: number };
 }

@@ -18,7 +18,7 @@
 // request's own hookSeq, so it can never be applied to a mis-correlated tool (P-SEC-36).
 
 import type { Command, PermissionDecision } from '../model/commands.js';
-import { isCctError } from '../model/errors.js';
+import { isCcdError } from '../model/errors.js';
 import type { PermissionKey } from '../model/ids.js';
 import type { Intent } from '../model/intents.js';
 import type { KernelPermissionHandler, PermissionAsk } from '../model/kernel.js';
@@ -131,13 +131,13 @@ export function createPermissionBroker(o: PermissionBrokerOptions): PermissionBr
     try {
       await o.dispatch({ type: 'permission.answer', permissionKey: k, decision, by: 'handler' });
     } catch (e) {
-      if (isCctError(e, 'E_PERMISSION_INVALID') && e.details?.['reason'] === 'structuredAnswerRequired') {
+      if (isCcdError(e, 'E_PERMISSION_INVALID') && e.details?.['reason'] === 'structuredAnswerRequired') {
         o.logger?.warn('permission-broker: handler gave a plain allow for a structured tool; request stays pending', { permissionKey: k });
         return;
       }
       o.logger?.warn('permission-broker: core refused the handler decision', {
         permissionKey: k,
-        code: isCctError(e) ? e.code : 'unknown',
+        code: isCcdError(e) ? e.code : 'unknown',
       });
     }
   };

@@ -15,7 +15,7 @@
 //     `EditorGate` for that.
 // `input.done` never carries prompt text; `detail` is an error kind / short reason only (SEC §8).
 
-import { isCctError, CCD_ERROR_CODES } from '../model/errors.js';
+import { isCcdError, CCD_ERROR_CODES } from '../model/errors.js';
 import type { CcdErrorCode } from '../model/errors.js';
 import type { CaptureUntil, InputPrimitive, Intent, TmuxKeyName } from '../model/intents.js';
 import type { Logger } from '../model/logger.js';
@@ -195,7 +195,7 @@ export function validatePrimitive(p: InputPrimitive): void {
 /** Map a thrown adapter error to an internal code + a text-free detail (never the message: it may echo input). */
 export function errorOf(e: unknown): { code: CcdErrorCode; detail: string } {
   if (e instanceof PrimitiveError) return { code: e.code, detail: e.detail };
-  if (isCctError(e)) {
+  if (isCcdError(e)) {
     const reason = e.details?.['reason'];
     return { code: e.code, detail: typeof reason === 'string' ? reason : e.code };
   }

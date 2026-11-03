@@ -99,7 +99,7 @@ export function createLifecheckHostFromPorts(ports: LifecheckPorts, o: Lifecheck
         })),
         skippedLive: r.skippedLive.map(String),
         socketsUnlinked: r.sockets.unlinked,
-        unknownCctSockets: r.sockets.unknownCctSockets,
+        unknownCcdSockets: r.sockets.unknownCcdSockets,
         sweptDirs: r.sweptDirs,
         prunedArchive: r.prunedArchive.map((k: SessionKey) => String(k)),
         ownersRemoved: r.ownersRemoved,

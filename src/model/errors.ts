@@ -307,7 +307,7 @@ export class CcdError extends Error {
 }
 
 /** Duck-typed on `code`, not instanceof, so two installed package copies agree (P-API-12). */
-export function isCctError(e: unknown, code?: CcdErrorCode): e is CcdError {
+export function isCcdError(e: unknown, code?: CcdErrorCode): e is CcdError {
   if (typeof e !== 'object' || e === null) return false;
   const c = (e as { code?: unknown }).code;
   if (typeof c !== 'string' || !CODE_SET.has(c)) return false;

@@ -332,6 +332,60 @@ describe.skipIf(!liveReady())('live (real claude 2.1.316)', () => {
   // L-13 needs a test hook that kills the hook worker thread from outside the transport; the public API and the ./kernel
   // subpath deliberately expose none (the worker is private to the session, SEC §2.4). The worker-death path is covered by
   // the WP-03 contract suite (HookWorkerDied) and the kernel's channel-down handling (K-scenarios); it stays out of v1 live.
+  it('L-14 idle suspend → Claude and its tmux server stop → the next send resumes the same conversation (ICR 0041)', async () => {
+    const s = await ClaudeSession.start(liveOptions('l14', { idle: { suspendAfterMs: 3000 } }));
+    const rec = recorder(s);
+    try {
+      takePrompt();
+      const r1 = await s.send('Remember the word PELICAN. Reply with just OK.').done;
+      expect(r1.outcome).toBe('completed');
+      const sock = socketOf(s.debug.viewCommand());
+      const sid = s.claudeSessionId;
+      await s.waitFor((x) => x.status.kind === 'suspended', { timeoutMs: 30_000 });
+      expect(tmuxServerAlive(sock)).toBe(false);
+      expect(s.debug.viewCommand()).toBe('');
+      takePrompt();
+      const r2 = await s.send('What word did I ask you to remember? Reply with just the word.').done;
+      expect(r2.outcome).toBe('completed');
+      expect(r2.text.toUpperCase()).toContain('PELICAN');
+      expect(s.claudeSessionId).toBe(sid);
+      expect(rec.events.filter((e) => e.type === 'suspended')).toHaveLength(1);
+      expect(rec.events.filter((e) => e.type === 'resumed')).toHaveLength(1);
+      expect(rec.events.filter((e) => e.type === 'exited')).toHaveLength(0);
+    } finally {
+      rec.stop();
+      await s.close();
+    }
+  });
+
+  it('L-15 a pending permission keeps the session live past the idle time; after the answer it suspends (ICR 0041)', async () => {
+    let answer: ((d: PermissionDecision) => void) | undefined;
+    const s = await ClaudeSession.start(
+      liveOptions('l15', {
+        idle: { suspendAfterMs: 2000 },
+        permissions: {
+          policy: () =>
+            new Promise<PermissionDecision>((r) => {
+              answer = r;
+            }),
+          timeoutMs: 60_000,
+        },
+      }),
+    );
+    try {
+      takePrompt();
+      const turn = s.send('Use the Bash tool to run exactly: touch live-idle.txt\nThen reply OK.');
+      await waitUntil(() => answer !== undefined, { timeoutMs: 60_000, what: 'permission request' });
+      await new Promise((r) => setTimeout(r, 6000));
+      expect(s.status.kind).toBe('awaitingPermission');
+      answer?.({ behavior: 'allow' });
+      expect((await turn.done).outcome).toBe('completed');
+      await s.waitFor((x) => x.status.kind === 'suspended', { timeoutMs: 30_000 });
+    } finally {
+      await s.close();
+    }
+  });
+
   it.skip('L-13 kill the hook worker mid-session → channel hooks down → pane killed (needs a worker kill hook; not in v1)', () =>
     undefined);
 });

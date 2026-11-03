@@ -51,6 +51,10 @@ export interface SessionKernel {
   subscribeDebug(listener: (r: DebugRecord) => void): Unsubscribe; // no-op unless debug enabled
   /** ICR 0040: runs `/usage` (no model call), parses the dialog, dismisses it. Rejects E_USAGE_UNAVAILABLE if unreadable. */
   queryUsage(opts?: { signal?: AbortSignal; timeoutMs?: number }): Promise<UsageReport>;
+  /** ICR 0041: stop Claude and keep the session; rejects E_BUSY{reason: first blocker} when not suspendable. */
+  suspend(): Promise<void>;
+  /** ICR 0041: relaunch a suspended session (no-op when live); rejects with the start error and stays suspended. */
+  resume(): Promise<void>;
   setPermissionHandler(h: KernelPermissionHandler | null): void; // lives in L3 (user code); the core only sees permission.answer
   waitFor(pred: (s: SessionState) => boolean, opts?: { timeoutMs?: number; signal?: AbortSignal }): Promise<SessionState>; // rejects E_WAIT_TIMEOUT / AbortError
   readonly diagnostics: {

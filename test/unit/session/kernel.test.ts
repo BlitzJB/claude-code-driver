@@ -168,6 +168,7 @@ function stubServices(
           if (o.abortGate !== undefined) await o.abortGate();
           return o.finalScreen === undefined ? exit : { ...exit, finalScreen: o.finalScreen };
         },
+        tailCheckpoint: () => ({ files: [] }),
       };
     },
   };

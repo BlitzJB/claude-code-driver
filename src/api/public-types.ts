@@ -88,7 +88,9 @@ export type AgentStatus =
   | { kind: 'compacting'; since: number }
   | { kind: 'usageLimited'; since: number; resetsAt?: number; nextWakeAt?: number; autoResume: boolean }
   | { kind: 'authRequired'; since: number; message: string }
-  | { kind: 'exited'; since: number; exitStatus: number | null; signal: string | null };
+  | { kind: 'exited'; since: number; exitStatus: number | null; signal: string | null }
+  /** Claude was stopped on idle; the next `send`, `command`, `usage` or `setMode` resumes this conversation (ICR 0041). */
+  | { kind: 'suspended'; since: number; claudeSessionId: string };
 
 export interface ToolRunSnapshot {
   readonly key: ToolKey;
@@ -182,7 +184,10 @@ export type SessionEvent =
   | Ev<'security', { code: 'E_SECURITY'; reason: string }>
   | Ev<'warning', { code: PublicErrorCode; reason: string; message: string }>
   | Ev<'gap', { from: number; to: number }>
-  | Ev<'exited', SessionExitInfo>;
+  | Ev<'exited', SessionExitInfo>
+  /** `interrupted`: work that started in the last moment before the stop was cut off (a `warning` names it). */
+  | Ev<'suspended', { claudeSessionId: string; reason: 'idle' | 'manual'; interrupted: boolean }>
+  | Ev<'resumed', { claudeSessionId: string; durationMs: number }>;
 export type SessionEventType = SessionEvent['type'];
 export type SessionEventOf<T extends SessionEventType> = Extract<SessionEvent, { type: T }>;
 

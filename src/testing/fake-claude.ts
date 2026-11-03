@@ -229,7 +229,13 @@ export interface FakeTurn {
   /** One tool call (PreToolUse → PermissionRequest/dialog → run → PostToolUse + tool_result). */
   tool(spec: ToolSpec): Promise<ToolOutcome>;
   /** Stop hook (+ stop_hook_summary, turn_duration), idle screen. */
-  stop(o?: { lastMessage?: string; stopHookActive?: boolean; backgroundTasks?: unknown[]; noTurnDuration?: boolean }): Promise<void>;
+  stop(o?: {
+    lastMessage?: string;
+    stopHookActive?: boolean;
+    backgroundTasks?: unknown[];
+    noTurnDuration?: boolean;
+    sessionCrons?: unknown[];
+  }): Promise<void>;
   /** StopFailure hook (+ synthetic API error entry), idle screen. */
   fail(o: { error: string; message: string; details?: string; resetsAtEpochS?: number; rateLimitType?: string }): Promise<void>;
   /** Replace the status line (spinner/retry/stall banner); undefined = plain spinner. */
@@ -1096,7 +1102,13 @@ class TurnImpl implements FakeTurn {
   }
 
   async stop(
-    o: { lastMessage?: string; stopHookActive?: boolean; backgroundTasks?: unknown[]; noTurnDuration?: boolean } = {},
+    o: {
+      lastMessage?: string;
+      stopHookActive?: boolean;
+      backgroundTasks?: unknown[];
+      noTurnDuration?: boolean;
+      sessionCrons?: unknown[];
+    } = {},
   ): Promise<void> {
     if (this.interrupted || this.ended) return;
     const s = this.session;
@@ -1104,7 +1116,7 @@ class TurnImpl implements FakeTurn {
       stop_hook_active: o.stopHookActive ?? false,
       last_assistant_message: o.lastMessage ?? this.lastText,
       background_tasks: o.backgroundTasks ?? [],
-      session_crons: [],
+      session_crons: o.sessionCrons ?? [],
     });
     if (o.stopHookActive === true) return;
     s.entry({

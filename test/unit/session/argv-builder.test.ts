@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { isCctError } from '../../../src/model/errors.js';
+import { isCcdError } from '../../../src/model/errors.js';
 import {
   ALLOWED_EXTRA_FLAGS,
   buildClaudeArgv,
@@ -23,7 +23,7 @@ function err(fn: () => unknown): { code: string; reason: unknown } | undefined {
   try {
     fn();
   } catch (e) {
-    if (isCctError(e)) return { code: e.code, reason: e.details?.['reason'] };
+    if (isCcdError(e)) return { code: e.code, reason: e.details?.['reason'] };
     throw e;
   }
   return undefined;
@@ -177,7 +177,7 @@ describe('extraArgs allowlist (§3.3)', () => {
         await checkExtraArgFiles([{ flag: '--system-prompt-file', kind: 'file', value: v }], lstat);
         return 'ok';
       } catch (e) {
-        return isCctError(e) ? e.details?.['reason'] : e;
+        return isCcdError(e) ? e.details?.['reason'] : e;
       }
     };
     expect(await check('/ok.txt')).toBe('ok');

@@ -35,6 +35,11 @@ export interface ClaudeSessionOptions {
   /** Opt-in CONNECT channel (faults only via unstable_advanced). */
   network?: boolean;
   usageLimit?: { autoResume?: boolean /* true */; resumePrompt?: string /* 'continue' */ };
+  /**
+   * Stop Claude after the session has been idle (quiescent, no open prompt of any kind) for `suspendAfterMs` (≥ 1000).
+   * The next `send`, `command`, `usage` or `setMode` resumes the same conversation first (ICR 0041).
+   */
+  idle?: { suspendAfterMs?: number };
   debug?: { trace?: string; raw?: 'none' | 'meta' | 'full' };
   /** Operator logger; structured metadata only, never prompt or tool content. */
   logger?: Logger;
@@ -68,6 +73,7 @@ const PUBLIC_KEYS: readonly (keyof ClaudeSessionOptions)[] = [
   'trust',
   'network',
   'usageLimit',
+  'idle',
   'debug',
   'logger',
   'signal',
@@ -96,6 +102,7 @@ const SPEC_SHAPE: Readonly<Record<keyof SessionSpec, readonly string[] | null>> 
   security: ['denyTmuxInBash', 'crossSessionInbound', 'mcp', 'onTamper'],
   usageLimit: ['autoResume', 'resumePrompt', 'jitterMinMs', 'jitterMaxMs', 'maxRearms', 'builtinAutoContinue'],
   lifecycle: ['closeGraceMs', 'killAfterMs', 'stateDir', 'runtimeRoot'],
+  idle: ['suspendAfterMs'],
   debug: ['tracePath', 'raw', 'retainEvents', 'claudeDebugFile', 'keepClaudeDebugFile', 'dumpDir', 'captureLimitFixtures'],
 };
 /** Fields only the stable options may set (an advanced override would bypass their validation here). */
@@ -232,6 +239,10 @@ export function toSessionSpec(opts: ClaudeSessionOptions): MappedOptions {
   const claude = o['claude'] === undefined ? undefined : checkKeys(o['claude'], 'claude', ['bin', 'expectVersion']);
   const usage = o['usageLimit'] === undefined ? undefined : checkKeys(o['usageLimit'], 'usageLimit', ['autoResume', 'resumePrompt']);
   const debug = o['debug'] === undefined ? undefined : checkKeys(o['debug'], 'debug', ['trace', 'raw']);
+  const idle = o['idle'] === undefined ? undefined : checkKeys(o['idle'], 'idle', ['suspendAfterMs']);
+  const suspendAfterMs = idle?.['suspendAfterMs'];
+  if (suspendAfterMs !== undefined && (typeof suspendAfterMs !== 'number' || !Number.isInteger(suspendAfterMs) || suspendAfterMs < 1000))
+    invalid('idle.suspendAfterMs', 'must be an integer of at least 1000 (ms)');
   const network = bool(o['network'], 'network');
   const trust = oneOf(o['trust'], 'trust', ['require', 'seed']);
   const logger = o['logger'];
@@ -273,6 +284,7 @@ export function toSessionSpec(opts: ClaudeSessionOptions): MappedOptions {
       debug === undefined
         ? undefined
         : defined({ tracePath: str(debug['trace'], 'debug.trace'), raw: oneOf(debug['raw'], 'debug.raw', ['none', 'meta', 'full']) }),
+    idle: suspendAfterMs === undefined ? undefined : { suspendAfterMs },
   });
   if (o['unstable_advanced'] !== undefined) spec = merge(spec, vetAdvanced(o['unstable_advanced']));
 

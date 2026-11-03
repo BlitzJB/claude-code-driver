@@ -71,6 +71,9 @@ export type DomainEvent =
   | E<'session.authRequired', { message: string }>
   | E<'session.authRestored', {}>
   | E<'session.closing', { reason: string }>
+  // ICR 0041: Claude stopped on idle (or session.suspend()); `interrupted` = work arrived after the commit and was cut off
+  | E<'session.suspended', { claudeSessionId: string; reason: 'idle' | 'manual'; interrupted: boolean }>
+  | E<'session.resumed', { claudeSessionId: string; durationMs: number }>
   | E<
       'session.exited',
       {

@@ -27,6 +27,8 @@ import { normalizeRegistry } from '../channels/registry/normalize.js';
 import { selectProfile } from '../channels/profiles/index.js';
 import type { ClaudeProfile } from '../channels/profiles/index.js';
 import { evolve } from '../core/evolve.js';
+import { resumeCore } from '../core/resume.js';
+import { suspendBlockers } from '../core/selectors.js';
 import { initialCore, nextDeadline, step as coreStep } from '../core/step.js';
 import type { CoreState, StepResult } from '../core/step.js';
 import type { Command, CommandResult } from '../model/commands.js';
@@ -50,10 +52,10 @@ import type { Logger } from '../model/logger.js';
 import type { ObservationInput } from '../model/observation.js';
 import type { ScreenFacts } from '../model/screen-facts.js';
 import type { SessionState } from '../model/state.js';
-import type { MonoMs } from '../model/time.js';
+import type { Cancel, MonoMs } from '../model/time.js';
 import type { UsageReport } from '../model/usage.js';
 import { LIB_VERSION, SUPPORTED_CLAUDE_VERSION } from '../model/version.js';
-import type { Capture, ClaudeRegistryRecord, Ports, RawHookEvent, TailEvent, TunnelRecord } from '../platform/ports.js';
+import type { Capture, ClaudeRegistryRecord, Ports, RawHookEvent, TailCheckpoint, TailEvent, TunnelRecord } from '../platform/ports.js';
 import type { TranscriptNormalizer } from '../channels/transcript/normalize.js';
 import { createInputExecutor } from './input-executor.js';
 import type { InputExecutor } from './input-executor.js';
@@ -69,7 +71,7 @@ import { createTailDriver } from './tail-driver.js';
 import type { TailDriver } from './tail-driver.js';
 import { createDebugTrace, createScreenRing } from './debug-trace.js';
 import type { DebugTrace, ScreenRing, TraceFs } from './debug-trace.js';
-import { toCctError } from './errors-map.js';
+import { toCcdError } from './errors-map.js';
 import { createEventLog } from './event-log.js';
 import type { EventLog } from './event-log.js';
 import { createLimitRecorder } from './limit-recorder.js';
@@ -143,6 +145,11 @@ export interface LaunchRequest {
   resume?: string;
   /** 'auto' on the first attempt with the default config; always 'unix' on the relaunch. */
   transport: 'auto' | 'http' | 'unix';
+  /** ICR 0041 resume: the mode and model the session had when it was suspended (they may differ from the options). */
+  permissionMode?: ResolvedConfig['permissionMode'];
+  model?: string;
+  /** ICR 0041 resume: continue the transcript at the offset where the suspend stopped. */
+  tailCheckpoint?: TailCheckpoint;
 }
 
 interface LaunchInfo {
@@ -164,6 +171,8 @@ export interface LaunchedSession {
   close(o: KernelCloseOptions & { mode: 'graceful' | 'kill'; graceMs: number; reason: string }): Promise<SessionExitInfo>;
   /** Tear down after a failed start (gate, self-test failure, timeout): kill, never press anything. Idempotent. */
   abort(reason: string): Promise<SessionExitInfo | undefined>;
+  /** ICR 0041: where the transcript tail stands (taken at suspend; the resume continues there). */
+  tailCheckpoint(): TailCheckpoint | undefined;
 }
 
 export interface KernelServices {
@@ -304,6 +313,20 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
   const killEscalation = new AbortController();
   /** The in-flight `services.launch` of start() (settled → `launched` is attached); close() waits for this, never for start. */
   let launchInFlight: Promise<void> | undefined;
+  // ---- ICR 0041 suspend / resume ----
+  /** live → suspending → suspended → resuming → live. `closedForGood` still ends everything. */
+  let phase: 'live' | 'suspending' | 'suspended' | 'resuming' = 'live';
+  /** While set, observations from the launch being stopped (or one that failed to resume) never reach the core. */
+  let detached = false;
+  /** Work that arrived between the suspend commit and the stop (UserPromptSubmit, PreToolUse, PermissionRequest). */
+  let cutOff = 0;
+  /** A resume's own Claude exit, kept out of the core (it would publish session.exited) and raced by the resume. */
+  let resumeExit: ((info: { exitStatus: number | null; signal: string | null }) => void) | undefined;
+  let suspendPromise: Promise<void> | undefined;
+  let resumePromise: Promise<void> | undefined;
+  let resumeCheckpoint: TailCheckpoint | undefined;
+  let lastTransport: 'http' | 'unix' | undefined;
+  let idleTimer: Cancel | undefined;
   /** The armed self-test nonce of the current attempt and whether the transcript recorded it (K-37 relaunch evidence). */
   let currentNonce: string | undefined;
   let nonceInTranscript = false;
@@ -473,9 +496,30 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
     loop.publishLocal('warning', detail === undefined ? { code, message } : { code, message, detail });
   };
 
-  const dispatch = <C extends Command>(cmd: C): Promise<CommandResult<C>> => {
+  /** ICR 0041: commands accepted but not settled. One in the loop queue is not yet visible in state, so it blocks a suspend. */
+  let commandsInFlight = 0;
+  const rawDispatch = <C extends Command>(cmd: C): Promise<CommandResult<C>> => {
     if (closedForGood) return Promise.reject(new CcdError('E_SESSION_CLOSED', 'the session is closed'));
-    return loop.dispatch(cmd, clock.now(), clock.wallNow()) as Promise<CommandResult<C>>;
+    commandsInFlight += 1;
+    return (loop.dispatch(cmd, clock.now(), clock.wallNow()) as Promise<CommandResult<C>>).finally(() => {
+      commandsInFlight -= 1;
+      // the last settled command may be the last activity: no further step would re-arm the idle timer
+      if (commandsInFlight === 0) evalIdle();
+    });
+  };
+  /**
+   * ICR 0041: while the session is not live, a command that needs Claude waits for (or starts) the resume and then runs, in
+   * call order (concurrent callers share one resume). Commands with nothing to act on are answered without waking Claude.
+   */
+  const dispatch = <C extends Command>(cmd: C): Promise<CommandResult<C>> => {
+    if (closedForGood || phase === 'live') return rawDispatch(cmd);
+    if (cmd.type === 'prompt.send' || cmd.type === 'slash.run' || cmd.type === 'mode.set') return ensureLive().then(() => rawDispatch(cmd));
+    if (phase === 'suspended') {
+      if (cmd.type === 'interrupt') return Promise.resolve({} as CommandResult<C>);
+      if (cmd.type === 'turn.stop') return Promise.resolve({ ok: true, effect: 'none' } as CommandResult<C>);
+      if (cmd.type === 'usage.wakeNow') return Promise.resolve({ ok: true } as CommandResult<C>);
+    }
+    return rawDispatch(cmd);
   };
 
   const subscribe = (listener: KernelListener, opts?: { fromSeq?: EventSeq }): Unsubscribe => loop.subscribe(listener, opts?.fromSeq);
@@ -489,6 +533,11 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
     redactor,
     tz,
     ingestHook(e: RawHookEvent): boolean {
+      if (detached) {
+        // ICR 0041: the launch is being stopped. A held request is released unanswered (never allowed or denied here).
+        if (e.event === 'UserPromptSubmit' || e.event === 'PreToolUse' || e.event === 'PermissionRequest') cutOff += 1;
+        return heldUnclaimed(e, undefined);
+      }
       const { closed: _closed, ...data } = e;
       const ref = raw('hook', e.at, e.wallAt, data);
       limit.recordHook(e);
@@ -505,9 +554,11 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
       return heldUnclaimed(e, res);
     },
     ingestTail(e: TailEvent): void {
+      if (detached) return;
       for (const x of recordingTranscript.push(e)) enqueue(x);
     },
     ingestTunnel(r: TunnelRecord): void {
+      if (detached) return;
       const ref = raw('network', r.at, r.wallAt, r);
       let out: ObservationInput[];
       try {
@@ -519,6 +570,7 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
       for (const x of out) enqueue(withRef(x, ref));
     },
     ingestCapture(c: Capture, opt?: { editorPhase?: boolean }): ScreenFacts | undefined {
+      if (detached) return undefined;
       const wallAt = clock.wallNow();
       const facts = recordingScreen.push(c, opt?.editorPhase === true ? { wallAt, tz, editorPhase: true } : { wallAt, tz });
       if (facts === undefined) return undefined;
@@ -530,6 +582,7 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
       return facts;
     },
     ingestRegistry(rec: ClaudeRegistryRecord | undefined): void {
+      if (detached) return;
       const at = clock.now();
       const wallAt = clock.wallNow();
       const ref = raw('registry', at, wallAt, rec ?? null);
@@ -537,6 +590,12 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
     },
     channels: { screen: recordingScreen, transcript: recordingTranscript },
     observe(x: ObservationInput): void {
+      if (detached) return;
+      if (phase === 'resuming' && x.kind === 'process.exited') {
+        // ICR 0041: a resume whose Claude exits is a failed resume, not a session exit; the resume reports it
+        resumeExit?.({ exitStatus: (x.p as { exitStatus: number | null }).exitStatus, signal: (x.p as { signal: string | null }).signal });
+        return;
+      }
       if (x.kind === 'screen.frame' && pendingScreenRef !== undefined && x.meta.rawRef === undefined) {
         x = withRef(x, pendingScreenRef);
         pendingScreenRef = undefined;
@@ -664,6 +723,8 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
   // ---- bookkeeping watchers ----
   let startupWarning: { code: string; message: string; detail?: JsonValue } | undefined;
   let readyEvent: Extract<DomainEvent, { type: 'session.ready' }> | undefined;
+  /** Read through a function: the bookkeeping watcher sets it asynchronously, so local narrowing would be wrong. */
+  const readyOf = (): Extract<DomainEvent, { type: 'session.ready' }> | undefined => readyEvent;
   loop.watch((_s, events) => {
     for (const e of events) {
       if (e.type === 'warning' && START_WARNING_CODES.has(e.payload.code) && readyEvent === undefined) {
@@ -783,6 +844,222 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
     return teardownPromise;
   };
 
+  // ------------------------------------------------------------------ ICR 0041 suspend / resume
+  const busy = (blockers: readonly string[]): CcdError =>
+    new CcdError('E_BUSY', `the session cannot be suspended now (${blockers[0] ?? 'unknown'})`, {
+      details: { blocker: blockers[0] ?? 'unknown', blockers: [...blockers] },
+    });
+
+  /** Read through a function: close() sets these concurrently, so a value narrowed earlier in an async body is stale. */
+  const closingNow = (): boolean => closeRequested || closedForGood;
+
+  const cancelIdle = (): void => {
+    idleTimer?.();
+    idleTimer = undefined;
+  };
+
+  /** The idle timer measures how long the session has been continuously suspendable (suspendBlockers empty). */
+  const evalIdle = (): void => {
+    const ms = config.idle?.suspendAfterMs;
+    if (ms === undefined || phase !== 'live' || closeRequested || closedForGood || launched === undefined) {
+      cancelIdle();
+      return;
+    }
+    if (commandsInFlight > 0 || suspendBlockers(loop.core).length > 0) {
+      cancelIdle();
+      return;
+    }
+    idleTimer ??= clock.setTimer((clock.now() + ms) as MonoMs, () => {
+      idleTimer = undefined;
+      suspendShared('idle').catch((e: unknown) => {
+        logger.debug('idle suspend skipped', { code: e instanceof CcdError ? e.code : 'unknown' });
+      });
+    });
+  };
+  loop.watch(() => {
+    evalIdle();
+  });
+
+  /** One suspend at a time; a manual suspend during an idle one shares it. */
+  function suspendShared(reason: 'idle' | 'manual'): Promise<void> {
+    suspendPromise ??= doSuspend(reason).finally(() => {
+      suspendPromise = undefined;
+    });
+    return suspendPromise;
+  }
+
+  async function doSuspend(reason: 'idle' | 'manual'): Promise<void> {
+    if (closedForGood || closeRequested) throw new CcdError('E_SESSION_CLOSED', 'the session is closed');
+    if (phase === 'suspended') return;
+    if (phase !== 'live') throw busy([phase]);
+    const l = launched;
+    if (l === undefined) throw busy(['notReady']);
+    // (1) decide: let queued observations land first, then check on the settled state
+    await loop.idle();
+    // the check and the commit below run in one synchronous block: nothing can be accepted in between
+    const blockers = suspendBlockers(loop.core);
+    if (commandsInFlight > 0) blockers.push('command');
+    if (blockers.length > 0 || launched !== l || closingNow()) throw busy(blockers.length > 0 ? blockers : ['notReady']);
+    // (2) commit: from here a command that needs Claude waits for the resume that follows
+    phase = 'suspending';
+    cancelIdle();
+    try {
+      const st = loop.state;
+      const claudeSessionId = st.claude.sessionId ?? config.resume ?? config.claudeSessionId;
+      // (3) checkpoint
+      resumeCheckpoint = l.tailCheckpoint();
+      lastTransport = l.info.hookTransport;
+      record({ r: 'diag', at: clock.now(), code: 'suspend', detail: { reason, claudeSessionId } });
+      // (4) detach, then stop Claude, the private tmux server, the hook worker, the proxy and the owner-watch
+      cutOff = 0;
+      detached = true;
+      try {
+        await l.close({ mode: 'graceful', graceMs: config.lifecycle.closeGraceMs, reason: 'suspended' });
+      } catch (e) {
+        logger.warn('suspend: stopping Claude failed', { code: toCcdError(e).code });
+      }
+      launched = undefined;
+      intentBacklog.length = 0;
+      channels = newChannels();
+      // (5) record: the core moves to lifecycle 'suspended' and publishes it
+      const interrupted = cutOff > 0;
+      enqueue({
+        kind: 'session.suspended',
+        meta: { at: clock.now(), wallAt: clock.wallNow(), source: 'self' },
+        p: { claudeSessionId, reason, interrupted },
+      });
+      await loop.idle();
+      if (interrupted)
+        warn('E_BUSY', 'work that started while the session was being suspended was cut off', { reason: 'suspendCutOff', hooks: cutOff });
+      phase = 'suspended';
+    } catch (e) {
+      // the launch is gone either way: never report live without a process
+      phase = launched === undefined ? 'suspended' : 'live';
+      throw e;
+    }
+  }
+
+  /** Waits for a suspend in progress, then resumes if needed. Rejects with the resume's start error. */
+  async function ensureLive(): Promise<void> {
+    if (phase === 'suspending') await suspendPromise?.catch(() => undefined);
+    if (closedForGood || closeRequested) throw new CcdError('E_SESSION_CLOSED', 'the session is closed');
+    if (phase === 'live') return;
+    await resumeShared();
+  }
+
+  function resumeShared(): Promise<void> {
+    resumePromise ??= doResume().finally(() => {
+      resumePromise = undefined;
+    });
+    return resumePromise;
+  }
+
+  async function doResume(): Promise<void> {
+    if (phase === 'live') return;
+    if (phase === 'suspending') await suspendPromise?.catch(() => undefined);
+    if (phase !== 'suspended') return;
+    if (closedForGood || closeRequested) throw new CcdError('E_SESSION_CLOSED', 'the session is closed');
+    const t0 = clock.now();
+    const suspendedCore = loop.core;
+    const d = suspendedCore.domain;
+    const claudeSessionId = d.suspended?.claudeSessionId ?? d.claude.sessionId ?? config.claudeSessionId;
+    const mode = d.claude.permissionMode?.value;
+    const model = d.claude.model?.value;
+    phase = 'resuming';
+    coreInit = { ...coreInit, initialClaudeSessionId: claudeSessionId, resume: true, startedAt: clock.now(), wallAt: clock.wallNow() };
+    loop.setCore(resumeCore(suspendedCore, coreInit));
+    startupWarning = undefined;
+    readyEvent = undefined;
+    channels = newChannels();
+    detached = false;
+    scheduler.rearm(nextDeadline(loop.core));
+    record({ r: 'diag', at: clock.now(), code: 'resume', detail: { claudeSessionId } });
+
+    // back to suspended after a failed resume: the core returns to the suspended state, counters kept so seqs stay increasing
+    const backToSuspended = async (l: LaunchedSession | undefined, why: string): Promise<void> => {
+      detached = true;
+      if (l !== undefined) await l.abort(why).catch(() => undefined);
+      launched = undefined;
+      intentBacklog.length = 0;
+      channels = newChannels();
+      const now = loop.core;
+      loop.setCore({
+        ...suspendedCore,
+        counters: { ...now.counters },
+        domain: { ...suspendedCore.domain, lastEventSeq: now.domain.lastEventSeq },
+      });
+      scheduler.rearm(nextDeadline(loop.core));
+      phase = 'suspended';
+    };
+
+    const exited = new Promise<{ exitStatus: number | null; signal: string | null }>((resolve) => {
+      resumeExit = resolve;
+    });
+    let l: LaunchedSession | undefined;
+    try {
+      const req: LaunchRequest = {
+        attempt: 0,
+        claudeSessionId,
+        resume: claudeSessionId,
+        transport: lastTransport ?? config.hooks.transport,
+        ...(mode !== undefined ? { permissionMode: mode } : {}),
+        ...(model !== undefined ? { model } : {}),
+        ...(resumeCheckpoint !== undefined ? { tailCheckpoint: resumeCheckpoint } : {}),
+      };
+      const launching = (o.services ?? defaultKernelServices()).launch(host, req).then((x) => {
+        attachLaunched(x);
+        return x;
+      });
+      launchInFlight = launching.then(
+        () => undefined,
+        () => undefined,
+      );
+      try {
+        l = await launching;
+      } finally {
+        launchInFlight = undefined;
+      }
+      if (closingNow()) throw new CcdError('E_SESSION_CLOSED', 'the session was closed during resume');
+      const key = selfTestKey(l.info);
+      let cachedPass = false;
+      if (config.core.selfTest === 'once') cachedPass = await cache.cachedPass(key, clock.wallNow()).catch(() => false);
+      const nonce = `ccd-selftest-${ports.ids.tokenHex(16)}`;
+      currentNonce = nonce;
+      nonceInTranscript = false;
+      rawDispatch({ type: 'selftest.run', nonce, cachedPass }).catch(() => undefined);
+      const out = await Promise.race([
+        waitStartOutcome(),
+        exited.then((ex): StartOutcome => ({ kind: 'exited', state: { ...loop.state, exit: { ...ex, reason: 'startupFailed' } } })),
+      ]);
+      if (closingNow()) throw new CcdError('E_SESSION_CLOSED', 'the session was closed during resume');
+      if (out.kind !== 'ready') {
+        const err = startError(out);
+        await backToSuspended(l, `resumeFailed:${err.code}`);
+        warn(err.code, `resume failed: ${err.message}`, { reason: 'resumeFailed' });
+        throw err;
+      }
+      const ready = readyOf();
+      if (ready?.payload.selfTest === 'passed') await cache.record(key, 'pass', clock.wallNow()).catch(() => undefined);
+      phase = 'live';
+      loop.publishLocal('session.resumed', { claudeSessionId, durationMs: Math.max(0, clock.now() - t0) });
+      evalIdle();
+    } catch (e) {
+      if (phase === 'resuming') {
+        // a launch failure, or close() during the resume (close owns `launched` then and kills it)
+        if (closingNow()) phase = 'live';
+        else {
+          await backToSuspended(l, 'resumeFailed');
+          const err = toCcdError(e, { op: 'resume' });
+          warn(err.code, `resume failed: ${err.message}`, { reason: 'resumeFailed' });
+          throw err;
+        }
+      }
+      throw e;
+    } finally {
+      resumeExit = undefined;
+    }
+  }
+
   let startPromise: Promise<SessionKernel> | undefined;
   let closePromise: Promise<SessionExitInfo> | undefined;
 
@@ -814,13 +1091,23 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
     setPermissionHandler(h: KernelPermissionHandler | null): void {
       permissionHandler = h;
     },
+    suspend: () => suspendShared('manual'),
+    resume: () => ensureLive(),
     waitFor,
     diagnostics: {
       viewCommand: () => (launched !== undefined ? launched.viewCommand() : ''),
       captureScreen: () =>
         launched !== undefined
           ? launched.captureScreen()
-          : Promise.reject(new CcdError('E_SESSION_EXITED', 'no pane (the session is not launched)')),
+          : Promise.reject(
+              new CcdError(
+                'E_SESSION_EXITED',
+                phase === 'suspended' ? 'no pane (the session is suspended)' : 'no pane (the session is not launched)',
+                {
+                  details: { reason: phase === 'suspended' ? 'suspended' : 'notLaunched' },
+                },
+              ),
+            ),
       ...(config.debug.tracePath !== undefined ? { tracePath: config.debug.tracePath } : {}),
     },
 
@@ -854,7 +1141,7 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
           try {
             l = await launching;
           } catch (e) {
-            const err = toCctError(e, { op: 'start' });
+            const err = toCcdError(e, { op: 'start' });
             await teardown('startFailed');
             throw err;
           } finally {
@@ -965,6 +1252,15 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
       closePromise = (async (): Promise<SessionExitInfo> => {
         const graceMs = opts.graceMs ?? config.lifecycle.closeGraceMs;
         const reason = opts.reason ?? 'closed';
+        // ICR 0041: a suspend in progress finishes first; a suspended session has no process, so it ends at once
+        cancelIdle();
+        if (phase === 'suspending') await suspendPromise?.catch(() => undefined);
+        if (phase === 'suspended') {
+          rawDispatch({ type: 'session.close', mode: closeMode, graceMs, reason }).catch(() => undefined);
+          await waitFor((s) => s.lifecycle === 'exited', { timeoutMs: CLOSE_EXIT_WAIT_MS }).catch(() => undefined);
+          await teardown(reason);
+          return { exitStatus: null, signal: null, reason: closeMode === 'kill' ? 'killed' : 'closed' };
+        }
         // Only the in-flight launch call is awaited (its session is then killed at once); start() itself stops at its next
         // await because `closeRequested` is set.
         if (launched === undefined && launchInFlight !== undefined) await launchInFlight;
@@ -999,7 +1295,7 @@ export function createSessionKernel(ports: Ports, config: ResolvedConfig, o: Ses
           // steps 4–10 (escalation when the pane is still alive, teardown, archive); its own grace is already spent above
           info = await l.close({ ...opts, mode, graceMs: loop.state.lifecycle === 'exited' ? graceMs : 1, reason });
         } catch (e) {
-          logger.warn('close sequence failed', { code: toCctError(e).code });
+          logger.warn('close sequence failed', { code: toCcdError(e).code });
           const ex = loop.state.exit;
           info = {
             exitStatus: ex?.exitStatus ?? null,
@@ -1067,8 +1363,13 @@ function defaultKernelServices(o: { launch?: typeof launchSession } = {}): Kerne
     async launch(host: KernelHost, req: LaunchRequest): Promise<LaunchedSession> {
       const { ports, logger, profile, tz } = host;
       const clock = ports.clock;
-      const config: ResolvedConfig =
+      let config: ResolvedConfig =
         req.claudeSessionId === host.config.claudeSessionId ? host.config : { ...host.config, claudeSessionId: req.claudeSessionId };
+      // ICR 0041 resume: --resume the latest Claude session id with the mode and model the session had when suspended
+      if (req.resume !== undefined && req.resume !== config.resume) config = { ...config, resume: req.resume };
+      if (req.permissionMode !== undefined && req.permissionMode !== config.permissionMode)
+        config = { ...config, permissionMode: req.permissionMode };
+      if (req.model !== undefined && req.model !== config.model) config = { ...config, model: req.model };
       const cache = createSelfTestCache({ state: ports.state, pid: process.pid });
       const late: { broker?: PermissionBroker; tailDriver?: TailDriver } = {};
       const early: { e: RawHookEvent; unclaimed: boolean }[] = [];
@@ -1158,7 +1459,15 @@ function defaultKernelServices(o: { launch?: typeof launchSession } = {}): Kerne
       });
       const td =
         h.tail !== undefined
-          ? createTailDriver({ clock, tail: h.tail, emit, profile, normalizer: host.channels.transcript, logger })
+          ? createTailDriver({
+              clock,
+              tail: h.tail,
+              emit,
+              profile,
+              normalizer: host.channels.transcript,
+              logger,
+              ...(req.tailCheckpoint !== undefined ? { resumeCheckpoint: req.tailCheckpoint } : {}),
+            })
           : undefined;
       if (td !== undefined) late.tailDriver = td;
       const paths = createPathResolver({ clock, fs: ports.env, cwdRealpath: h.cwdRealpath, emit, logger });
@@ -1227,7 +1536,7 @@ function defaultKernelServices(o: { launch?: typeof launchSession } = {}): Kerne
           await lifecycle.finalizeAfterExit({ startup: !ready, ownerGone: st.exit?.reason === 'ownerGone' });
         })()
           .catch((e: unknown) => {
-            logger.warn('finalize after exit failed', { code: toCctError(e).code });
+            logger.warn('finalize after exit failed', { code: toCcdError(e).code });
           })
           .finally(() => {
             host.exitFinalized();
@@ -1323,6 +1632,7 @@ function defaultKernelServices(o: { launch?: typeof launchSession } = {}): Kerne
           reportExit(info);
           return info;
         },
+        tailCheckpoint: () => safe(() => h.tail?.checkpoint()),
       };
     },
   };

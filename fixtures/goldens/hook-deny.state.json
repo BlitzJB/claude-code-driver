@@ -224,6 +224,7 @@
       "toolName": "Bash"
     }
   },
+  "scheduledTasks": 0,
   "selfTest": {
     "state": "skipped"
   },

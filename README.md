@@ -90,6 +90,8 @@ The library looks for `claude.exe` in this order: the `claude.bin` option, your 
   the native dialog take over (`onTimeout: 'tui'`).
 - `session.usage()` returns current subscription usage (session and weekly %, reset times) read from Claude's `/usage`
   dialog. It costs no model call.
+- With `idle: { suspendAfterMs }`, an idle session stops Claude and frees the machine. The next `send()` resumes the same
+  conversation first. A pending permission or question always keeps the session live.
 - `session.interrupt()` sends one Escape (or denies a held permission with `interrupt:true`). It never sends Ctrl-C.
 - `session.close()` waits for background work if you ask, denies held permissions, types `/exit`, then kills the private
   tmux server and removes every file it created. If the host process dies, a detached owner-watch kills Claude and the

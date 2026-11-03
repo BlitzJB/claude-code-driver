@@ -213,6 +213,43 @@ u.meters;             // every meter shown, including per-model weekly meters
 
 It waits until the dialog has finished loading (at least one meter shown, no `Refreshing…`), capped by `timeoutMs` (default 5000); that is typically 0.5–2 s. If the cap is hit, the result has `partial: true`. Like any other command it waits for the composer, so while a turn is running it is queued. Reset times are the text Claude shows. If the dialog shows no meters (for example API-key auth or a dialog that is still loading after retries), it rejects with `E_ENVIRONMENT` and `details.reason: 'noMeters'`.
 
+## Suspending idle sessions
+
+A live session keeps a Claude process, a tmux server and a hook worker running. With `idle.suspendAfterMs`, the library
+stops them once the session has been idle that long and brings the same conversation back on the next call that needs
+Claude:
+
+```ts
+const session = await ClaudeSession.start({ cwd, permissions: 'allowRead', idle: { suspendAfterMs: 10 * 60_000 } });
+
+session.on('suspended', (e) => console.log('suspended', e.data.claudeSessionId));
+session.on('resumed', (e) => console.log('resumed in', e.data.durationMs, 'ms'));
+
+// …an hour later: resumes Claude with --resume, then sends. The turn sees the whole earlier conversation.
+const turn = session.send('Continue where we left off.');
+```
+
+**When it suspends.** Only when nothing could be lost: the session is idle and quiescent, nothing is queued, and there
+is no open permission request, question, plan approval or MCP elicitation, including ones raised by background agents.
+Background agents, in-session scheduled tasks (`/loop`, cron), usage limits, a pending login and compaction also hold it
+off. The timer counts how long the session has been continuously in that state, so any activity starts it again. **A
+suspend never answers, denies or drops a prompt**; a pending prompt simply keeps the session live.
+
+**While suspended**, `status.kind` is `'suspended'` and `waitForIdle()` / `waitForQuiescence()` resolve. `send()`,
+`command()`, `usage()` and `setMode()` resume first; concurrent calls share one resume and run in call order.
+`interrupt()` and `turn.interrupt()` are no-ops that do not wake Claude. `close()` ends the session without starting
+Claude. `debug.viewCommand()` returns `''`.
+
+**The resume** continues the latest Claude session (the new one after `/clear`) with the permission mode and model the
+session had, and picks the transcript up where it stopped. It takes about as long as `start()`, so the first call after a
+suspend is a few seconds slower. Library keys and event `seq` numbers continue across any number of cycles.
+
+**If a resume fails** (the folder is no longer trusted, you were logged out, tmux is missing), the call that triggered it
+rejects with the usual start error, the session stays suspended, and the next call tries again.
+
+You can also do it by hand: `await session.suspend()` (rejects `E_BUSY` with `details.blocker` and `details.blockers`
+when something is in progress) and `await session.resume()`.
+
 ## Closing, crashes and recovery
 
 ```ts
@@ -342,6 +379,7 @@ committed declaration report is `etc/claude-code-driver.api.d.ts` (`pnpm check:a
 | `respondToPermission(key, decision)`, `answerQuestion(key, answers)`, `approvePlan(key, { approve, mode?, feedback? })` | answer a `permissionRequested` |
 | `setMode(mode)` | `'default' \| 'acceptEdits' \| 'plan'` |
 | `usage({ timeoutMs, signal })` | current subscription usage from `/usage` (no model call); resolves `UsageInfo` |
+| `suspend()`, `resume()` | stop Claude and keep the session; resume it (also automatic with the `idle` option) |
 | `wakeNow()` | run the usage-limit wake check now |
 | `on(type, fn)`, `onAny(fn)`, `events({ fromSeq, types, highWaterMark })` | events (default high-water mark 1000) |
 | `waitFor(pred, { timeoutMs, signal })`, `waitForIdle()`, `waitForQuiescence()` | resolve with a `SessionSnapshot` |

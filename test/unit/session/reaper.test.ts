@@ -478,7 +478,7 @@ describe('socket sweep (P-TMUX-39, P-REV-33, P-LIFE-45)', () => {
     );
     await w.store.archive(key, { reapedBy: 'close' });
     const rep = await pump(w.fakes, reap(w.deps, { selfPid: w.fakes.ownerPid, socketProbeGapMs: 10 }));
-    expect(rep.sockets.unknownCctSockets).toBe(2);
+    expect(rep.sockets.unknownCcdSockets).toBe(2);
     const touched = w.execs.flatMap((c) => c.args).filter((a) => a.includes('ccd-input') || a.includes('ccd-verify'));
     expect(touched).toEqual([]);
   });

@@ -92,6 +92,8 @@ const FIELDS = Object.freeze({
   stopHookActive: 'stop_hook_active',
   lastAssistantMessage: 'last_assistant_message',
   backgroundTasks: 'background_tasks',
+  /** ICR 0041: VERIFIED-LIVE in Stop and SubagentStop payloads (hook probe 2026-11-03: `"session_crons":[]`). */
+  sessionCrons: 'session_crons',
   errorDetails: 'error_details',
   agentTranscriptPath: 'agent_transcript_path',
   // MessageDisplay

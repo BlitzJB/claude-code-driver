@@ -32,7 +32,7 @@ import type {
   TmuxServer,
   TranscriptTail,
 } from '../platform/ports.js';
-import { CcdError, isCctError } from '../model/errors.js';
+import { CcdError, isCcdError } from '../model/errors.js';
 import { LIB_VERSION } from '../model/version.js';
 import { buildClaudeArgv } from './argv-builder.js';
 import { argvLeaksEnvSecret, buildChildEnv, checkCallerEnv, networkEligibility, type ChildEnv } from './env-builder.js';
@@ -241,7 +241,7 @@ export async function launchSession(ports: Ports, config: ResolvedConfig, o: Lau
     try {
       return await fn();
     } catch (e) {
-      throw isCctError(e) ? e : mapPortError(e, fallback, what);
+      throw isCcdError(e) ? e : mapPortError(e, fallback, what);
     }
   };
 
@@ -723,7 +723,7 @@ export async function launchSession(ports: Ports, config: ResolvedConfig, o: Lau
     await runSteps([...[...undo].reverse(), ...finalUndo], (m, f) => {
       log.warn(m, { sessionKey: key, ...f });
     });
-    throw isCctError(e) ? e : mapPortError(e, 'E_INVARIANT', 'launch failed');
+    throw isCcdError(e) ? e : mapPortError(e, 'E_INVARIANT', 'launch failed');
   }
 }
 

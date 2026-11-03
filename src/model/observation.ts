@@ -71,6 +71,8 @@ export type Observation =
   | Obs<'session.ended', { sessionId: string; reason: string }>
   | Obs<'process.launched', { pid: number; paneId: string; claudeVersion: string; startTime: string }>
   | Obs<'process.exited', { exitStatus: number | null; signal: string | null; byOwnerWatch?: boolean }>
+  // ICR 0041: L3 stopped Claude on purpose (idle or manual suspend); the session is kept for a resume
+  | Obs<'session.suspended', { claudeSessionId: string; reason: 'idle' | 'manual'; interrupted: boolean }>
   | Obs<'process.identityMismatch', { pid: number }>
   | Obs<'auth.status', { loggedIn: boolean; authMethod?: string; apiProvider?: string }> // rev2: result of an auth.poll intent
   // ---- prompts / turns ----
@@ -93,7 +95,10 @@ export type Observation =
   | Obs<'prompt.absorbed', { text: string; deliveryId?: string }> // queued_command attachment: evidence for TurnRecord.mergedInto only
   | Obs<'prompt.withdrawn', {}>
   | Obs<'prompt.blocked', { reason: string; text: string }> // ICR 0002 (LP-47): transcript system/informational promptSubmitEnding.ending.kind 'blocked_by_hook'
-  | Obs<'turn.stopped', { promptId?: string; lastAssistantMessage?: string; backgroundTasks: BgTaskInfo[]; stopHookActive: boolean }>
+  | Obs<
+      'turn.stopped',
+      { promptId?: string; lastAssistantMessage?: string; backgroundTasks: BgTaskInfo[]; stopHookActive: boolean; sessionCrons?: number }
+    > // sessionCrons: ICR 0041
   | Obs<'turn.failed', { promptId?: string; error: string; errorDetails?: string; message?: string }> // StopFailure
   | Obs<'turn.durationRecorded', { durationMs: number; pendingBackgroundAgentCount: number; promptId?: string }> // promptId: the file's prompt chain when written (ICR 0021)
   | Obs<'turn.interrupted', { marker: 'request' | 'tool_use' | 'aborted_mid_stream'; interruptedMessageId?: string; promptId?: string }>

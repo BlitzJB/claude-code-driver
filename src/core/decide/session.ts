@@ -18,6 +18,7 @@ import {
   cfg,
   diag,
   disarm,
+  disarmWhere,
   dom,
   emit,
   mint,
@@ -28,6 +29,7 @@ import {
   seqOf,
   setInputState,
   setLifecycle,
+  unset,
   updRecon,
   inputState,
 } from '../ctx.js';
@@ -133,6 +135,29 @@ function finalizeExit(
   setLifecycle(ctx, 'exited');
   closeProcess(ctx, finalizeReason ?? e.reason);
   publish(ctx, 'session.exited', { exitStatus: e.exitStatus, signal: e.signal, reason: e.reason }, { sources: ['process'] });
+}
+
+/**
+ * ICR 0041: L3 stopped Claude on purpose (idle or manual suspend) after checking suspendBlockers. The session, its keys and
+ * its history stay; everything that belongs to the process is cleared. A resume replaces this core with resumeCore().
+ */
+export function onSessionSuspended(ctx: Ctx, o: Extract<Observation, { kind: 'session.suspended' }>): void {
+  const lc = dom(ctx).lifecycle;
+  if (lc === 'exited' || lc === 'suspended') return;
+  disarmWhere(ctx, () => true);
+  unset(ctx, ['claude', 'pid'], 'suspended');
+  unset(ctx, ['claude', 'paneId'], 'suspended');
+  for (const ch of ['hooks', 'transcript', 'network', 'screen'] as const) {
+    patch(ctx, ['channels', ch], { health: 'off', reasons: ['suspended'] }, 'suspended');
+  }
+  patch(ctx, ['suspended'], { since: nowOf(ctx), claudeSessionId: o.p.claudeSessionId, reason: o.p.reason }, 'suspended');
+  setLifecycle(ctx, 'suspended');
+  publish(
+    ctx,
+    'session.suspended',
+    { claudeSessionId: o.p.claudeSessionId, reason: o.p.reason, interrupted: o.p.interrupted },
+    { sources: ['process'] },
+  );
 }
 
 export function onIdentityMismatch(ctx: Ctx, o: Extract<Observation, { kind: 'process.identityMismatch' }>): void {
@@ -524,6 +549,11 @@ function beginClosing(ctx: Ctx, reason: string): void {
 export function onSessionClose(ctx: Ctx, cmd: Extract<Command, { type: 'session.close' }>): void {
   const lc = dom(ctx).lifecycle;
   if (lc === 'exited' || lc === 'closing' || recon(ctx).closePending !== undefined) return;
+  // ICR 0041: no process to stop; the session ends at once
+  if (lc === 'suspended') {
+    finalizeExit(ctx, { exitStatus: null, signal: null, reason: 'closed' });
+    return;
+  }
   const wait = cmd.waitForBackgroundMs ?? 0;
   if (wait > 0 && cmd.mode === 'graceful' && backgroundCount(dom(ctx)) > 0) {
     updRecon(ctx, (r) => ({ ...r, closePending: { mode: cmd.mode, reason: cmd.reason, until: (nowOf(ctx) + wait) as MonoMs } }));

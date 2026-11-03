@@ -1,5 +1,5 @@
 // model/json.ts — JSON value type and canonical stringify (DESIGN.md §2.1).
-// stableStringify is one of the two pieces of logic allowed in model/ (the other is isCctError).
+// stableStringify is one of the two pieces of logic allowed in model/ (the other is isCcdError).
 // It is total: it never throws, so the pure core may call it from `step` (invariant I2).
 
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [k: string]: JsonValue };

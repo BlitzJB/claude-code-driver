@@ -27,7 +27,7 @@ describe('runLifecheck (§3.12)', () => {
     const { host, s } = memLifecheck({
       sessions: [rec('s1')],
       classes: new Map([['s1', { classification: 'owned-alive', heartbeatAt: NOW - 1000 }]]),
-      pass: emptyPass({ skippedLive: ['s1'], unknownCctSockets: 2 }),
+      pass: emptyPass({ skippedLive: ['s1'], unknownCcdSockets: 2 }),
     });
     const r = await runLifecheck(host, { signalHung: false });
     expect(r.lastRunOk).toBe(true);
@@ -47,9 +47,9 @@ describe('runLifecheck (§3.12)', () => {
     expect(s.written).toHaveLength(1);
     const w = s.written[0] as Record<string, unknown>;
     expect(Object.keys(w).sort()).toEqual(
-      ['actions', 'distPath', 'durationMs', 'errors', 'lastRunOk', 'libVersion', 'ranAt', 'sessions', 'unknownCctSockets'].sort(),
+      ['actions', 'distPath', 'durationMs', 'errors', 'lastRunOk', 'libVersion', 'ranAt', 'sessions', 'unknownCcdSockets'].sort(),
     );
-    expect(w).toMatchObject({ ranAt: NOW, lastRunOk: true, libVersion: '9.9.9', distPath: '/pkg/dist/cli/main.js', unknownCctSockets: 2 });
+    expect(w).toMatchObject({ ranAt: NOW, lastRunOk: true, libVersion: '9.9.9', distPath: '/pkg/dist/cli/main.js', unknownCcdSockets: 2 });
   });
 
   it('owned-hung: logged and reported, never killed; SIGUSR2 only with --signal-hung (P-LIFE-58)', async () => {
@@ -185,10 +185,10 @@ describe('runLifecheck (§3.12)', () => {
   });
 
   it('listSessions failure is an error but the reap pass still runs', async () => {
-    const { host, s } = memLifecheck({ listError: new Error('EACCES'), pass: emptyPass({ unknownCctSockets: 1 }) });
+    const { host, s } = memLifecheck({ listError: new Error('EACCES'), pass: emptyPass({ unknownCcdSockets: 1 }) });
     const r = await runLifecheck(host, { signalHung: false });
     expect(r.errors).toEqual(['listSessions: EACCES']);
-    expect(r.unknownCctSockets).toBe(1);
+    expect(r.unknownCcdSockets).toBe(1);
     expect(s.calls).toEqual(['reapPass']);
   });
 
@@ -207,7 +207,7 @@ describe('runLifecheck (§3.12)', () => {
       libVersion: '1',
       distPath: '/d',
       actions: [{ kind: 'socketSwept', detail: '/tmp/x' }],
-      unknownCctSockets: 3,
+      unknownCcdSockets: 3,
       sessions: [{ key: 's1', classification: 'dead', claudeSessionId: 'u', ownerPid: 1 }],
       durationMs: 5,
       errors: ['x: y'],
@@ -223,7 +223,7 @@ describe('runLifecheck (§3.12)', () => {
         libVersion: '1',
         distPath: '/d',
         actions: [],
-        unknownCctSockets: 0,
+        unknownCcdSockets: 0,
         sessions: [],
         durationMs: 0,
         errors: [],

@@ -116,6 +116,8 @@ function recordingModules(o: { failConfig?: boolean; failStartAfterHooks?: boole
         subscribe: () => () => undefined,
         subscribeDebug: () => () => undefined,
         queryUsage: () => Promise.resolve({ meters: [], readAt: 0 }),
+        suspend: () => Promise.resolve(),
+        resume: () => Promise.resolve(),
         setPermissionHandler: () => undefined,
         waitFor: () => Promise.reject(new Error('not used')),
         diagnostics: { viewCommand: () => '', captureScreen: () => Promise.resolve('') },

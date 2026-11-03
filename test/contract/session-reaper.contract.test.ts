@@ -153,7 +153,7 @@ describe.skipIf(real === undefined)(`reaper against real tmux ${real?.version ??
     expect(existsSync(sessionDir)).toBe(false);
     // P-REV-33 / P-LIFE-45: the unknown ccd-* server is never touched, only counted
     expect(serverAlive(bin, unknown)).toBe(true);
-    expect(report.sockets.unknownCctSockets).toBeGreaterThanOrEqual(1);
+    expect(report.sockets.unknownCcdSockets).toBeGreaterThanOrEqual(1);
     expect((await store.readArchive(key))?.state).toBe('reaped');
     expect(await store.readSession(key)).toBeUndefined();
     expect((await store.listOwners()).length).toBe(0);
