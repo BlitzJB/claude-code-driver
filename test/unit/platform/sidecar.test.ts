@@ -629,7 +629,8 @@ describe('faults (§3.10; P-NET-15, P-NET-21, P-NET-27)', () => {
     c.sock.write('hello world');
     const err = await c.closed;
     expect(c.data()).toBe(`${OK}ECHO:he`);
-    expect(err).toBe('ECONNRESET');
+    // macOS surfaces the RST as ECONNRESET; Linux may report a plain close first. The sidecar's own record proves the reset.
+    expect([undefined, 'ECONNRESET', 'EPIPE']).toContain(err);
     await waitFor(() => h.records.some((r) => r.kind === 'close'));
     expect(h.records.find((r) => r.kind === 'close')?.closeKind).toBe('rst');
   });

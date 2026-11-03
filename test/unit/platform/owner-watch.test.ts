@@ -242,7 +242,12 @@ describe('FakeOwnerWatchFactory (K-22)', () => {
   });
 });
 
-describe('owner-watch standalone (real processes)', () => {
+/** Node < 22.18 cannot run the `.ts` standalone sources directly; their dist/ builds are covered by the contract suite. */
+const CAN_RUN_TS =
+  (process.features as { typescript?: unknown }).typescript !== undefined &&
+  (process.features as { typescript?: unknown }).typescript !== false;
+
+describe.skipIf(!CAN_RUN_TS)('owner-watch standalone (real processes)', () => {
   const clock = createRealClock();
   const port = createProcessPort({ clock });
   const script = fileURLToPath(new URL('../../../src/platform/process/standalone/owner-watch.ts', import.meta.url));

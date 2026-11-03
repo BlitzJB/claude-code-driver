@@ -87,7 +87,12 @@ describe('setup', () => {
   });
 });
 
-describe('stage → C-g → consumed (real wrapper and standalone)', () => {
+/** Node < 22.18 cannot run the `.ts` standalone sources directly; their dist/ builds are covered by the contract suite. */
+const CAN_RUN_TS =
+  (process.features as { typescript?: unknown }).typescript !== undefined &&
+  (process.features as { typescript?: unknown }).typescript !== false;
+
+describe.skipIf(!CAN_RUN_TS)('stage → C-g → consumed (real wrapper and standalone)', () => {
   it('replaces the draft byte-exactly, signals done once, and a second run does not consume again', async () => {
     const inj = createEditorInjectorFactory().create({ clock: createRealClock(), ids: new FakeIds() });
     const { visualPath } = await inj.setup(dir, process.execPath);

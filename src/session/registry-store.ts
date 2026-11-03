@@ -158,6 +158,24 @@ export function parseExitLine(raw: string): ExitLine {
   return { kind, fields, raw: line };
 }
 
+/** tmux 3.5 prints `term`, 3.3/3.4 print `15`, 3.2a nothing: normalize to `SIGTERM` (or null). */
+const SIGNALS: Readonly<Record<string, string>> = {
+  '1': 'HUP',
+  '2': 'INT',
+  '3': 'QUIT',
+  '6': 'ABRT',
+  '9': 'KILL',
+  '13': 'PIPE',
+  '14': 'ALRM',
+  '15': 'TERM',
+};
+function signalName(raw: string): string | null {
+  const t = raw.trim();
+  if (t === '') return null;
+  const name = /^\d+$/.test(t) ? (SIGNALS[t] ?? t) : t.toUpperCase();
+  return name.startsWith('SIG') ? name : `SIG${name}`;
+}
+
 /** The last `died` line of an exits log → exit status and signal (null when tmux printed nothing). */
 export function lastDeath(text: string): { exitStatus: number | null; signal: string | null } | undefined {
   const lines = text.split('\n').filter((l) => l.trim() !== '');
@@ -166,7 +184,7 @@ export function lastDeath(text: string): { exitStatus: number | null; signal: st
     if (p.kind !== 'died') continue;
     const st = p.fields['status'] ?? '';
     const sig = p.fields['signal'] ?? '';
-    return { exitStatus: /^\d+$/.test(st) ? Number(st) : null, signal: sig === '' ? null : sig };
+    return { exitStatus: /^\d+$/.test(st) ? Number(st) : null, signal: signalName(sig) };
   }
   return undefined;
 }

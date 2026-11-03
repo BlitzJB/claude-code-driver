@@ -149,6 +149,10 @@ describe('owners/, exits/, lock, lifecheck target', () => {
     expect(lastDeath(text)).toEqual({ exitStatus: 143, signal: null });
     expect(lastDeath('died pane=%0 pid=1 status= signal=SIGHUP\n')).toEqual({ exitStatus: null, signal: 'SIGHUP' });
     expect(lastDeath('launched x=1')).toBeUndefined();
+    // tmux 3.5 prints the name, 3.3/3.4 the number, 3.2a nothing (CI on Linux)
+    expect(lastDeath('died pane=%0 pid=1 status= signal=term\n')).toEqual({ exitStatus: null, signal: 'SIGTERM' });
+    expect(lastDeath('died pane=%0 pid=1 status= signal=15\n')).toEqual({ exitStatus: null, signal: 'SIGTERM' });
+    expect(lastDeath('died pane=%0 pid=1 status= signal=\n')).toEqual({ exitStatus: null, signal: null });
     expect(parseExitLine('watch=owner-gone ownerPid=1 claude=terminated').kind).toBe('watch');
     expect(parseExitLine('watch=owner-gone ownerPid=1 claude=terminated').fields['claude']).toBe('terminated');
     await store.removeExits(KEY);

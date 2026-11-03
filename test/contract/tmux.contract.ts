@@ -546,14 +546,20 @@ export function defineTmuxContract(makeHarness: () => TmuxHarness): void {
         h.ceilingMs,
         'dead',
       );
-      expect(st).toMatchObject({ dead: true, exitStatus: null, exitSignal: 'SIGTERM' });
+      // pane_dead_signal exists from tmux 3.3; 3.2a reports no signal at all (documented in KNOWN-LIMITATIONS).
+      const v = parseTmuxVersion(`tmux ${h.version}`);
+      const hasSignal = v !== undefined && versionAtLeast(v, 3, 3);
+      expect(st).toMatchObject({ dead: true, exitStatus: null, exitSignal: hasSignal ? 'SIGTERM' : null });
       const lines = await waitFor(
         () => h.readExitLog(exitLog),
         (l) => l.length > 0,
         h.ceilingMs,
         'exit record',
       );
-      expect(lines[0]).toMatch(/^died pane=%\d+ pid=\d+ status= signal=term$/);
+      // tmux 3.5 prints the signal name, 3.3/3.4 the number, 3.2a nothing
+      expect(lines[0]).toMatch(
+        hasSignal ? /^died pane=%\d+ pid=\d+ status= signal=(term|15)$/ : /^died pane=%\d+ pid=\d+ status= signal=$/,
+      );
     });
 
     it('kill(): server and socket file gone, pane gone, onGone not fired', async () => {
