@@ -41,6 +41,8 @@ Status as of the release gate (2026-11-03): `pnpm typecheck`, `pnpm lint`, `pnpm
 - On **tmux 3.2a** a pane killed by a signal reports no signal name (the `pane_dead_signal` format only exists from
   tmux 3.3), so `SessionExitInfo.signal` is `null` there. tmux 3.3/3.4 report the number and 3.5+ the name; both are
   normalized to `SIGTERM`-style names.
+- Network fault injection on Linux: after a `reset` fault the sidecar records the RST, but the faulted client's close
+  event does not always arrive promptly (seen once in CI). It affects only the test-time fault tool, not normal traffic.
 - macOS is the primary, live-verified platform. Linux runs the full unit, kernel, replay and contract suites in CI;
   the gated live suite has only been run on macOS.
 
