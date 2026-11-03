@@ -101,9 +101,21 @@ Status as of the release gate (2026-11-03): `pnpm typecheck`, `pnpm lint`, `pnpm
   test M-02) and whether launchd re-runs the lifecheck LaunchAgent after wake (M-01) are manual tests that have no
   recorded run yet.
 
+### Idle suspend and resume (ICR 0041)
+
+- A crashed session stays exited; only a suspend (idle or `suspend()`) can be resumed.
+- An `/effort` change made inside the session is not carried into a resume; the resume uses the configured `effort`.
+  Permission mode and model are carried.
+- The first call after a suspend waits for the resume (about 1 s live, plus the normal turn).
+- Work a human starts in the pane in the few milliseconds between the suspend's commit and the stop is cut off; the
+  `suspended` event then has `interrupted: true` and a `warning` names it. Held permission requests in that window are
+  released unanswered.
+- A human attached read-only to the pane (`debug.viewCommand()`) sees the pane disappear on suspend.
+
 ### Live test coverage
 
-- L-01 to L-11 passed live on 2026-11-03. The smoke test passed before the F-1 fix and
+- L-01 to L-11 passed live on 2026-11-03. L-14 (a conversation survives an idle suspend and resume) and L-15 (a pending
+  permission holds the session live past the idle time) passed live on 2026-11-04. The smoke test passed before the F-1 fix and
   was not re-run afterwards (L-04 covers the same flow).
 - L-11 does not yet test the `refuse` network fault and the `attempt 1/10` retry banner (live finding N-4).
 - L-13 (kill the hook worker mid-session) is skipped: v1 has no hook to kill the worker from a test.

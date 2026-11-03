@@ -162,7 +162,7 @@ CCD_LIVE_NIGHTLY=1 CCD_LIVE_MAX_PROMPTS=15 pnpm test:live   # adds L-06 (backgro
   `src/channels/profiles/claude-2.1.316/`, and a new Claude version needs a new profile.
 - Not supported: agent teams, attaching to an existing session, answering MCP elicitations programmatically (they
   surface as `awaitingInput`), `/resume` and `/rewind` inside the pane (use `start({ resume })`), live Bash output.
-- Live-verified on 2026-11-03: L-01…L-11 pass. They cover start → ready with the
+- Live-verified on 2026-11-03 (L-01…L-11) and 2026-11-04 (L-14, L-15: idle suspend and resume). They cover start → ready with the
   cached self-test, a plain turn, resume in a fresh pane, a handler allow and a TUI deny, the `deny` policy,
   interrupting a running Bash, `/clear`, a background agent's notification turn, a user proxy, owner SIGKILL →
   owner-watch cleanup and resume, and one prompt through the network sidecar. L-13 (hook-worker kill) is skipped, and

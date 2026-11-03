@@ -281,7 +281,10 @@ claims** that are never reported as `confirmed`.
 ### 6.1 Contract
 
 ```ts
-step(core: CoreState, input: CoreInput) → { core, events: DomainEvent[], intents: Intent[], diagnostics: Diagnostic[] }
+declare function step(
+  core: CoreState,
+  input: CoreInput,
+): { core: CoreState; events: DomainEvent[]; intents: Intent[]; diagnostics: Diagnostic[] };
 ```
 
 - `CoreInput` is either an observation (with `seq`, `at` monotonic time, `wallAt`) or a command from the facade.

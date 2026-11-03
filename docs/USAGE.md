@@ -126,6 +126,8 @@ behind the retention ring gets one `gap` event. Main event types:
 | `warning`, `security` | non-fatal problems, and security alerts (forged hook requests, unexpected input, settings tampering) |
 | `gap` | events `from…to` were dropped for this consumer (it fell behind) |
 | `exited` | the session ended (`SessionExitInfo`) |
+| `suspended` | Claude was stopped on idle or by `suspend()` (`claudeSessionId`, `reason: 'idle' \| 'manual'`, `interrupted`) |
+| `resumed` | a suspended session is live again (`claudeSessionId`, `durationMs`) |
 
 Every event has `type`, `seq`, `at` (wall-clock epoch ms), `provenance`, `data` and, for turn-scoped events, `turnKey`.
 `session.on()` returns an `Unsubscribe`. A listener that throws is reported as a `warning` and does not stop delivery.
@@ -135,11 +137,11 @@ banner while the network channel is off, an interrupt banner before the transcri
 
 ## Status
 
-`session.status` is the first matching entry of: `exited`, `starting`, `awaitingPermission` (a permission waits for an
+`session.status` is the first matching entry of: `exited`, `suspended` (Claude stopped on idle; the next call resumes), `starting`, `awaitingPermission` (a permission waits for an
 answer), `awaitingInput`, `interrupted` (for 1.5 s after an interrupt), `authRequired`, `usageLimited`, `compacting`,
 `runningTools`, `writing`, `modelRequest{phase}`, `idle{backgroundAgents, queued, quiescent}`. An API error of the last
 turn shows as `idle.lastError`, not as a status. `waitForIdle()` waits for `idle`, and `waitForQuiescence()` additionally
-waits until no background agent or task notification is pending.
+waits until no background agent or task notification is pending. Both resolve for a suspended session.
 
 ## Permissions
 
@@ -392,4 +394,4 @@ Types: `ClaudeSessionOptions`, `AgentStatus`, `ChannelName`, `ClaudeSessionError
 `PermissionHandler`, `PermissionKey`, `PermissionMode`, `PermissionRequest`, `Provenance`, `PublicErrorCode`,
 `SessionEvent`, `SessionEventOf`, `SessionEventType`, `SessionExitInfo`, `SessionKey`, `SessionSnapshot`, `SubagentKey`,
 `SubagentSnapshot`, `ToolKey`, `ToolRunSnapshot`, `Turn`, `TurnKey`, `TurnOutcome`, `TurnResult`, `TurnSnapshot`,
-`Unsubscribe`, `UsageInfo`, `UsageMeter`.
+`Unsubscribe`, `UsageInfo`, `UsageMeter`, `HandledSignal`.

@@ -76,5 +76,6 @@ console.log(session.debug.viewCommand()); // tmux -L ccd-… attach -r -t …
 ## Next steps
 
 - [Usage](./usage): options, events, status, permissions, commands, usage limits, errors, debugging.
+- [Suspending idle sessions](./usage#suspending-idle-sessions): stop Claude when idle and resume on the next call.
 - [Known limitations](./limitations): what v1 does not do.
 - [API reference](../api/): every exported type and member.
