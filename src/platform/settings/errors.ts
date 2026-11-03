@@ -14,7 +14,7 @@ export class ClaudeConfigUnreadable extends Error {
   override readonly name = 'ClaudeConfigUnreadable';
   constructor(
     readonly path: string,
-    readonly reason: 'missing' | 'invalidJson' | 'notObject' | 'projectsNotObject',
+    readonly reason: 'missing' | 'invalidJson' | 'notObject' | 'projectsNotObject' | 'cwdNotAbsolute',
   ) {
     super(`claude config ${path}: ${reason}`);
   }

@@ -83,7 +83,8 @@ describe('ProcessPort.exec', () => {
   it('killOnTimeout:false resolves timedOut but leaves the child running untouched (P-LIFE-38)', async () => {
     const marker = join(dir, 'finished');
     const t0 = Date.now();
-    const r = await port().exec(NODE, ['-e', `setTimeout(()=>{require("fs").writeFileSync(${JSON.stringify(marker)},"done")},600)`], {
+    // the path goes in argv, never into the evaluated source
+    const r = await port().exec(NODE, ['-e', 'setTimeout(()=>{require("fs").writeFileSync(process.argv[1],"done")},600)', marker], {
       env: ENV,
       timeoutMs: 100,
       killOnTimeout: false,

@@ -153,6 +153,8 @@ export function createClaudeConfigPort(o: ClaudeConfigOptions): ClaudeConfigPort
 
     async seedTrust(realCwd, so = {}) {
       const file = so.globalConfigPath ?? paths().globalConfig;
+      // The key is an absolute realpath, so it can never be `__proto__`/`constructor`; refuse anything else outright.
+      if (!realCwd.startsWith('/')) throw new ClaudeConfigUnreadable(file, 'cwdNotAbsolute');
       const added = await mutate((cfg) => {
         let projects = cfg['projects'];
         if (projects === undefined) {
@@ -172,6 +174,7 @@ export function createClaudeConfigPort(o: ClaudeConfigOptions): ClaudeConfigPort
     },
 
     async unseedTrust(realCwd, uo = {}) {
+      if (!realCwd.startsWith('/')) return;
       await mutate((cfg) => {
         const projects = cfg['projects'];
         if (!isPlainObject(projects)) return false;

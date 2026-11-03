@@ -73,6 +73,12 @@ describe('readGlobal', () => {
 });
 
 describe('seedTrust / unseedTrust (single key, P-LIFE-27, P-LIVE-12)', () => {
+  it('refuses a non-absolute key, so a prototype key can never be written (CodeQL js/prototype-polluting-assignment)', async () => {
+    await expect(port().seedTrust('__proto__')).rejects.toMatchObject({ name: 'ClaudeConfigUnreadable', reason: 'cwdNotAbsolute' });
+    await expect(port().unseedTrust('constructor')).resolves.toBeUndefined();
+    expect(({} as Record<string, unknown>)['hasTrustDialogAccepted']).toBeUndefined();
+  });
+
   it('adds only projects[cwd].hasTrustDialogAccepted, keeps every other byte-level property', async () => {
     writeConfig(ORIGINAL, { indent: 4, trailingNewline: false, mode: 0o640 });
     expect(await port().seedTrust('/work/repo')).toEqual({ added: true });

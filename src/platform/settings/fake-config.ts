@@ -76,6 +76,8 @@ export class FakeClaudeConfig implements ClaudeConfigPort {
   }
 
   seedTrust(realCwd: string, o: { globalConfigPath?: string } = {}): Promise<{ added: boolean }> {
+    // same guard as the real port: the key is an absolute realpath, never a prototype key
+    if (!realCwd.startsWith('/')) return Promise.reject(new ClaudeConfigUnreadable('~/.claude.json', 'cwdNotAbsolute'));
     const g = this.configAt(o.globalConfigPath, true);
     if (typeof g === 'string') return Promise.reject(new ClaudeConfigUnreadable('~/.claude.json', g));
     let projects = g['projects'];

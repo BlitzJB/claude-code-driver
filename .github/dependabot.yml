@@ -15,6 +15,9 @@ updates:
     ignore:
       # The Claude Code pin moves only with a new version profile (ARCHITECTURE.md §8).
       - dependency-name: '@anthropic-ai/claude-code'
+      # Types track the minimum supported Node (engines >= 20), not the latest Node.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
       dev-tooling:
         dependency-type: development
