@@ -182,8 +182,8 @@ export const DEFAULTS: ConfigDefaults = deepFreeze({
 /** P-TMUX-56: tmux max width is 10000; we keep a sane window. cols < 120 breaks the classifier (§3.1 step 1). */
 export const COLS_MIN = 120;
 export const COLS_MAX = 1000;
-export const ROWS_MIN = 24;
-export const ROWS_MAX = 1000;
+const ROWS_MIN = 24;
+const ROWS_MAX = 1000;
 
 /** Caller `env.set` names that move billing or the model host (BRIEF; §3.2; P-REV-04). */
 export const FORBIDDEN_ENV_SET: ReadonlySet<string> = new Set([

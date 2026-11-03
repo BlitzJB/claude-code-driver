@@ -9,11 +9,9 @@
     "src/platform/hook-server/worker.ts",
     "scripts/*.mjs",
     "test/**/*.test.ts",
-    "test/live/global-setup.ts",
     "test/setup/*.ts"
   ],
   "project": ["src/**/*.ts", "scripts/**/*.mjs", "test/**/*.ts"],
-  "ignore": ["src/model/version.ts"],
   "ignoreDependencies": ["@anthropic-ai/claude-code"],
   "includeEntryExports": false
 }

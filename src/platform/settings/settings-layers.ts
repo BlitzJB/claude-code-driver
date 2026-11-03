@@ -12,7 +12,7 @@ import type { SettingsLayers } from '../ports.js';
 import { isNoEnt } from '../runtime-dir/dir-checks.js';
 import { isPlainObject, parseLenientJson } from './lenient-json.js';
 
-export type LayerName = 'user' | 'project' | 'local';
+type LayerName = 'user' | 'project' | 'local';
 const MAX_SETTINGS_BYTES = 4 * 1024 * 1024;
 
 export interface LayerFiles {

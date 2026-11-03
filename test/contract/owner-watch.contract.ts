@@ -5,7 +5,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { OwnerWatchFactory } from '../../src/platform/ports.js';
 
-export interface WatchedProc {
+interface WatchedProc {
   pid: number;
   start: string;
 }
@@ -28,7 +28,7 @@ export interface OwnerWatchHarness {
   cleanup(): Promise<void>;
 }
 
-export async function waitUntil(cond: () => boolean | Promise<boolean>, timeoutMs: number, stepMs = 20): Promise<number> {
+async function waitUntil(cond: () => boolean | Promise<boolean>, timeoutMs: number, stepMs = 20): Promise<number> {
   const t0 = Date.now();
   for (;;) {
     if (await cond()) return Date.now() - t0;

@@ -281,7 +281,7 @@ export const errorsProfile: ClaudeProfile['errors'] = Object.freeze({
   parseResetText,
 });
 
-export type AutoContinueState = NonNullable<NonNullable<ScreenFacts['usageLimit']>['autoContinue']>;
+type AutoContinueState = NonNullable<NonNullable<ScreenFacts['usageLimit']>['autoContinue']>;
 
 /** Error vocabulary the assembly type has no slot for. */
 export interface ErrorsExtras {

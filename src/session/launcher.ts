@@ -63,11 +63,11 @@ import { RegistryStore, type SessionRecord } from './registry-store.js';
 import { buildSettingsPlan } from './settings-plan.js';
 
 /** Hook transport limits (§3.5). */
-export const HOOK_MAX_BODY_BYTES = 32 * 1024 * 1024;
-export const HOOK_MAX_HELD = 32;
-export const HOOK_MAX_CONNECTIONS = 64;
+const HOOK_MAX_BODY_BYTES = 32 * 1024 * 1024;
+const HOOK_MAX_HELD = 32;
+const HOOK_MAX_CONNECTIONS = 64;
 /** Transcript tail tuning (= platform/fs-tail DEFAULT_TAIL_TUNING; L3 may not import platform values, §1.3). */
-export const TAIL_TUNING = Object.freeze({
+const TAIL_TUNING = Object.freeze({
   pollIdleMs: 250,
   pollFastMs: 50,
   fastBurstMs: 3000,
@@ -77,7 +77,7 @@ export const TAIL_TUNING = Object.freeze({
   readChunkBytes: 1024 * 1024,
   maxActiveFollowers: 32,
 });
-export const TAIL_SKIP_PARSE_TYPES: ReadonlySet<string> = new Set(['api-request-blob', 'api-request-shape', 'file-history-snapshot']);
+const TAIL_SKIP_PARSE_TYPES: ReadonlySet<string> = new Set(['api-request-blob', 'api-request-shape', 'file-history-snapshot']);
 const IDENTITY_RETRIES = 5;
 const IDENTITY_RETRY_MS = 100;
 const REGISTRY_CHECK_TRIES = 5;
@@ -89,7 +89,7 @@ export interface LaunchWarning {
   details?: Record<string, JsonValue>;
 }
 
-export interface LaunchSinks {
+interface LaunchSinks {
   /** Attached before the hook server starts, so no event is missed. */
   hook?: (e: RawHookEvent) => void;
   /** Attached before `followMain`. */
@@ -104,7 +104,7 @@ export interface LaunchSinks {
   securityAlert?: (a: LaunchSecurityAlert) => void;
 }
 
-export interface LaunchSecurityAlert {
+interface LaunchSecurityAlert {
   code: 'E_SECURITY_HOOK_FORGERY';
   detail: Record<string, JsonValue>;
 }
@@ -168,7 +168,7 @@ function defaultDistCliPath(): string | undefined {
 }
 
 /** The reserved sidecar-death record of the net port (ICR 0004 item 1: tunnelId 0, kind 'error', error 'sidecarDied'). */
-export function isSidecarDiedRecord(r: { tunnelId: number; kind: string; error?: string }): boolean {
+function isSidecarDiedRecord(r: { tunnelId: number; kind: string; error?: string }): boolean {
   return r.tunnelId === 0 && r.kind === 'error' && r.error === 'sidecarDied';
 }
 

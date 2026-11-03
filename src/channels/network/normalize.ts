@@ -16,8 +16,8 @@ import type { MonoMs, WallMs } from '../../model/time.js';
 import type { TunnelRecord } from '../../platform/ports.js';
 
 /** The only host whose token-A tunnels carry model calls (NP §3.1). */
-export const MODEL_HOST = 'api.anthropic.com';
-export const MODEL_PORT = 443;
+const MODEL_HOST = 'api.anthropic.com';
+const MODEL_PORT = 443;
 /** Mirrors `platform/netproxy/client.ts` SIDECAR_TUNNEL_ID / SIDECAR_DIED (ICR 0004 item 1); channels may not import values from platform. */
 export const SIDECAR_TUNNEL_ID = 0;
 export const SIDECAR_DIED = 'sidecarDied';

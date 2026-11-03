@@ -29,7 +29,7 @@ export interface TranscriptNormalizer {
   resetFile(fileKey: string): void;
 }
 
-export interface TranscriptNormalizerStats {
+interface TranscriptNormalizerStats {
   /** `line` events seen. */
   lines: number;
   /** Observations produced. */

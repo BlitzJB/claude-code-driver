@@ -25,9 +25,9 @@ import { createScreenChannel } from '../channels/screen/debounce.js';
 import type { ScreenChannel } from '../channels/screen/debounce.js';
 import type { EditorGate, ObservationSink } from './input-executor.js';
 
-export type PollerIntent = Extract<Intent, { kind: 'poll.cadence' | 'auth.poll' | 'screen.captureNow' }>;
+type PollerIntent = Extract<Intent, { kind: 'poll.cadence' | 'auth.poll' | 'screen.captureNow' }>;
 
-export const PANE_DEAD_POLL_MS = 2000;
+const PANE_DEAD_POLL_MS = 2000;
 /** Consecutive capture failures before `channel.health screen degraded{captureFailed}` (restored by the next success). */
 export const CAPTURE_FAILURES_DEGRADED = 3;
 const FROZEN_AFTER_MS = 3000;

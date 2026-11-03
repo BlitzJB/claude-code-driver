@@ -36,11 +36,11 @@ import { checkSettingsEnv, type EnvWarning } from './env-builder.js';
 import { toCctError } from './errors-map.js';
 import type { RegistryStore } from './registry-store.js';
 
-export const MIN_NODE_MAJOR = 20;
-export const AUTH_STAGGER_MS = 1_500;
+const MIN_NODE_MAJOR = 20;
+const AUTH_STAGGER_MS = 1_500;
 export const TMUX_SEARCH_DIRS: readonly string[] = Object.freeze(['/opt/homebrew/bin', '/usr/local/bin', '/usr/bin']);
 /** Keys the input protocols use (IN §2); a user rebinding any of them breaks the library. */
-export const GUARDED_KEYS: readonly string[] = Object.freeze(['enter', 'escape', 'ctrl+g', 'ctrl+j', 'shift+tab', 'ctrl+c']);
+const GUARDED_KEYS: readonly string[] = Object.freeze(['enter', 'escape', 'ctrl+g', 'ctrl+j', 'shift+tab', 'ctrl+c']);
 
 export interface PreflightWarning {
   code: CcdErrorCode;
@@ -214,7 +214,7 @@ export async function checkAccount(
 // ------------------------------------------------------------------------------------------------- step 7
 
 /** Normalise a key name: lowercase, `ctrl-g` → `ctrl+g`, `return` → `enter`, `esc` → `escape`, `s-tab` → `shift+tab`. */
-export function normaliseKeyName(k: string): string {
+function normaliseKeyName(k: string): string {
   let s = k.trim().toLowerCase().replace(/\s+/g, ' ');
   // A chord: only its first element matters (a rebind of `ctrl+g ...` still captures ctrl+g as a prefix).
   s = s.split(' ')[0] ?? s;

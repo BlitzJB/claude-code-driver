@@ -23,7 +23,7 @@ import type { Clock } from '../model/time.js';
 import type { EnvPort } from '../platform/ports.js';
 import type { ObservationSink } from './input-executor.js';
 
-export type ResolvePathsIntent = Extract<Intent, { kind: 'permission.resolvePaths' }>;
+type ResolvePathsIntent = Extract<Intent, { kind: 'permission.resolvePaths' }>;
 
 type Fs = Pick<EnvPort, 'realpath' | 'lstat'>;
 

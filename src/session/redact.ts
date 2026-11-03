@@ -16,7 +16,7 @@ import type { JsonValue } from '../model/json.js';
 
 export const REDACTED = '[REDACTED]';
 export const EMAIL_FAKE = 'user@example.com';
-export const NONCE_FAKE = 'ccd-selftest-NONCE';
+const NONCE_FAKE = 'ccd-selftest-NONCE';
 
 /** Shortest secret we mask by exact match (shorter strings would mask ordinary words). */
 const MIN_SECRET_LEN = 8;
@@ -240,19 +240,19 @@ const FIXTURE_PATTERNS: readonly (readonly [RegExp, string])[] = [
 const FIX_NONCE_RE = /ccd-selftest-[0-9a-f]{32}/g;
 const FIX_HEX_RE = /(?<![0-9a-fA-F])[0-9a-f]{32,}(?![0-9a-fA-F])/g;
 const FIX_B64_RE = /[A-Za-z0-9+/]{32,}={0,2}/g;
-export const FAKE_HEX_RE = /^cafe0+[0-9a-f]{1,8}$/;
-export const FAKE_B64_RE = /^FAKEb64x+[0-9]{4,}$/;
+const FAKE_HEX_RE = /^cafe0+[0-9a-f]{1,8}$/;
+const FAKE_B64_RE = /^FAKEb64x+[0-9]{4,}$/;
 const FIX_DROP_KEY_RE = /^(x-ccd-token|proxy-authorization)$/i;
 const FIX_SECRET_KEY_RE =
   /^(token|tokenA|controlToken|hookToken|authToken|accessToken|refreshToken|apiKey|api_key|x-api-key|authorization|cookie|password|secret)$/i;
 const FIX_ID_KEY_RE =
   /^(organizationUuid|organization_uuid|orgUuid|org_uuid|orgId|org_id|organizationId|accountUuid|account_uuid|accountId|account_id|userID|userId|user_id|anonymousId|deviceId|device_id)$/;
 
-export function fakeHex(n: number, len: number): string {
+function fakeHex(n: number, len: number): string {
   const body = n.toString(16);
   return `cafe${'0'.repeat(Math.max(1, len - 4 - body.length))}${body}`;
 }
-export function fakeB64(n: number, len: number): string {
+function fakeB64(n: number, len: number): string {
   const body = String(n).padStart(4, '0');
   return `FAKEb64${'x'.repeat(Math.max(1, len - 7 - body.length))}${body}`;
 }

@@ -15,7 +15,7 @@ import type { ScreenSnapshot } from './classify.js';
 import { hashText } from './normalize-text.js';
 import { toFacts } from './to-facts.js';
 
-export interface FrozenInfo {
+interface FrozenInfo {
   /** Mono time of the first capture of the unchanged frame. */
   since: MonoMs;
   /** How long the spinner frame has been unchanged, as of the last pushed capture. */
@@ -23,7 +23,7 @@ export interface FrozenInfo {
   frameHash: string;
 }
 
-export interface ScreenTelemetry {
+interface ScreenTelemetry {
   pushed: number;
   emitted: number;
   dropped: number;
@@ -112,7 +112,7 @@ export function createScreenDebouncer(o: { frozenAfterMs: number; profile: Claud
 }
 
 /** Per-capture context for the channel helper (all from L3: the poller knows the wall time, the zone and the job phase). */
-export interface ScreenChannelContext {
+interface ScreenChannelContext {
   wallAt: WallMs;
   tz: string;
   /** An `editorStage`/`awaitEditorConsumed` phase is active (ICR 0001 item 3b). */

@@ -17,10 +17,10 @@ import { classifyStatus, type StatusProbe, type StatusResult } from './lifecheck
 
 export const LAUNCHD_LABEL = 'com.claude-code-driver.lifecheck';
 export const JOB_PATH = '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin';
-export const JOB_LOCALE = 'en_US.UTF-8';
-export const START_INTERVAL_S = 300;
-export const MIN_NODE_MAJOR = 20;
-export const SYSTEMD_UNIT = 'ccd-lifecheck';
+const JOB_LOCALE = 'en_US.UTF-8';
+const START_INTERVAL_S = 300;
+const MIN_NODE_MAJOR = 20;
+const SYSTEMD_UNIT = 'ccd-lifecheck';
 /** `launchctl bootout` returns before the job is fully removed; an immediate `bootstrap` then fails with EIO (code 5). */
 export const BOOTSTRAP_ATTEMPTS = 5;
 export const BOOTSTRAP_RETRY_MS = 500;
@@ -353,7 +353,7 @@ export function parseLifecheckJson(text: string | undefined): StatusProbe['last'
   }
 }
 
-export async function probeStatus(h: InstallHost): Promise<StatusProbe> {
+async function probeStatus(h: InstallHost): Promise<StatusProbe> {
   const p = lifecheckPaths(h.stateDir, h.homeDir);
   const probe: StatusProbe = { platform: h.platform, shimInstalled: await h.exists(p.shim), now: h.nowWall() };
   if (h.platform === 'darwin') {

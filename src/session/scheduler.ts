@@ -17,18 +17,18 @@
 import { monitorEventLoopDelay } from 'node:perf_hooks';
 import type { Cancel, Clock, MonoMs, WallMs } from '../model/time.js';
 
-export const HOST_RESUME_THRESHOLD_MS = 5000;
-export const LOOP_LAG_WINDOW_MS = 5000;
-export const LOOP_LAG_THRESHOLD_MS = 500;
-export const LOOP_LAG_RESOLUTION_MS = 20;
+const HOST_RESUME_THRESHOLD_MS = 5000;
+const LOOP_LAG_WINDOW_MS = 5000;
+const LOOP_LAG_THRESHOLD_MS = 500;
+const LOOP_LAG_RESOLUTION_MS = 20;
 
-export interface NextDeadlineLike {
+interface NextDeadlineLike {
   atMono?: MonoMs;
   atWall?: WallMs;
 }
 
 /** A started loop-lag monitor (A-7). */
-export interface LagMonitor {
+interface LagMonitor {
   stop(): void;
 }
 export type LagMonitorFactory = (o: {

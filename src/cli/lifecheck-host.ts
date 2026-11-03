@@ -143,7 +143,7 @@ export function assertLifecheckPorts(v: unknown, stateDir: string): asserts v is
     throw new Error(`createNodePorts() state root ${JSON.stringify(root)} is not the requested ${JSON.stringify(stateDir)}`);
 }
 
-export function loadNodePorts(stateDir: string): Promise<LifecheckPorts> {
+function loadNodePorts(stateDir: string): Promise<LifecheckPorts> {
   const ports: unknown = createNodePorts({ stateDir });
   assertLifecheckPorts(ports, stateDir);
   return Promise.resolve(ports);

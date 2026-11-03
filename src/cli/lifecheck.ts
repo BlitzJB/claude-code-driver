@@ -20,10 +20,10 @@ export const RESET_GRACE_MS = 120_000;
 /** `ccd lifecheck status`: `ranAt` older than this → stale, exit 2 (§3.12). */
 export const STATUS_STALE_MS = 15 * 60_000;
 
-export type LifecheckActionKind =
+type LifecheckActionKind =
   'finalized' | 'reaped' | 'reapFailed' | 'hung' | 'hungWhileLimited' | 'diagnosticsRequested' | 'socketSwept' | 'error';
 
-export interface LifecheckAction {
+interface LifecheckAction {
   kind: LifecheckActionKind;
   sessionKey?: string;
   /** For `ClaudeSession.start({resume})` after an owner death (§3.8 recovery). */
@@ -31,7 +31,7 @@ export interface LifecheckAction {
   detail?: string;
 }
 
-export interface LifecheckSessionLine {
+interface LifecheckSessionLine {
   key: string;
   classification: Classification;
   claudeSessionId: string;
@@ -234,7 +234,7 @@ export interface StatusProbe {
   now: number;
 }
 
-export type StatusHealth = 'ok' | 'notInstalled' | 'neverRan' | 'stale' | 'failing';
+type StatusHealth = 'ok' | 'notInstalled' | 'neverRan' | 'stale' | 'failing';
 
 export interface StatusResult {
   health: StatusHealth;

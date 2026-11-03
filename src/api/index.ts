@@ -3,6 +3,7 @@
 
 export { SUPPORTED_CLAUDE_VERSION } from '../model/version.js';
 export { ClaudeSession, installSignalHandlers } from './claude-session.js';
+export type { HandledSignal } from './claude-session.js';
 export { ClaudeSessionError, isClaudeSessionError, PUBLIC_ERROR_CODES } from './map-errors.js';
 export { consoleLogger } from './options.js';
 export type { ClaudeSessionOptions } from './options.js';

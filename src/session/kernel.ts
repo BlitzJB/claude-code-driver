@@ -145,7 +145,7 @@ export interface LaunchRequest {
   transport: 'auto' | 'http' | 'unix';
 }
 
-export interface LaunchInfo {
+interface LaunchInfo {
   claudeVersion: string;
   tmuxVersion: string;
   hookTransport: 'http' | 'unix';
@@ -1061,7 +1061,7 @@ function safeTz(ports: Ports): string {
  *   permission.resolvePaths → path resolver; tail.* → tail driver; registry.persist / process.signal / lifecycle.finalize →
  *   lifecycle; net.fault → the sidecar.
  */
-export function defaultKernelServices(o: { launch?: typeof launchSession } = {}): KernelServices {
+function defaultKernelServices(o: { launch?: typeof launchSession } = {}): KernelServices {
   const launch = o.launch ?? launchSession;
   return {
     async launch(host: KernelHost, req: LaunchRequest): Promise<LaunchedSession> {

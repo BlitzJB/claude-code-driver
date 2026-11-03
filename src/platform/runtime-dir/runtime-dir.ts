@@ -11,7 +11,7 @@ import type { EnvPort, RuntimeDirPort } from '../ports.js';
 import { currentUid, isNoEnt, privateDirProblem } from './dir-checks.js';
 import { SocketPathTooLong, UnsafeRuntimeDir } from './errors.js';
 
-export const SESSION_DIR_PREFIX = 'ccd-';
+const SESSION_DIR_PREFIX = 'ccd-';
 export const MAX_SOCKET_PATH_BYTES = 100;
 export const LONGEST_SOCKET_NAME = 'net.sock';
 const SESSION_DIR_RE = /^ccd-[A-Za-z0-9]{6}$/;

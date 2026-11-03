@@ -123,13 +123,13 @@ export const STRIP_ALWAYS: readonly string[] = Object.freeze([
   ...PROVIDER_SWITCHES,
 ]);
 /** Prefix entries of the strip list (`CLAUDE_CODE_RETRY_WATCHDOG_*`, `BUN_*`). */
-export const STRIP_PREFIXES: readonly string[] = Object.freeze(['CLAUDE_CODE_RETRY_WATCHDOG_', 'BUN_']);
+const STRIP_PREFIXES: readonly string[] = Object.freeze(['CLAUDE_CODE_RETRY_WATCHDOG_', 'BUN_']);
 
 /** Caller `env.set` names that fail the start (BRIEF: never redirect the API; P-REV-04). */
-export const CALLER_FORBIDDEN: readonly string[] = Object.freeze(['ANTHROPIC_BASE_URL', ...PROVIDER_SWITCHES]);
+const CALLER_FORBIDDEN: readonly string[] = Object.freeze(['ANTHROPIC_BASE_URL', ...PROVIDER_SWITCHES]);
 
 /** Proxy variables, in Claude's precedence order (lowercase first, NP §6). */
-export const PROXY_VARS: readonly string[] = Object.freeze([
+const PROXY_VARS: readonly string[] = Object.freeze([
   'https_proxy',
   'HTTPS_PROXY',
   'http_proxy',
@@ -141,7 +141,7 @@ export const PROXY_VARS: readonly string[] = Object.freeze([
 ]);
 
 /** Always appended to NO_PROXY/no_proxy when any proxy variable is present (D-22). Exact hosts only: no CIDR (P-HOOK-19). */
-export const LOOPBACK_NO_PROXY: readonly string[] = Object.freeze(['127.0.0.1', 'localhost', '::1']);
+const LOOPBACK_NO_PROXY: readonly string[] = Object.freeze(['127.0.0.1', 'localhost', '::1']);
 
 export const LIBRARY_REQUIRED: Readonly<Record<string, string>> = Object.freeze({
   DISABLE_AUTOUPDATER: '1',

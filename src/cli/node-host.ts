@@ -13,7 +13,7 @@ import type { InstallHost, SessionRecord } from './host.js';
 import { parseSessionRecord } from './host.js';
 import type { ViewHost } from './view.js';
 
-export const STATE_DIR_NAME = 'claude-code-driver';
+const STATE_DIR_NAME = 'claude-code-driver';
 
 /** `${XDG_STATE_HOME:-~/.local/state}/claude-code-driver` (D-38). A relative XDG_STATE_HOME is ignored (XDG spec). */
 export function defaultStateDir(env: Readonly<Record<string, string | undefined>>, home: string): string {
@@ -51,7 +51,7 @@ async function writeAtomic(path: string, text: string, mode: number): Promise<vo
   await rename(tmp, path);
 }
 
-export function runCommand(file: string, args: readonly string[]): Promise<{ code: number | null; stdout: string; stderr: string }> {
+function runCommand(file: string, args: readonly string[]): Promise<{ code: number | null; stdout: string; stderr: string }> {
   return new Promise((resolve) => {
     let stdout = '';
     let stderr = '';

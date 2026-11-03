@@ -11,7 +11,7 @@ import { ProcessSpawnError } from './errors.js';
 import { parsePsIdentity, PS_ARGS, PS_CANDIDATES, PS_ENV } from './identity.js';
 import { isExecutableFile, which } from './which.js';
 
-export const DEFAULT_MAX_BUFFER = 16 * 1024 * 1024;
+const DEFAULT_MAX_BUFFER = 16 * 1024 * 1024;
 const SYNC_TIMEOUT_MS = 2_000;
 const IDENTITY_TIMEOUT_MS = 5_000;
 /** killOnTimeout: SIGTERM at the deadline, SIGKILL this much later. */

@@ -100,8 +100,8 @@ export interface HttpHook {
   headers: { 'X-CCD-Token': string };
   timeout: number;
 }
-export type HookEntry = CommandHook | HttpHook;
-export interface HookGroup {
+type HookEntry = CommandHook | HttpHook;
+interface HookGroup {
   matcher: '*';
   hooks: [HookEntry];
 }

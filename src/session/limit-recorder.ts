@@ -18,7 +18,7 @@ import type { ScreenFacts } from '../model/screen-facts.js';
 import type { Capture, RawHookEvent, StateStorePort, TailEvent } from '../platform/ports.js';
 import type { FixtureScrubber } from './redact.js';
 
-export const LIMIT_RING_CAPACITY = 2000;
+const LIMIT_RING_CAPACITY = 2000;
 export const LIMIT_SCREEN_ROWS = 12;
 export const LIMIT_CAPTURE_DIR = 'limit-captures';
 const NARROW_HOOKS: ReadonlySet<string> = new Set(['StopFailure', 'Notification', 'Stop']);

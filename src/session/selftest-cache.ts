@@ -24,7 +24,7 @@ export interface SelfTestKey {
   transport: 'http' | 'unix';
 }
 
-export interface SelfTestEntry extends SelfTestKey {
+interface SelfTestEntry extends SelfTestKey {
   result: 'pass' | 'fail';
   step?: string;
   atWall: number;

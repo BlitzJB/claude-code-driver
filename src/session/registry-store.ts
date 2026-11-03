@@ -21,10 +21,10 @@ import type { WallMs } from '../model/time.js';
 import type { StateStorePort } from '../platform/ports.js';
 import { CcdError } from '../model/errors.js';
 
-export const REGISTRY_VERSION = 2;
+const REGISTRY_VERSION = 2;
 export const ARCHIVE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-export const LOCK_NAME = 'lock';
-export const LOCK_STALE_MS = 60_000;
+const LOCK_NAME = 'lock';
+const LOCK_STALE_MS = 60_000;
 export const TRUST_SEEDS_FILE = 'trust-seeds.json';
 
 export type SessionRecordState = 'launching' | 'ready' | 'closing' | 'exited' | 'reaped';
@@ -133,7 +133,7 @@ export function isSessionRecord(v: unknown): v is SessionRecord {
   );
 }
 
-export function isOwnerRecord(v: unknown): v is OwnerRecord {
+function isOwnerRecord(v: unknown): v is OwnerRecord {
   return isObject(v) && typeof v['pid'] === 'number' && typeof v['startTime'] === 'string' && typeof v['heartbeatAt'] === 'number';
 }
 

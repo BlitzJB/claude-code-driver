@@ -7,7 +7,7 @@ import type { HookTransportExtras } from '../../src/platform/hook-server/transpo
 import type { HookEndpoint, HookTransport, RawHookEvent } from '../../src/platform/ports.js';
 import type { ClientCall, ClientReply } from './hooks.contract.helpers.js';
 
-export interface CallOptions {
+interface CallOptions {
   via?: 'http' | 'unix';
   /** Make the body about this large (to cross the cap). */
   bytes?: number;

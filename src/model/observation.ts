@@ -7,7 +7,7 @@ import type { ScreenFacts } from './screen-facts.js';
 import type { MonoMs, WallMs } from './time.js';
 
 export type Source = 'hook' | 'transcript' | 'network' | 'registry' | 'screen' | 'self' | 'clock' | 'process' | 'channel';
-export type ObsOrigin =
+type ObsOrigin =
   | { kind: 'hook'; transport: 'http' | 'unix'; event: string; hookSeq: HookSeq }
   | { kind: 'transcript'; fileKey: string; generation: number; offset: number; entryUuid?: string; entryTs?: string; sidechain: boolean }
   | { kind: 'screen'; frameHash: string }
@@ -25,7 +25,7 @@ export interface ObsMeta {
   origin?: ObsOrigin;
   rawRef?: number;
 }
-export interface Obs<K extends string, P> {
+interface Obs<K extends string, P> {
   kind: K;
   meta: ObsMeta;
   p: P;

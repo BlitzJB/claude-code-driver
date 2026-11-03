@@ -19,11 +19,11 @@ import type { Clock, WallMs } from '../model/time.js';
 import type { ClaudeConfigPort, EnvPort, ProcessPort, RuntimeDirPort } from '../platform/ports.js';
 import type { RegistryStore, SessionRecord } from './registry-store.js';
 
-export const REAP_TERM_GRACE_MS = 12_000;
-export const REAP_POLL_MS = 100;
-export const SOCKET_PROBE_TIMEOUT_MS = 2_000;
-export const SOCKET_PROBE_GAP_MS = 5_000;
-export const OWNER_HUNG_MS = 60_000;
+const REAP_TERM_GRACE_MS = 12_000;
+const REAP_POLL_MS = 100;
+const SOCKET_PROBE_TIMEOUT_MS = 2_000;
+const SOCKET_PROBE_GAP_MS = 5_000;
+const OWNER_HUNG_MS = 60_000;
 const TMUX_KILL_TIMEOUT_MS = 3_000;
 const SAFE_ABS = /^\/[A-Za-z0-9/._-]+$/;
 const CCD_SOCKET = /^ccd-[A-Za-z0-9._-]+$/;
@@ -43,7 +43,7 @@ export type IdentityVerdict = 'match' | 'gone' | 'mismatch';
 const CONFIG_FILE = /^\/(?:[^\0]*\/)?\.(?:claude|config)\.json$/;
 
 /** The global config file a record's trust decision applies to; a record of an older writer (none recorded) → `fallback`. */
-export function recordConfigPath(p: unknown, fallback: string): string {
+function recordConfigPath(p: unknown, fallback: string): string {
   return typeof p === 'string' && CONFIG_FILE.test(p) && !p.split('/').includes('..') ? p : fallback;
 }
 
@@ -124,7 +124,7 @@ export async function terminateVerified(
 }
 
 /** Poll `isAlive` every 100 ms (Clock.sleep, so FakeClock tests are deterministic). */
-export async function waitDead(proc: ProcessPort, clock: Clock, pid: number, maxMs: number): Promise<boolean> {
+async function waitDead(proc: ProcessPort, clock: Clock, pid: number, maxMs: number): Promise<boolean> {
   const until = clock.now() + maxMs;
   while (proc.isAlive(pid)) {
     if (clock.now() >= until) return false;
@@ -144,11 +144,6 @@ export function tmuxTarget(rec: Pick<SessionRecord['tmux'], 'socketName' | 'sock
 function basename(p: string): string {
   const i = p.lastIndexOf('/');
   return i < 0 ? p : p.slice(i + 1);
-}
-
-function dirname(p: string): string {
-  const i = p.lastIndexOf('/');
-  return i <= 0 ? '/' : p.slice(0, i);
 }
 
 /** Minimal env for our own tmux/rm invocations (never the child env: it may carry the proxy token). */
@@ -187,7 +182,7 @@ export interface ReapOptions {
   reapedBy?: 'reaper' | 'lifecheck';
 }
 
-export interface ReapedSession {
+interface ReapedSession {
   sessionKey: SessionKey;
   claude: TerminateOutcome | 'n/a';
   server: 'killed' | 'gone' | 'failed' | 'n/a';
@@ -523,6 +518,3 @@ export async function classifySession(
 }
 
 /** Directory of a socket path (exported for the CLI's report). */
-export function socketDirOf(socketPath: string): string {
-  return dirname(socketPath);
-}

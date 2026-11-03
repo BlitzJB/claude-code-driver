@@ -148,7 +148,7 @@ export function summarizeTrace(t: ParsedTrace): TraceSummary {
   return s;
 }
 
-export function formatRecord(r: DebugRecord): string {
+function formatRecord(r: DebugRecord): string {
   switch (r.r) {
     case 'header':
       return `header lib=${r.lib} claude=${r.claude} tmux=${r.tmux} node=${r.node} ${r.platform} tz=${r.tz} redaction=${r.redaction} hooks=${r.hookTransport}`;
@@ -242,7 +242,7 @@ export function replayTrace(t: ParsedTrace, o: ReplayOptions = {}): ReplayResult
   return result;
 }
 
-export function formatSummary(s: TraceSummary): string {
+function formatSummary(s: TraceSummary): string {
   const counts = KINDS.filter((k) => s.counts[k] !== undefined)
     .map((k) => `${k}=${s.counts[k] ?? 0}`)
     .join(' ');
@@ -272,7 +272,7 @@ export interface Explanation {
  * The record a step consumed. `session/kernel.ts` writes `inSeq = obs.meta.seq` for an observation and `inSeq = -cmdId` for
  * a command (the two numberings are independent, so the sign is what tells them apart).
  */
-export function stepInputOf(
+function stepInputOf(
   step: Extract<DebugRecord, { r: 'step' }>,
   obsBySeq: ReadonlyMap<number, Extract<DebugRecord, { r: 'obs' }>>,
   cmdById: ReadonlyMap<number, Extract<DebugRecord, { r: 'cmd' }>>,

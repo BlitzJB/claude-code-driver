@@ -11,7 +11,7 @@ import { ClaudeAuthStatusUnreadable, ClaudeVersionUnreadable } from './errors.js
 import { isExecutableFile, KNOWN_BIN_DIRS } from './which.js';
 
 export const CLAUDE_EXE_REL = join('node_modules', '@anthropic-ai', 'claude-code', 'bin', 'claude.exe');
-export const VERSION_TIMEOUT_MS = 10_000;
+const VERSION_TIMEOUT_MS = 10_000;
 export const AUTH_STATUS_TIMEOUT_MS = 10_000;
 const SHIM_MAX_BYTES = 64 * 1024;
 

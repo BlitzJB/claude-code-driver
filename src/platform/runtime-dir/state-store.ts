@@ -13,7 +13,7 @@ import { isPidAlive } from '../process/process-port.js';
 import { currentUid, isNoEnt, privateDirProblem } from './dir-checks.js';
 import { UnsafeRuntimeDir } from './errors.js';
 
-export const STATE_DIR_NAME = 'claude-code-driver';
+const STATE_DIR_NAME = 'claude-code-driver';
 const LOCK_POLL_MIN_MS = 20;
 const LOCK_POLL_MAX_MS = 250;
 

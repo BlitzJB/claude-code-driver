@@ -20,7 +20,7 @@ import { createTranscriptNormalizer } from '../channels/transcript/normalize.js'
 import type { TranscriptNormalizer } from '../channels/transcript/normalize.js';
 import type { ObservationSink } from './input-executor.js';
 
-export type TailIntent = Extract<
+type TailIntent = Extract<
   Intent,
   { kind: 'tail.followMain' | 'tail.observePath' | 'tail.expectSubagent' | 'tail.subagentStopped' | 'tail.poke' }
 >;

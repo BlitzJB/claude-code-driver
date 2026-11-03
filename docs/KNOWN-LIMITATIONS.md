@@ -109,10 +109,9 @@ Status as of the release gate (2026-11-03): `pnpm typecheck`, `pnpm lint`, `pnpm
 
 ### Tooling
 
-- `knip` (the last step of `pnpm check`) fails with 77 unused exports and 32 unused exported types, plus two
-  configuration hints (`src/model/version.ts` in `ignore`, the redundant `test/live/global-setup.ts` entry). It is not
-  one of the release-gate commands and the findings are dead-code warnings, not behaviour, so they were left for a
-  cleanup pass.
+- `pnpm check` (including `knip`) passes. The docs site's dev tooling carries pnpm overrides for dev-only advisories
+  (`vite` 6.4.4 under VitePress 1.x, `esbuild` 0.25, `minimatch` 11.0.1); one moderate Vite dev-server advisory has no
+  patched release yet. None of these packages ship at runtime: the library has zero runtime dependencies.
 
 ## 3. Open live-probe questions (DESIGN §9)
 

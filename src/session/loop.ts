@@ -28,12 +28,12 @@ import type { EventLog } from './event-log.js';
 import { fromErrorData } from './errors-map.js';
 import type { InputQueue, QueueItem } from './queue.js';
 
-export type SecurityAlertPayload = Extract<DomainEvent, { type: 'security.alert' }>['payload'];
+type SecurityAlertPayload = Extract<DomainEvent, { type: 'security.alert' }>['payload'];
 
-export const DEFAULT_MAX_PENDING_EVENTS = 10_000;
-export const DEFAULT_STEPS_PER_SLICE = 512;
+const DEFAULT_MAX_PENDING_EVENTS = 10_000;
+const DEFAULT_STEPS_PER_SLICE = 512;
 
-export interface StepLoopHooks {
+interface StepLoopHooks {
   /** Before an input is stepped (trace `obs`/`cmd` records). */
   beforeStep?(item: QueueItem): void;
   /** After a step was committed: intents → executor, trace `step`/`diag`/`event` records, limit recorder. */

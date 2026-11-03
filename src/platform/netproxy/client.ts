@@ -85,7 +85,7 @@ const CLOSE_KINDS: ReadonlySet<string> = new Set(['fin', 'rst', 'error']);
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
 /** Maps one wire record onto a TunnelRecord with our clock's monotonic base. Undefined for malformed records. */
-export function toTunnelRecord(w: unknown, monoOffset: number): TunnelRecord | undefined {
+function toTunnelRecord(w: unknown, monoOffset: number): TunnelRecord | undefined {
   if (typeof w !== 'object' || w === null) return undefined;
   const r = w as Partial<Record<keyof WireRecord, unknown>>;
   if (!isNum(r.tunnelId) || !isNum(r.mono) || !isNum(r.wallAt) || !isNum(r.port)) return undefined;
@@ -159,7 +159,7 @@ interface Pending {
 }
 
 /** The live connection to one sidecar. */
-export class NetProxyClient implements NetProxy {
+class NetProxyClient implements NetProxy {
   private readonly listeners = new Set<(r: TunnelRecord) => void>();
   private readonly pending = new Map<number, Pending>();
   private nextReq = 1;

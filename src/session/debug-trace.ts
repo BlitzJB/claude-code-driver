@@ -20,8 +20,8 @@ import type { Unsubscribe } from '../model/kernel.js';
 import type { Redactor } from './redact.js';
 import { summarize } from './redact.js';
 
-export const TRACE_MAX_LAG_BYTES = 8 * 1024 * 1024;
-export const TRACE_FLUSH_MS = 250;
+const TRACE_MAX_LAG_BYTES = 8 * 1024 * 1024;
+const TRACE_FLUSH_MS = 250;
 
 /** File operations the trace needs (injectable for tests; the default is node:fs/promises with 0600/0700 modes). */
 export interface TraceFs {
@@ -355,7 +355,7 @@ export function createDebugTrace(o: DebugTraceOptions): DebugTrace {
 // ---------------------------------------------------------------------------------------------------------------------------
 // P-SEC-42 / SEC §8.5: bounded in-memory screen ring; disk only with debug.dumpDir.
 
-export interface ScreenRingEntry {
+interface ScreenRingEntry {
   at: number;
   wallAt: number;
   hash: string;

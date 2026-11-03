@@ -14,6 +14,9 @@ import { createProcessPort } from '../../src/platform/process/process-port.js';
 import { KNOWN_BIN_DIRS, which } from '../../src/platform/process/which.js';
 import { ownerWatchContract, type OwnerWatchHarness } from './owner-watch.contract.js';
 
+/** Node < 22.18 cannot run the `.ts` standalone sources directly; their dist/ builds are covered by test/contract/standalone.test.ts. */
+const CAN_RUN_TS = ![undefined, false].includes((process.features as { typescript?: unknown }).typescript as undefined);
+
 ownerWatchContract('fake', () => {
   const fp = new FakeProcess();
   const configs = new Map<string, unknown>();
@@ -55,95 +58,96 @@ ownerWatchContract('fake', () => {
   return Promise.resolve(h);
 });
 
-ownerWatchContract('real standalone + tmux', async () => {
-  const tmuxBin = await which('tmux', { pathEnv: process.env['PATH'], extraDirs: KNOWN_BIN_DIRS });
-  if (tmuxBin === undefined) throw new Error('tmux is required for the owner-watch contract test');
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-owc-')));
-  chmodSync(dir, 0o700);
-  const binDir = join(dir, 'bin');
-  mkdirSync(binDir);
-  const fakeClaude = join(binDir, 'claude.exe');
-  writeFileSync(fakeClaude, 'process.on("SIGHUP",()=>{});setInterval(()=>{},1e6);\n');
-  const clock = createRealClock();
-  const port = createProcessPort({ clock });
-  const children: ChildProcess[] = [];
-  const sockets: string[] = [];
-  const watchers: number[] = [];
-  let n = 0;
+if (CAN_RUN_TS)
+  ownerWatchContract('real standalone + tmux', async () => {
+    const tmuxBin = await which('tmux', { pathEnv: process.env['PATH'], extraDirs: KNOWN_BIN_DIRS });
+    if (tmuxBin === undefined) throw new Error('tmux is required for the owner-watch contract test');
+    const dir = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-owc-')));
+    chmodSync(dir, 0o700);
+    const binDir = join(dir, 'bin');
+    mkdirSync(binDir);
+    const fakeClaude = join(binDir, 'claude.exe');
+    writeFileSync(fakeClaude, 'process.on("SIGHUP",()=>{});setInterval(()=>{},1e6);\n');
+    const clock = createRealClock();
+    const port = createProcessPort({ clock });
+    const children: ChildProcess[] = [];
+    const sockets: string[] = [];
+    const watchers: number[] = [];
+    let n = 0;
 
-  const start = async (args: string[]) => {
-    const c = spawn(process.execPath, args, { stdio: 'ignore' });
-    children.push(c);
-    await new Promise((r) => c.once('spawn', r));
-    const pid = c.pid ?? 0;
-    let id = await port.identity(pid);
-    for (let i = 0; i < 20 && id === undefined; i++) {
-      await new Promise((r) => setTimeout(r, 20));
-      id = await port.identity(pid);
-    }
-    return { pid, start: id?.startTime ?? '' };
-  };
-  const tmux = (args: string[]) =>
-    new Promise<number>((res) => {
-      execFile(tmuxBin, args, { env: { ...process.env, TMUX: '' }, timeout: 5_000 }, (err) => {
-        res(err === null ? 0 : typeof err.code === 'number' ? err.code : 1);
+    const start = async (args: string[]) => {
+      const c = spawn(process.execPath, args, { stdio: 'ignore' });
+      children.push(c);
+      await new Promise((r) => c.once('spawn', r));
+      const pid = c.pid ?? 0;
+      let id = await port.identity(pid);
+      for (let i = 0; i < 20 && id === undefined; i++) {
+        await new Promise((r) => setTimeout(r, 20));
+        id = await port.identity(pid);
+      }
+      return { pid, start: id?.startTime ?? '' };
+    };
+    const tmux = (args: string[]) =>
+      new Promise<number>((res) => {
+        execFile(tmuxBin, args, { env: { ...process.env, TMUX: '' }, timeout: 5_000 }, (err) => {
+          res(err === null ? 0 : typeof err.code === 'number' ? err.code : 1);
+        });
       });
-    });
 
-  const real = createOwnerWatchFactory({ process: port, clock, hostEnv: { ...(process.env as Record<string, string>) } });
-  const h: OwnerWatchHarness = {
-    factory: {
-      start: async (o) => {
-        const w = await real.start(o);
-        watchers.push(w.pid);
-        return w;
+    const real = createOwnerWatchFactory({ process: port, clock, hostEnv: { ...(process.env as Record<string, string>) } });
+    const h: OwnerWatchHarness = {
+      factory: {
+        start: async (o) => {
+          const w = await real.start(o);
+          watchers.push(w.pid);
+          return w;
+        },
       },
-    },
-    spawnOwner: () => start(['-e', 'setInterval(()=>{},1e6)', 'ccd-test-owner']),
-    spawnClaude: (sid) => start([fakeClaude, '--session-id', sid]),
-    spawnImpostor: () => start(['-e', 'setInterval(()=>{},1e6)', 'not-the-agent']),
-    startServer: async () => {
-      const socketName = `ccd-ctest-${process.pid}-${randomBytes(4).toString('hex')}`;
-      sockets.push(socketName);
-      const code = await tmux(['-L', socketName, '-f', '/dev/null', 'new-session', '-d', '-s', 'w', 'sleep 600']);
-      if (code !== 0) throw new Error(`tmux new-session failed (${code})`);
-      return { socketName, tmuxBin };
-    },
-    serverAlive: async (s) => (await tmux(['-L', s, 'list-sessions'])) === 0,
-    kill: (pid, sig) => {
-      try {
-        process.kill(pid, sig);
-      } catch {
-        // gone
-      }
-    },
-    isAlive: (pid) => {
-      // Our own children are judged by their exit event (a not-yet-reaped zombie still answers kill(pid, 0)).
-      const c = children.find((x) => x.pid === pid);
-      return c !== undefined ? c.exitCode === null && c.signalCode === null : port.isAlive(pid);
-    },
-    writeConfig: (cfg) => {
-      const configPath = join(dir, `watch-${++n}.json`);
-      writeFileSync(configPath, JSON.stringify(cfg), { mode: 0o600 });
-      chmodSync(configPath, 0o600);
-      return Promise.resolve({ configPath, logPath: join(dir, `watch-${n}.log`) });
-    },
-    exitsLogPath: () => join(dir, 'exits.log'),
-    readExits: () => Promise.resolve(existsSync(join(dir, 'exits.log')) ? readFileSync(join(dir, 'exits.log'), 'utf8') : ''),
-    cleanup: async () => {
-      for (const pid of watchers) port.kill(pid, 'SIGKILL');
-      for (const c of children) if (c.exitCode === null && c.signalCode === null) c.kill('SIGKILL');
-      const sockDir = join(process.env['TMUX_TMPDIR'] ?? '/tmp', `tmux-${process.getuid?.() ?? 0}`);
-      for (const s of sockets) {
-        await tmux(['-L', s, 'kill-server']);
+      spawnOwner: () => start(['-e', 'setInterval(()=>{},1e6)', 'ccd-test-owner']),
+      spawnClaude: (sid) => start([fakeClaude, '--session-id', sid]),
+      spawnImpostor: () => start(['-e', 'setInterval(()=>{},1e6)', 'not-the-agent']),
+      startServer: async () => {
+        const socketName = `ccd-ctest-${process.pid}-${randomBytes(4).toString('hex')}`;
+        sockets.push(socketName);
+        const code = await tmux(['-L', socketName, '-f', '/dev/null', 'new-session', '-d', '-s', 'w', 'sleep 600']);
+        if (code !== 0) throw new Error(`tmux new-session failed (${code})`);
+        return { socketName, tmuxBin };
+      },
+      serverAlive: async (s) => (await tmux(['-L', s, 'list-sessions'])) === 0,
+      kill: (pid, sig) => {
         try {
-          unlinkSync(join(sockDir, s));
+          process.kill(pid, sig);
         } catch {
-          // already removed by tmux
+          // gone
         }
-      }
-      rmSync(dir, { recursive: true, force: true });
-    },
-  };
-  return h;
-});
+      },
+      isAlive: (pid) => {
+        // Our own children are judged by their exit event (a not-yet-reaped zombie still answers kill(pid, 0)).
+        const c = children.find((x) => x.pid === pid);
+        return c !== undefined ? c.exitCode === null && c.signalCode === null : port.isAlive(pid);
+      },
+      writeConfig: (cfg) => {
+        const configPath = join(dir, `watch-${++n}.json`);
+        writeFileSync(configPath, JSON.stringify(cfg), { mode: 0o600 });
+        chmodSync(configPath, 0o600);
+        return Promise.resolve({ configPath, logPath: join(dir, `watch-${n}.log`) });
+      },
+      exitsLogPath: () => join(dir, 'exits.log'),
+      readExits: () => Promise.resolve(existsSync(join(dir, 'exits.log')) ? readFileSync(join(dir, 'exits.log'), 'utf8') : ''),
+      cleanup: async () => {
+        for (const pid of watchers) port.kill(pid, 'SIGKILL');
+        for (const c of children) if (c.exitCode === null && c.signalCode === null) c.kill('SIGKILL');
+        const sockDir = join(process.env['TMUX_TMPDIR'] ?? '/tmp', `tmux-${process.getuid?.() ?? 0}`);
+        for (const s of sockets) {
+          await tmux(['-L', s, 'kill-server']);
+          try {
+            unlinkSync(join(sockDir, s));
+          } catch {
+            // already removed by tmux
+          }
+        }
+        rmSync(dir, { recursive: true, force: true });
+      },
+    };
+    return h;
+  });

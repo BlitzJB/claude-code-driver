@@ -4,7 +4,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { EditorInjector } from '../../src/platform/ports.js';
 
-export interface EditorRunResult {
+interface EditorRunResult {
   exitCode: number;
   /** The draft file content after the editor exited. */
   result: string;

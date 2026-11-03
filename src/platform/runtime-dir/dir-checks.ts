@@ -30,8 +30,3 @@ export function isNoEnt(e: unknown): boolean {
   const code = (e as { code?: unknown } | null)?.code;
   return code === 'ENOENT' || code === 'ENOTDIR';
 }
-
-export function errCode(e: unknown): string | undefined {
-  const code = (e as { code?: unknown } | null)?.code;
-  return typeof code === 'string' ? code : undefined;
-}

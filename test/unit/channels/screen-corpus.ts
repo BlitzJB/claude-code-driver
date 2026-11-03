@@ -5,7 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import type { PaneStatus } from '../../../src/platform/ports.js';
 
-export const SCREENS_DIR = fileURLToPath(new URL('../../../fixtures/screens/', import.meta.url));
+const SCREENS_DIR = fileURLToPath(new URL('../../../fixtures/screens/', import.meta.url));
 
 export interface CorpusFrame {
   file: string;
@@ -32,7 +32,7 @@ export function paneStatus(o: Partial<PaneStatus> = {}): PaneStatus {
   };
 }
 
-export function corpusFiles(): string[] {
+function corpusFiles(): string[] {
   return readdirSync(SCREENS_DIR)
     .filter((f) => f.endsWith('.log'))
     .sort();

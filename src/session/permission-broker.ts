@@ -29,7 +29,7 @@ import type { Clock } from '../model/time.js';
 import type { HookTransport, RawHookEvent } from '../platform/ports.js';
 import type { ObservationSink } from './input-executor.js';
 
-export type BrokerIntent = Extract<
+type BrokerIntent = Extract<
   Intent,
   { kind: 'host.askPermission' | 'host.cancelAsk' | 'hook.respond' | 'hook.armSelfTest' | 'hook.disarmSelfTest' }
 >;

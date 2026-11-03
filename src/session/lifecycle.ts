@@ -44,14 +44,14 @@ import { CcdError } from '../model/errors.js';
 import { releaseTrustLocked, terminateVerified, verifyClaudeIdentity, type ClaudeIdentity, type TerminateOutcome } from './reaper.js';
 import type { RegistryStore, SessionRecord } from './registry-store.js';
 
-export const HEARTBEAT_MS = 10_000;
-export const PANE_POLL_MS = 100;
-export const EXIT_CONSUME_MS = 3_000;
-export const EXIT_SETTLE_MS = 100;
+const HEARTBEAT_MS = 10_000;
+const PANE_POLL_MS = 100;
+const EXIT_CONSUME_MS = 3_000;
+const EXIT_SETTLE_MS = 100;
 /** After `/exit` + Enter, a dialog (worktree keep/remove, P-LIFE-46) is checked once after this delay. */
 export const EXIT_DIALOG_CHECK_MS = 1_500;
-export const DEFAULT_CLOSE_GRACE_MS = 12_000;
-export const DEFAULT_KILL_AFTER_MS = 3_000;
+const DEFAULT_CLOSE_GRACE_MS = 12_000;
+const DEFAULT_KILL_AFTER_MS = 3_000;
 
 /** The body every still-held PermissionRequest gets at close (the core decides deny on close, SEC §4.1). */
 export const CLOSE_DENY_BODY = Object.freeze({

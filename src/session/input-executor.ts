@@ -73,10 +73,10 @@ export interface InputExecutor extends EditorGate {
 // Limits (§2.6 InputPrimitive comments; IN §3.2; TD §3)
 // ---------------------------------------------------------------------------------------------------------------------------
 
-export const PASTE_CHUNK_MAX_BYTES = 400;
-export const PASTE_CHUNK_MAX_LF = 2;
-export const TYPE_LITERAL_MAX_BYTES = 200;
-export const MODAL_OUTPUT_MAX_CHARS = 16 * 1024;
+const PASTE_CHUNK_MAX_BYTES = 400;
+const PASTE_CHUNK_MAX_LF = 2;
+const TYPE_LITERAL_MAX_BYTES = 200;
+const MODAL_OUTPUT_MAX_CHARS = 16 * 1024;
 const DEFAULT_CHUNK_GAP_MS = 30;
 const DEFAULT_ESC_GAP_MS = 250;
 /** Poll interval while waiting for Claude to leave the editor's alternate screen after done-<nonce> (LP-01). */
