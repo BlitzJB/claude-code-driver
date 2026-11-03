@@ -89,7 +89,8 @@ export class FakeClaudeConfig implements ClaudeConfigPort {
     const entry = projects[realCwd];
     if (isPlainObject(entry) && entry[TRUST_KEY] === true) return Promise.resolve({ added: false });
     if (isPlainObject(entry)) entry[TRUST_KEY] = true;
-    else projects[realCwd] = { [TRUST_KEY]: true };
+    // defineProperty never invokes the __proto__ setter (CodeQL js/prototype-polluting-assignment)
+    else Object.defineProperty(projects, realCwd, { value: { [TRUST_KEY]: true }, enumerable: true, writable: true, configurable: true });
     this.note('seed', realCwd, o.globalConfigPath);
     return Promise.resolve({ added: true });
   }

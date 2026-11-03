@@ -88,7 +88,9 @@ export function fsContract(label: string, make: () => Promise<FsHarness>): void 
           },
           { staleMs: 60_000 },
         );
-        await new Promise((r) => setTimeout(r, 5));
+        // wait for the first holder to actually enter (mkdir + open + fsync can take a while on a busy CI box)
+        for (let i = 0; i < 400 && order.length === 0; i++) await new Promise((r) => setTimeout(r, 5));
+        expect(order).toEqual(['first-in']);
         const second = h.state.withLock(
           'lock',
           () => {
