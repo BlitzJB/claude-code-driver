@@ -11,6 +11,9 @@ import { editorContract } from './editor.contract.js';
 
 const SUFFIX = '+orig';
 
+/** Node < 22.18 cannot run the `.ts` standalone sources directly; their dist/ builds are covered by test/contract/standalone.test.ts. */
+const CAN_RUN_TS = ![undefined, false].includes((process.features as { typescript?: unknown }).typescript as undefined);
+
 editorContract('fake', (o) => {
   const inj = new FakeEditorInjectorFactory({
     original: (d) => `${d}${SUFFIX}`,
@@ -32,34 +35,35 @@ editorContract('fake', (o) => {
   });
 });
 
-editorContract('real wrapper + standalone', (o) => {
-  const sessionDir = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-edc-')));
-  chmodSync(sessionDir, 0o700);
-  const work = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-edw-')));
-  const orig = join(work, 'orig-editor');
-  writeFileSync(orig, `#!/bin/sh\nprintf '%s' '${SUFFIX}' >> "$1"\n`);
-  chmodSync(orig, 0o755);
-  let n = 0;
-  return Promise.resolve({
-    injector: createEditorInjectorFactory({
-      hostEnv: { VISUAL: orig },
-      ...(o?.armTtlMs !== undefined ? { armTtlMs: o.armTtlMs } : {}),
-    }).create({ clock: createRealClock(), ids: createCryptoIds() }),
-    sessionDir,
-    nodePath: process.execPath,
-    origSuffix: SUFFIX,
-    runEditor: (visual, draft, o) =>
-      new Promise((res) => {
-        const file = join(work, o?.claudeDraft === false ? `COMMIT_EDITMSG-${++n}` : `claude-prompt-${(++n).toString(16)}abc.md`);
-        writeFileSync(file, draft);
-        execFile(visual, [file], { env: { PATH: '/usr/bin:/bin' } }, (err) => {
-          res({ exitCode: err === null ? 0 : typeof err.code === 'number' ? err.code : -1, result: readFileSync(file, 'utf8') });
-        });
-      }),
-    cleanup: () => {
-      rmSync(sessionDir, { recursive: true, force: true });
-      rmSync(work, { recursive: true, force: true });
-      return Promise.resolve();
-    },
+if (CAN_RUN_TS)
+  editorContract('real wrapper + standalone', (o) => {
+    const sessionDir = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-edc-')));
+    chmodSync(sessionDir, 0o700);
+    const work = realpathSync(mkdtempSync(join(tmpdir(), 'ccd-wp05-edw-')));
+    const orig = join(work, 'orig-editor');
+    writeFileSync(orig, `#!/bin/sh\nprintf '%s' '${SUFFIX}' >> "$1"\n`);
+    chmodSync(orig, 0o755);
+    let n = 0;
+    return Promise.resolve({
+      injector: createEditorInjectorFactory({
+        hostEnv: { VISUAL: orig },
+        ...(o?.armTtlMs !== undefined ? { armTtlMs: o.armTtlMs } : {}),
+      }).create({ clock: createRealClock(), ids: createCryptoIds() }),
+      sessionDir,
+      nodePath: process.execPath,
+      origSuffix: SUFFIX,
+      runEditor: (visual, draft, o) =>
+        new Promise((res) => {
+          const file = join(work, o?.claudeDraft === false ? `COMMIT_EDITMSG-${++n}` : `claude-prompt-${(++n).toString(16)}abc.md`);
+          writeFileSync(file, draft);
+          execFile(visual, [file], { env: { PATH: '/usr/bin:/bin' } }, (err) => {
+            res({ exitCode: err === null ? 0 : typeof err.code === 'number' ? err.code : -1, result: readFileSync(file, 'utf8') });
+          });
+        }),
+      cleanup: () => {
+        rmSync(sessionDir, { recursive: true, force: true });
+        rmSync(work, { recursive: true, force: true });
+        return Promise.resolve();
+      },
+    });
   });
-});

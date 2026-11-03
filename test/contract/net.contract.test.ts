@@ -207,6 +207,9 @@ function sleeper(): ChildProcess {
   return c;
 }
 
+/** Node < 22.18 cannot run the `.ts` standalone sources directly; their dist/ builds are covered by test/contract/standalone.test.ts. */
+const CAN_RUN_TS = ![undefined, false].includes((process.features as { typescript?: unknown }).typescript as undefined);
+
 // ---- the two harnesses ----
 netProxyContract({
   name: 'fake',
@@ -231,34 +234,35 @@ netProxyContract({
   },
 });
 
-netProxyContract({
-  name: 'real sidecar process',
-  create(): Promise<NetContractContext> {
-    const dir = newDir();
-    const spawned: number[] = [];
-    const claude = sleeper();
-    return Promise.resolve({
-      factory: createNetProxyFactory(realDeps(spawned)),
-      clock: realClock,
-      startOptions: startOptions(dir),
-      driveTunnel: (p: NetProxy, host: string) => connectThrough(p.port, host),
-      async killSidecar(p: NetProxy) {
-        process.kill(p.pid, 'SIGKILL');
-        await waitFor(() => !isAlive(p.pid));
-      },
-      claudePid: claude.pid ?? 0,
-      dispose() {
-        claude.kill('SIGKILL');
-        for (const pid of spawned) if (isAlive(pid)) process.kill(pid, 'SIGKILL');
-        rmSync(dir, { recursive: true, force: true });
-        return Promise.resolve();
-      },
-    });
-  },
-});
+if (CAN_RUN_TS)
+  netProxyContract({
+    name: 'real sidecar process',
+    create(): Promise<NetContractContext> {
+      const dir = newDir();
+      const spawned: number[] = [];
+      const claude = sleeper();
+      return Promise.resolve({
+        factory: createNetProxyFactory(realDeps(spawned)),
+        clock: realClock,
+        startOptions: startOptions(dir),
+        driveTunnel: (p: NetProxy, host: string) => connectThrough(p.port, host),
+        async killSidecar(p: NetProxy) {
+          process.kill(p.pid, 'SIGKILL');
+          await waitFor(() => !isAlive(p.pid));
+        },
+        claudePid: claude.pid ?? 0,
+        dispose() {
+          claude.kill('SIGKILL');
+          for (const pid of spawned) if (isAlive(pid)) process.kill(pid, 'SIGKILL');
+          rmSync(dir, { recursive: true, force: true });
+          return Promise.resolve();
+        },
+      });
+    },
+  });
 
 // ---- real-only behaviour: spawn, config file, lifetime, failure paths ----
-describe('real client + sidecar specifics', () => {
+describe.skipIf(!CAN_RUN_TS)('real client + sidecar specifics', () => {
   it('spawns through the ulimit wrapper with the given env and the 0600 config path (P-NET-16)', async () => {
     const dir = newDir();
     try {
@@ -402,7 +406,7 @@ describe('real client + sidecar specifics', () => {
       const OK = 'HTTP/1.1 200 Connection Established\r\n\r\n';
 
       await p.setFault({ mode: 'reset', afterDownBytes: 3 });
-      const reset = await rawTunnel(p.port, 'api.anthropic.com', 400);
+      const reset = await rawTunnel(p.port, 'api.anthropic.com', 2000); // generous: the sidecar is slower under coverage
       expect(reset.data).toBe(`${OK}ECH`);
       expect(reset.closed).toBe(true);
       await waitFor(() => recs.some((r) => r.kind === 'close' && r.closeKind === 'rst'));
