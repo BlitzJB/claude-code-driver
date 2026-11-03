@@ -82,7 +82,7 @@
   "devDependencies": {
     "@anthropic-ai/claude-code": "2.1.316",
     "@arethetypeswrong/cli": "0.18.5",
-    "@types/node": "^20",
+    "@types/node": "^26",
     "@vitest/coverage-v8": "4.1.12",
     "dependency-cruiser": "17.4.3",
     "eslint": "10.14.0",
