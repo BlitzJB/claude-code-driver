@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/render-brand.mjs — rasterize the brand SVGs in docs/assets/brand to the PNGs that social platforms and
+// scripts/render-brand.mjs: rasterize the brand SVGs in docs/assets/brand to the PNGs that social platforms and
 // browsers need (Open Graph, GitHub social preview, apple-touch-icon, PNG favicon). Uses a local headless Chrome:
 //   CHROME=/path/to/chrome node scripts/render-brand.mjs
 // The PNGs are committed; re-run this after editing an SVG.
@@ -20,10 +20,14 @@ if (CHROME === undefined) {
 const JOBS = [
   { svg: 'og-image.svg', png: 'og-image.png', w: 1200, h: 630 },
   { svg: 'social-preview.svg', png: 'social-preview.png', w: 1280, h: 640 },
-  { svg: 'mark.svg', png: 'apple-touch-icon.png', w: 180, h: 180, pad: 0, bg: '#0B1220' },
+  { svg: 'mark.svg', png: 'apple-touch-icon.png', w: 180, h: 180, bg: 'transparent' },
   { svg: 'favicon.svg', png: 'favicon-32.png', w: 32, h: 32, bg: 'transparent' },
   { svg: 'mark.svg', png: 'mark-512.png', w: 512, h: 512, bg: 'transparent' },
 ];
+
+const FONTS = new URL('../node_modules/@fontsource-variable/', import.meta.url).href;
+const FONT_CSS = `@font-face{font-family:'Geist';src:url('${FONTS}geist/files/geist-latin-wght-normal.woff2') format('woff2');font-weight:100 900}
+@font-face{font-family:'Geist Mono';src:url('${FONTS}geist-mono/files/geist-mono-latin-wght-normal.woff2') format('woff2');font-weight:100 900}`;
 
 const tmp = mkdtempSync(join(tmpdir(), 'ccd-brand-'));
 try {
@@ -32,7 +36,7 @@ try {
     const html = join(tmp, `${j.png}.html`);
     writeFileSync(
       html,
-      `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;padding:0;background:${j.bg ?? 'transparent'};overflow:hidden}</style></head><body>${svg}</body></html>`,
+      `<!doctype html><html><head><meta charset="utf-8"><style>${FONT_CSS}html,body{margin:0;padding:0;background:${j.bg ?? 'transparent'};overflow:hidden}</style></head><body>${svg}</body></html>`,
     );
     execFileSync(
       CHROME,

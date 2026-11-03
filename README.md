@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/assets/banner.svg" alt="claude-code-driver: drive the interactive Claude Code TUI from Node.js" width="100%"></p>
+<p align="center"><img src="docs/assets/banner.svg" alt="The claude-code-driver mark and wordmark above a green tmux status line" width="100%"></p>
 
 # claude-code-driver
 
@@ -6,7 +6,7 @@
 [![Docs](https://github.com/BlitzJB/claude-code-driver/actions/workflows/pages.yml/badge.svg)](https://blitzjb.github.io/claude-code-driver/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Node](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)
-![Claude Code](https://img.shields.io/badge/Claude%20Code-2.1.316-d97757)
+![Claude Code](https://img.shields.io/badge/Claude%20Code-2.1.316-1b763a)
 ![Runtime deps](https://img.shields.io/badge/runtime%20deps-0-brightgreen)
 
 **[Documentation](https://blitzjb.github.io/claude-code-driver/)** ·
@@ -34,7 +34,7 @@ const result = await turn.done; // { outcome: 'completed', text, tools, duration
 
 ## How it works
 
-![Observation channels feeding the pure core](docs/assets/channels.svg)
+![Six observation channels, ranked by authority, feeding the core that produces events and state](docs/assets/channels.svg)
 
 Claude Code is started in a tmux pane on a private socket (`tmux -L ccd-<pid>-<hex>`). The library observes it through
 four independent channels and reconciles them into one state machine:

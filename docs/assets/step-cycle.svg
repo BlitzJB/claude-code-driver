@@ -1,39 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 420" width="920" height="420" role="img" aria-label="The observe, step, execute cycle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 436" width="920" height="436" role="img" aria-label="The observe, step, execute cycle">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#080D19"/></linearGradient>
-    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
-    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#18233A" stroke-width="1"/></pattern>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6B85"/></marker>
-    <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2DD4BF"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#636B65"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1B763A"/></marker>
   </defs>
-  <rect width="920" height="420" rx="18" fill="url(#bg)"/>
-  <rect width="920" height="420" rx="18" fill="url(#grid)" opacity=".6"/>
-  <rect x=".75" y=".75" width="918.5" height="418.5" rx="17.25" fill="none" stroke="#24324D" stroke-width="1.5"/>
-  <text x="40" y="52" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="22" font-weight="700" fill="#E6EDF7">One cycle</text>
-  <text x="40" y="78" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#8B9BB4">Time enters as data, so a recorded trace replays to the exact same events and state.</text>
-  <g><rect x="40" y="122" width="190" height="66" rx="14" fill="#111A2E" stroke="#FB7185" stroke-width="1.6"/>
-    <text x="135.0" y="151" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15.5" font-weight="700" fill="#FB7185">L0 adapters</text>
-    <text x="135.0" y="172" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">tmux · tail · hooks · proxy</text></g>
-  <g><rect x="300" y="122" width="190" height="66" rx="14" fill="#111A2E" stroke="#FBBF24" stroke-width="1.6"/>
-    <text x="395.0" y="151" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15.5" font-weight="700" fill="#FBBF24">L1 normalizers</text>
-    <text x="395.0" y="172" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">raw → observations</text></g>
-  <g><rect x="560" y="122" width="190" height="66" rx="14" fill="#111A2E" stroke="#A78BFA" stroke-width="1.6"/>
-    <text x="655.0" y="151" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15.5" font-weight="700" fill="#A78BFA">L2 step()</text>
-    <text x="655.0" y="172" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">pure reducer</text></g>
-  <g><rect x="790" y="122" width="90" height="66" rx="14" fill="#0F2A2A" stroke="#5EEAD4" stroke-width="1.6"/>
-    <text x="835.0" y="151" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15.5" font-weight="700" fill="#5EEAD4">events</text>
-    <text x="835.0" y="172" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">→ you</text></g>
-  <path d="M230 155.0 H 294" stroke="#5B6B85" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="262" y="143.0" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12" fill="#8B9BB4">raw</text>
-  <path d="M490 155.0 H 554" stroke="#5B6B85" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="522" y="143.0" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12" fill="#8B9BB4">obs</text>
-  <path d="M750 155.0 H 784" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrT)"/>
-  <g><rect x="300" y="292" width="190" height="66" rx="14" fill="#111A2E" stroke="#60A5FA" stroke-width="1.6"/>
-    <text x="395.0" y="321" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15.5" font-weight="700" fill="#60A5FA">L3 executors</text>
-    <text x="395.0" y="342" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">intents → I/O</text></g>
-  <path d="M655 188 V 325.0 H 496" fill="none" stroke="#5B6B85" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="668" y="286" text-anchor="start" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12" fill="#8B9BB4">intents</text>
-  <path d="M300 325.0 H 135 V 194" fill="none" stroke="#5B6B85" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="150" y="343" text-anchor="start" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12" fill="#8B9BB4">keys · answers · polls</text>
-  <text x="40" y="396" text-anchor="start" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12" fill="#6B7C98">one decision timer: L3 arms nextDeadline(core) and feeds clock.tick back in</text>
+  <rect x=".75" y=".75" width="918.5" height="434.5" rx="18" fill="#F8FBF9" stroke="#D3D9D4" stroke-width="1.5"/>
+  <text x="40" y="54" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="23" font-weight="650" fill="#191F1A" letter-spacing="-0.3">One cycle</text>
+  <text x="40" y="82" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15.5" fill="#636B65">Time enters as data, so a recorded trace replays to the same events and state.</text>
+  <g><rect x="40" y="124" width="190" height="66" rx="13" fill="#FFE7E4" stroke="#AB413E" stroke-opacity=".75" stroke-width="1.5"/>
+    <text x="135" y="153" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="15.5" font-weight="600" fill="#191F1A">L0 adapters</text>
+    <text x="135" y="174" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#3D453E">tmux, tail, hooks, proxy</text></g>
+  <g><rect x="300" y="124" width="190" height="66" rx="13" fill="#FDF1D8" stroke="#976213" stroke-opacity=".75" stroke-width="1.5"/>
+    <text x="395" y="153" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="15.5" font-weight="600" fill="#191F1A">L1 normalizers</text>
+    <text x="395" y="174" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#3D453E">raw data to observations</text></g>
+  <g><rect x="560" y="124" width="190" height="66" rx="13" fill="#EBEFF5" stroke="#525E72" stroke-opacity=".75" stroke-width="1.5"/>
+    <text x="655" y="153" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="15.5" font-weight="600" fill="#191F1A">L2 step()</text>
+    <text x="655" y="174" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#3D453E">the pure reducer</text></g>
+  <g><rect x="790" y="124" width="90" height="66" rx="13" fill="#191F1A" stroke="#191F1A" stroke-opacity=".75" stroke-width="1.5"/>
+    <text x="835" y="153" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="15.5" font-weight="600" fill="#62D378">events</text>
+    <text x="835" y="174" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#D3D9D4">to you</text></g>
+  <path d="M230 157H294" stroke="#636B65" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="262" y="145" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#636B65">raw</text>
+  <path d="M490 157H554" stroke="#636B65" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="522" y="145" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#636B65">obs</text>
+  <path d="M750 157H784" stroke="#1B763A" stroke-width="2" marker-end="url(#arrG)"/>
+  <g><rect x="300" y="296" width="190" height="66" rx="13" fill="#E0F1FE" stroke="#1F6A96" stroke-opacity=".75" stroke-width="1.5"/>
+    <text x="395" y="325" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="15.5" font-weight="600" fill="#191F1A">L3 executors</text>
+    <text x="395" y="346" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#3D453E">intents to I/O</text></g>
+  <path d="M655 190V329H496" fill="none" stroke="#636B65" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="668" y="290" text-anchor="start" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#636B65">intents</text>
+  <path d="M300 329H135V196" fill="none" stroke="#636B65" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="150" y="318" text-anchor="start" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="12.5" fill="#636B65">keys, answers, polls</text>
+  <text x="40" y="408" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#636B65">L3 runs one decision timer at the core's next deadline and feeds the tick back in as an observation.</text>
+
 </svg>

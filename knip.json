@@ -9,9 +9,11 @@
     "src/platform/hook-server/worker.ts",
     "scripts/*.mjs",
     "test/**/*.test.ts",
-    "test/setup/*.ts"
+    "test/setup/*.ts",
+    "site/.vitepress/theme/index.ts",
+    "site/.vitepress/config.mts"
   ],
-  "project": ["src/**/*.ts", "scripts/**/*.mjs", "test/**/*.ts"],
+  "project": ["src/**/*.ts", "scripts/**/*.mjs", "test/**/*.ts", "site/.vitepress/**/*.{ts,mts}"],
   "ignoreDependencies": ["@anthropic-ai/claude-code"],
   "includeEntryExports": false
 }

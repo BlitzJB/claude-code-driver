@@ -78,11 +78,13 @@
     "docs:dev": "pnpm docs:api && vitepress dev site",
     "docs:build": "pnpm docs:api && vitepress build site",
     "docs:preview": "vitepress preview site",
-    "brand:render": "node scripts/render-brand.mjs"
+    "brand:render": "node scripts/brand-svgs.mjs && node scripts/render-brand.mjs"
   },
   "devDependencies": {
     "@anthropic-ai/claude-code": "2.1.316",
     "@arethetypeswrong/cli": "0.18.5",
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
     "@types/node": "^20",
     "@vitest/coverage-v8": "4.1.12",
     "dependency-cruiser": "17.4.3",

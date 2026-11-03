@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 80" width="520" height="80" role="img" aria-label="claude-code-driver">
+  <g transform="translate(4 4) scale(1.125)"><rect width="64" height="64" rx="14" fill="#191F1A"/>
+  <path d="M0 49H64V50C64 57.7 57.7 64 50 64H14C6.3 64 0 57.7 0 50Z" fill="#62D378"/>
+  <rect x="8" y="53" width="9" height="7" rx="1.5" fill="#191F1A"/>
+  <rect x="42" y="55.5" width="14" height="2" rx="1" fill="#191F1A" fill-opacity=".55"/>
+  <path d="M15 19L26 28L15 37" fill="none" stroke="#F0F4F0" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="30" y="33" width="15" height="5" rx="2" fill="#F0F4F0" fill-opacity=".9"/></g>
+  <text x="92" y="52" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="31" font-weight="600" letter-spacing="-0.6"><tspan fill="#D3D9D4">claude-code-</tspan><tspan fill="#62D378">driver</tspan></text>
+</svg>

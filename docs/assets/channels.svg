@@ -1,83 +1,71 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 556" width="920" height="556" role="img" aria-label="Observation channels and authority order">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 558" width="920" height="558" role="img" aria-label="Observation channels and their authority order">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#080D19"/></linearGradient>
-    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
-    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#18233A" stroke-width="1"/></pattern>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6B85"/></marker>
-    <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2DD4BF"/></marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#636B65"/></marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1B763A"/></marker>
   </defs>
-  <rect width="920" height="556" rx="18" fill="url(#bg)"/>
-  <rect width="920" height="556" rx="18" fill="url(#grid)" opacity=".6"/>
-  <rect x=".75" y=".75" width="918.5" height="554.5" rx="17.25" fill="none" stroke="#24324D" stroke-width="1.5"/>
-  <text x="40" y="52" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="22" font-weight="700" fill="#E6EDF7">Observation channels</text>
-  <text x="40" y="78" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#8B9BB4">Each fact keeps its source. A higher authority replaces a lower one; screen facts stay provisional.</text>
+  <rect x=".75" y=".75" width="918.5" height="556.5" rx="18" fill="#F8FBF9" stroke="#D3D9D4" stroke-width="1.5"/>
+  <text x="40" y="54" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="23" font-weight="650" fill="#191F1A" letter-spacing="-0.3">Observation channels</text>
+  <text x="40" y="82" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15.5" fill="#636B65">Every fact remembers its source, and a higher-ranked source replaces a lower one.</text>
   <g>
-    <rect x="40" y="112" width="380" height="52" rx="12" fill="#111A2E" stroke="#E6EDF7" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="138" r="6" fill="#E6EDF7"/>
-    <text x="82" y="134" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">process</text>
-    <text x="82" y="154" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">pane-died, exit status</text>
-    <rect x="364" y="126" width="42" height="24" rx="12" fill="#0B1220" stroke="#E6EDF7" stroke-opacity=".7"/>
-    <text x="385" y="143" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#E6EDF7">6</text>
-    <path d="M420 138 C 470 138, 470 318, 520 318" fill="none" stroke="#E6EDF7" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="114" width="390" height="52" rx="12" fill="#F0F4F0" stroke="#3D453E" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="136" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">process</text>
+    <text x="60" y="156" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">pane exit and its status</text>
+    <circle cx="404" cy="140" r="14" fill="#F8FBF9" stroke="#3D453E"/>
+    <text x="404" y="145" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#3D453E">6</text>
+    <path d="M430 140C480 140 480 322 530 322" fill="none" stroke="#3D453E" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="40" y="178" width="380" height="52" rx="12" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="204" r="6" fill="#2DD4BF"/>
-    <text x="82" y="200" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">hooks</text>
-    <text x="82" y="220" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">prompt acks, tools, permissions, text</text>
-    <rect x="364" y="192" width="42" height="24" rx="12" fill="#0B1220" stroke="#2DD4BF" stroke-opacity=".7"/>
-    <text x="385" y="209" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#2DD4BF">5</text>
-    <path d="M420 204 C 470 204, 470 318, 520 318" fill="none" stroke="#2DD4BF" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="180" width="390" height="52" rx="12" fill="#DFF6E2" stroke="#1B763A" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="202" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">hooks</text>
+    <text x="60" y="222" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">prompt acks, tools, permissions, text</text>
+    <circle cx="404" cy="206" r="14" fill="#F8FBF9" stroke="#1B763A"/>
+    <text x="404" y="211" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1B763A">5</text>
+    <path d="M430 206C480 206 480 322 530 322" fill="none" stroke="#1B763A" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="40" y="244" width="380" height="52" rx="12" fill="#111A2E" stroke="#60A5FA" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="270" r="6" fill="#60A5FA"/>
-    <text x="82" y="266" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">transcript</text>
-    <text x="82" y="286" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">interrupts, denials, api-requests, final text</text>
-    <rect x="364" y="258" width="42" height="24" rx="12" fill="#0B1220" stroke="#60A5FA" stroke-opacity=".7"/>
-    <text x="385" y="275" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#60A5FA">4</text>
-    <path d="M420 270 C 470 270, 470 318, 520 318" fill="none" stroke="#60A5FA" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="246" width="390" height="52" rx="12" fill="#E0F1FE" stroke="#1F6A96" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="268" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">transcript</text>
+    <text x="60" y="288" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">interrupts, denials, model calls, final text</text>
+    <circle cx="404" cy="272" r="14" fill="#F8FBF9" stroke="#1F6A96"/>
+    <text x="404" y="277" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#1F6A96">4</text>
+    <path d="M430 272C480 272 480 322 530 322" fill="none" stroke="#1F6A96" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="40" y="310" width="380" height="52" rx="12" fill="#111A2E" stroke="#FBBF24" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="336" r="6" fill="#FBBF24"/>
-    <text x="82" y="332" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">network</text>
-    <text x="82" y="352" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">bytes flowing, stalls (opt-in)</text>
-    <rect x="364" y="324" width="42" height="24" rx="12" fill="#0B1220" stroke="#FBBF24" stroke-opacity=".7"/>
-    <text x="385" y="341" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#FBBF24">3</text>
-    <path d="M420 336 C 470 336, 470 318, 520 318" fill="none" stroke="#FBBF24" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="312" width="390" height="52" rx="12" fill="#FDF1D8" stroke="#976213" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="334" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">network</text>
+    <text x="60" y="354" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">bytes flowing or stalled (opt-in)</text>
+    <circle cx="404" cy="338" r="14" fill="#F8FBF9" stroke="#976213"/>
+    <text x="404" y="343" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#976213">3</text>
+    <path d="M430 338C480 338 480 322 530 322" fill="none" stroke="#976213" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="40" y="376" width="380" height="52" rx="12" fill="#111A2E" stroke="#A78BFA" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="402" r="6" fill="#A78BFA"/>
-    <text x="82" y="398" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">registry</text>
-    <text x="82" y="418" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">pid / version cross-check</text>
-    <rect x="364" y="390" width="42" height="24" rx="12" fill="#0B1220" stroke="#A78BFA" stroke-opacity=".7"/>
-    <text x="385" y="407" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#A78BFA">2</text>
-    <path d="M420 402 C 470 402, 470 318, 520 318" fill="none" stroke="#A78BFA" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="378" width="390" height="52" rx="12" fill="#EBEFF5" stroke="#525E72" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="400" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">registry</text>
+    <text x="60" y="420" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">pid and version cross-check</text>
+    <circle cx="404" cy="404" r="14" fill="#F8FBF9" stroke="#525E72"/>
+    <text x="404" y="409" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#525E72">2</text>
+    <path d="M430 404C480 404 480 322 530 322" fill="none" stroke="#525E72" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="40" y="442" width="380" height="52" rx="12" fill="#111A2E" stroke="#FB7185" stroke-opacity=".5" stroke-width="1.5"/>
-    <circle cx="64" cy="468" r="6" fill="#FB7185"/>
-    <text x="82" y="464" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="16" font-weight="700" fill="#E6EDF7">screen</text>
-    <text x="82" y="484" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#9FB0C8">retry banners, dialogs, gates</text>
-    <rect x="364" y="456" width="42" height="24" rx="12" fill="#0B1220" stroke="#FB7185" stroke-opacity=".7"/>
-    <text x="385" y="473" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" font-weight="700" fill="#FB7185">1</text>
-    <path d="M420 468 C 470 468, 470 318, 520 318" fill="none" stroke="#FB7185" stroke-opacity=".6" stroke-width="2"/>
+    <rect x="40" y="444" width="390" height="52" rx="12" fill="#FFE7E4" stroke="#AB413E" stroke-opacity=".7" stroke-width="1.5"/>
+    <text x="60" y="466" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="16" font-weight="600" fill="#191F1A">screen</text>
+    <text x="60" y="486" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#3D453E">retry banners, dialogs, startup gates</text>
+    <circle cx="404" cy="470" r="14" fill="#F8FBF9" stroke="#AB413E"/>
+    <text x="404" y="475" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" font-weight="700" fill="#AB413E">1</text>
+    <path d="M430 470C480 470 480 322 530 322" fill="none" stroke="#AB413E" stroke-opacity=".55" stroke-width="2"/>
   </g>
   <g>
-    <rect x="520" y="258" width="190" height="120" rx="16" fill="#0F2A2A" stroke="#2DD4BF" stroke-width="2"/>
-    <text x="615" y="296" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="18" font-weight="700" fill="#5EEAD4">core</text>
-    <text x="615" y="320" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#8FB8B2">merge by authority</text>
-    <text x="615" y="340" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#8FB8B2">join on real ids</text>
-    <text x="615" y="360" text-anchor="middle" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" fill="#8FB8B2">claims · deadlines</text>
-    <path d="M710 300 H 760" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrT)"/>
-    <path d="M710 336 H 760" stroke="#2DD4BF" stroke-width="2" marker-end="url(#arrT)"/>
-    <rect x="766" y="276" width="114" height="40" rx="10" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".6"/>
-    <text x="823" y="301" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="14" fill="#C9D4E5">events</text>
-    <rect x="766" y="322" width="114" height="40" rx="10" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".6"/>
-    <text x="823" y="347" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="14" fill="#C9D4E5">state</text>
-    <text x="40" y="530" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" fill="#6B7C98">authority: process 6 &gt; hook 5 &gt; transcript 4 &gt; network 3 &gt; registry 2 &gt; screen 1</text>
+    <rect x="530" y="262" width="180" height="120" rx="14" fill="#191F1A"/>
+    <text x="620" y="300" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="18" font-weight="600" fill="#62D378">core</text>
+    <text x="620" y="325" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#D3D9D4">merges by authority</text>
+    <text x="620" y="346" text-anchor="middle" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13.5" fill="#D3D9D4">joins on real ids</text>
+    <path d="M710 304H760" stroke="#1B763A" stroke-width="2" marker-end="url(#arrG)"/>
+    <path d="M710 340H760" stroke="#1B763A" stroke-width="2" marker-end="url(#arrG)"/>
+    <rect x="766" y="284" width="114" height="40" rx="10" fill="#F8FBF9" stroke="#1B763A"/>
+    <text x="823" y="309" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#191F1A">events</text>
+    <rect x="766" y="324" width="114" height="40" rx="10" fill="#F8FBF9" stroke="#1B763A"/>
+    <text x="823" y="349" text-anchor="middle" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14" fill="#191F1A">state</text>
   </g>
+  <text x="40" y="530" font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#636B65">The number is the authority rank. Screen facts never count as confirmed.</text>
 
 </svg>

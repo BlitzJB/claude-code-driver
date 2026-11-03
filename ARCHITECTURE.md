@@ -43,7 +43,7 @@ deterministic reducer** that owns all decisions. Everything else is adapters.
 
 ## 2. The big picture
 
-![Layer diagram](docs/assets/layers.svg)
+![The six layers from the public API down to the OS adapters, with the kernel port below the API](docs/assets/layers.svg)
 
 The same picture in text:
 
@@ -74,7 +74,7 @@ The same picture in text:
 
 One cycle of the system:
 
-![The observe, step, execute cycle](docs/assets/step-cycle.svg)
+![Adapters feed normalizers, normalizers feed the pure step function, which emits events and intents that executors turn back into I/O](docs/assets/step-cycle.svg)
 
 1. An L0 adapter sees something (a hook POST, a new transcript line, a screen capture, tunnel bytes, a process exit).
 2. An L1 normalizer turns it into zero or more **observations** (`tool.pre`, `turn.stopped`, `screen.frame`, …).
@@ -199,7 +199,7 @@ nothing else. The `./kernel` subpath exports exactly that set (marked `@experime
 
 ## 5. Observation channels
 
-![Observation channels and their authority order](docs/assets/channels.svg)
+![Six observation channels, ranked by authority, feeding the core that produces events and state](docs/assets/channels.svg)
 
 Each channel has one L0 adapter, one L1 normalizer, and a fixed place in the **authority order**
 (`core/facts.ts`, higher wins):

@@ -1,66 +1,179 @@
-/* claude-code-driver brand — see docs/BRAND.md. Ink #0B1220, signal teal #2DD4BF; channel colors sky/amber/rose/violet. */
+/*
+ * claude-code-driver brand (docs/BRAND.md). Reference: the tmux status line.
+ * Neutrals are graphite and paper tinted toward the brand hue (150); one committed accent, the status-line green.
+ * Light green text on paper is 5.4:1, status green on graphite 9.8:1 (WCAG AA).
+ */
 :root {
-  --ccd-ink: #0b1220;
-  --ccd-teal: #14b8a6;
-  --ccd-teal-bright: #2dd4bf;
-  --ccd-teal-light: #5eead4;
+  --ccd-status: oklch(0.78 0.165 148);
+  --ccd-status-ink: oklch(0.5 0.125 150);
+  --ccd-graphite: oklch(0.23 0.012 150);
 
-  /* light theme: #0f766e on white is ≈5.4:1 (WCAG AA for text) */
-  --vp-c-brand-1: #0f766e;
-  --vp-c-brand-2: #115e59;
-  --vp-c-brand-3: #0d9488;
-  --vp-c-brand-soft: rgba(20, 184, 166, 0.14);
+  --vp-font-family-base: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --vp-font-family-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --vp-font-family-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  --vp-c-bg: oklch(0.985 0.004 150);
+  --vp-c-bg-alt: oklch(0.962 0.006 150);
+  --vp-c-bg-elv: oklch(0.99 0.003 150);
+  --vp-c-bg-soft: oklch(0.955 0.007 150);
+  --vp-c-divider: oklch(0.88 0.009 150);
+  --vp-c-gutter: oklch(0.93 0.008 150);
+  --vp-c-text-1: oklch(0.23 0.012 150);
+  --vp-c-text-2: oklch(0.38 0.014 150);
+  --vp-c-text-3: oklch(0.52 0.014 150);
 
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(120deg, #0f766e 10%, #14b8a6 60%, #2dd4bf);
-  --vp-home-hero-image-background-image: radial-gradient(
-    circle,
-    rgba(45, 212, 191, 0.28) 0%,
-    rgba(96, 165, 250, 0.12) 45%,
-    transparent 70%
-  );
-  --vp-home-hero-image-filter: blur(56px);
+  --vp-c-brand-1: oklch(0.5 0.125 150);
+  --vp-c-brand-2: oklch(0.44 0.11 150);
+  --vp-c-brand-3: oklch(0.56 0.13 150);
+  --vp-c-brand-soft: oklch(0.5 0.125 150 / 0.12);
 
-  --vp-button-brand-bg: #0f766e;
-  --vp-button-brand-hover-bg: #115e59;
-  --vp-button-brand-active-bg: #134e4a;
+  --vp-button-brand-bg: oklch(0.5 0.125 150);
+  --vp-button-brand-hover-bg: oklch(0.44 0.11 150);
+  --vp-button-brand-active-bg: oklch(0.4 0.1 150);
+  --vp-button-brand-text: oklch(0.985 0.004 150);
+
+  --vp-home-hero-name-color: var(--vp-c-brand-1);
+  --vp-home-hero-image-background-image: none;
+  --vp-home-hero-image-filter: none;
 }
 
 .dark {
-  --vp-c-bg: #0b1220;
-  --vp-c-bg-alt: #080d19;
-  --vp-c-bg-elv: #111a2e;
-  --vp-c-bg-soft: #111a2e;
-  --vp-c-divider: #1f2b44;
-  --vp-c-gutter: #070c17;
+  --vp-c-bg: oklch(0.19 0.01 150);
+  --vp-c-bg-alt: oklch(0.165 0.009 150);
+  --vp-c-bg-elv: oklch(0.23 0.012 150);
+  --vp-c-bg-soft: oklch(0.23 0.012 150);
+  --vp-c-divider: oklch(0.31 0.013 150);
+  --vp-c-gutter: oklch(0.14 0.008 150);
+  --vp-c-text-1: oklch(0.93 0.008 150);
+  --vp-c-text-2: oklch(0.78 0.01 150);
+  --vp-c-text-3: oklch(0.64 0.012 150);
 
-  --vp-c-brand-1: #2dd4bf;
-  --vp-c-brand-2: #5eead4;
-  --vp-c-brand-3: #14b8a6;
-  --vp-c-brand-soft: rgba(45, 212, 191, 0.16);
+  --vp-c-brand-1: oklch(0.78 0.165 148);
+  --vp-c-brand-2: oklch(0.85 0.14 148);
+  --vp-c-brand-3: oklch(0.7 0.15 148);
+  --vp-c-brand-soft: oklch(0.78 0.165 148 / 0.14);
 
-  --vp-home-hero-name-background: linear-gradient(120deg, #e6edf7 5%, #5eead4 55%, #2dd4bf);
-  --vp-button-brand-text: #04201d;
-  --vp-button-brand-bg: #2dd4bf;
-  --vp-button-brand-hover-bg: #5eead4;
-  --vp-button-brand-active-bg: #14b8a6;
+  --vp-button-brand-bg: oklch(0.78 0.165 148);
+  --vp-button-brand-hover-bg: oklch(0.85 0.14 148);
+  --vp-button-brand-active-bg: oklch(0.7 0.15 148);
+  --vp-button-brand-text: oklch(0.19 0.01 150);
 }
 
-/* Brand diagrams carry their own dark panel; give them room and a soft edge in both themes. */
+/* light text on dark reads lighter: a little more leading */
+.dark .vp-doc p,
+.dark .vp-doc li {
+  line-height: 1.8;
+}
+
+/* hero: committed weight, controlled scale (no shouting H1) */
+.VPHero .name,
+.VPHero .text {
+  /* the mono name is one unbreakable 18-character word: it must fit a 390px phone */
+  font-size: clamp(1.6rem, 0.9rem + 3vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+.VPHero .name {
+  font-family: var(--vp-font-family-mono);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.VPHero .text {
+  font-weight: 650;
+}
+.VPHero .tagline {
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+.VPHero .image-src {
+  max-width: min(520px, 100%);
+  border-radius: 16px;
+}
+
+/* diagrams carry their own panel and border */
 .vp-doc img[src*='docs-assets/'] {
   display: block;
   width: 100%;
   height: auto;
-  margin: 24px 0;
-  border-radius: 18px;
-  box-shadow: 0 8px 30px rgba(11, 18, 32, 0.18);
+  margin: 28px 0;
 }
-.VPHero .image-src {
-  max-width: 520px;
-  max-height: 420px;
+
+/* ---------- home sections (site/index.md) ---------- */
+.ccd-home {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 0 24px 96px;
 }
-.VPFeature {
-  border: 1px solid var(--vp-c-divider);
+.ccd-home h2 {
+  margin: 0 0 16px;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  font-weight: 650;
+  color: var(--vp-c-text-1);
+  border: 0;
+  padding: 0;
+}
+.ccd-home p {
+  max-width: 62ch;
+  color: var(--vp-c-text-2);
+  line-height: 1.7;
+}
+.ccd-split {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(48px, 7vw, 96px) 0 clamp(40px, 5vw, 64px);
+}
+.ccd-split img {
+  width: 100%;
+  height: auto;
+}
+.ccd-split pre {
+  margin-top: 24px;
+}
+.ccd-promises {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(24px, 5vw, 72px);
+  padding: clamp(40px, 6vw, 80px) 0;
+  border-top: 1px solid var(--vp-c-divider);
+}
+.ccd-promises dl {
+  margin: 0;
+}
+.ccd-promises dt {
+  font-weight: 650;
+  color: var(--vp-c-text-1);
+  padding-top: 20px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+.ccd-promises dt:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+.ccd-promises dd {
+  margin: 6px 0 20px;
+  color: var(--vp-c-text-2);
+  line-height: 1.65;
+  max-width: 62ch;
+}
+.ccd-start {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(24px, 5vw, 72px);
+  padding: clamp(40px, 6vw, 72px) 0 0;
+  border-top: 1px solid var(--vp-c-divider);
+}
+.ccd-start a {
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+}
+@media (max-width: 860px) {
+  .ccd-split,
+  .ccd-promises,
+  .ccd-start {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

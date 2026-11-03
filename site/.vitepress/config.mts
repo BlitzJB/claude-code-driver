@@ -1,4 +1,4 @@
-// site/.vitepress/config.mts — the GitHub Pages documentation site.
+// site/.vitepress/config.mts: the GitHub Pages documentation site.
 // Pages include the canonical markdown files from the repo root and docs/ (single source of truth). Their
 // repo-relative links are rewritten: files that are site pages become site routes, everything else a GitHub link.
 import { existsSync, readFileSync } from 'node:fs';
@@ -9,7 +9,7 @@ import { defineConfig, type DefaultTheme } from 'vitepress';
 const REPO = 'https://github.com/BlitzJB/claude-code-driver';
 const SITE = 'https://blitzjb.github.io/claude-code-driver/';
 const DESCRIPTION =
-  'Drive the interactive Claude Code TUI from Node.js: typed events, live state, permissions and interrupts, on your subscription.';
+  'Drive the interactive Claude Code TUI from Node.js. The TUI runs in tmux on your subscription, and your code reads every step as a typed event.';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')) as { version: string; claudeCodeVersion: string };
 
@@ -70,14 +70,21 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/claude-code-driver/favicon.svg' }],
     ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/claude-code-driver/favicon-32.png' }],
     ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/claude-code-driver/apple-touch-icon.png' }],
-    ['meta', { name: 'theme-color', content: '#0B1220' }],
+    ['meta', { name: 'theme-color', media: '(prefers-color-scheme: light)', content: '#F8FBF9' }],
+    ['meta', { name: 'theme-color', media: '(prefers-color-scheme: dark)', content: '#111511' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:site_name', content: 'claude-code-driver' }],
     ['meta', { property: 'og:url', content: SITE }],
     ['meta', { property: 'og:image', content: `${SITE}og-image.png` }],
     ['meta', { property: 'og:image:width', content: '1200' }],
     ['meta', { property: 'og:image:height', content: '630' }],
-    ['meta', { property: 'og:image:alt', content: 'claude-code-driver: drive the interactive Claude Code TUI from Node.js' }],
+    [
+      'meta',
+      {
+        property: 'og:image:alt',
+        content: 'The claude-code-driver mark beside a tmux window that shows Claude Code above and typed events below',
+      },
+    ],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:image', content: `${SITE}og-image.png` }],
   ],

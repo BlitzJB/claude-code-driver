@@ -1,65 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <radialGradient id="glow" cx="78%" cy="45%" r="60%"><stop offset="0" stop-color="#2DD4BF" stop-opacity=".16"/><stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/></radialGradient>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#070C17"/></linearGradient>
-    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
-    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16223A"/><stop offset="1" stop-color="#0B1220"/></linearGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#1C2840" stroke-width="1"/></pattern>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <rect width="1200" height="630" fill="url(#grid)" opacity=".55"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-  <g transform="translate(72 74) scale(1.35)">
-    <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#tile)"/>
-    <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="13.25" fill="none" stroke="#2DD4BF" stroke-opacity=".45" stroke-width="1.5"/>
-    <circle cx="13" cy="13" r="2.6" fill="#FB7185"/><circle cx="21" cy="13" r="2.6" fill="#FBBF24"/><circle cx="29" cy="13" r="2.6" fill="#60A5FA"/>
-    <path d="M16 26 L28 35 L16 44" fill="none" stroke="url(#sig)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="33" y="40" width="16" height="5.5" rx="2.2" fill="url(#sig)"/>
-  </g>
-  <text x="72" y="248" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="54" font-weight="700" letter-spacing="-1"><tspan fill="#E6EDF7">claude-code-</tspan><tspan fill="url(#sig)">driver</tspan></text>
-  <text font-family="Inter,'SF Pro Display',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="30" fill="#C9D4E5" font-weight="500">
-    <tspan x="72" y="310">Drive the interactive Claude Code TUI</tspan>
-    <tspan x="72" y="352">from Node.js, on your subscription.</tspan>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" width="1280" height="640" role="img" aria-label="claude-code-driver: drive the interactive Claude Code TUI from Node.js">
+  <rect width="1280" height="640" fill="#F0F4F0"/>
+  <g transform="translate(72 72) scale(1.25)"><rect width="64" height="64" rx="14" fill="#191F1A"/>
+  <path d="M0 49H64V50C64 57.7 57.7 64 50 64H14C6.3 64 0 57.7 0 50Z" fill="#62D378"/>
+  <rect x="8" y="53" width="9" height="7" rx="1.5" fill="#191F1A"/>
+  <rect x="42" y="55.5" width="14" height="2" rx="1" fill="#191F1A" fill-opacity=".55"/>
+  <path d="M15 19L26 28L15 37" fill="none" stroke="#F0F4F0" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="30" y="33" width="15" height="5" rx="2" fill="#F0F4F0" fill-opacity=".9"/></g>
+  <text x="72" y="240" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="50" font-weight="600" letter-spacing="-1.2"><tspan fill="#191F1A">claude-code-</tspan><tspan fill="#1B763A">driver</tspan></text>
+  <text font-family="'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="31" font-weight="450" fill="#3D453E">
+    <tspan x="72" y="300">Drive the interactive Claude Code TUI</tspan>
+    <tspan x="72" y="342">from Node.js, on your subscription.</tspan>
   </text>
-  <g font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="17" fill="#9FB0C8">
-    <rect x="72" y="400" width="176" height="40" rx="20" fill="#111A2E" stroke="#24324D"/><text x="160" y="426" text-anchor="middle">typed events</text>
-    <rect x="260" y="400" width="164" height="40" rx="20" fill="#111A2E" stroke="#24324D"/><text x="342" y="426" text-anchor="middle">live state</text>
-    <rect x="436" y="400" width="176" height="40" rx="20" fill="#111A2E" stroke="#24324D"/><text x="524" y="426" text-anchor="middle">permissions</text>
-  </g>
-  
-    <g>
-      <rect x="742" y="187" width="150" height="42" rx="10" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".55"/>
-      <circle cx="764" cy="208" r="5" fill="#2DD4BF"/>
-      <text x="778" y="214" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="17" fill="#C9D4E5">hooks</text>
-      <path d="M892 208 C 940 208, 940 301, 972 301" fill="none" stroke="#2DD4BF" stroke-opacity=".7" stroke-width="2.5"/>
-    </g>
-    <g>
-      <rect x="742" y="249" width="150" height="42" rx="10" fill="#111A2E" stroke="#60A5FA" stroke-opacity=".55"/>
-      <circle cx="764" cy="270" r="5" fill="#60A5FA"/>
-      <text x="778" y="276" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="17" fill="#C9D4E5">transcript</text>
-      <path d="M892 270 C 940 270, 940 301, 972 301" fill="none" stroke="#60A5FA" stroke-opacity=".7" stroke-width="2.5"/>
-    </g>
-    <g>
-      <rect x="742" y="311" width="150" height="42" rx="10" fill="#111A2E" stroke="#FBBF24" stroke-opacity=".55"/>
-      <circle cx="764" cy="332" r="5" fill="#FBBF24"/>
-      <text x="778" y="338" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="17" fill="#C9D4E5">network</text>
-      <path d="M892 332 C 940 332, 940 301, 972 301" fill="none" stroke="#FBBF24" stroke-opacity=".7" stroke-width="2.5"/>
-    </g>
-    <g>
-      <rect x="742" y="373" width="150" height="42" rx="10" fill="#111A2E" stroke="#FB7185" stroke-opacity=".55"/>
-      <circle cx="764" cy="394" r="5" fill="#FB7185"/>
-      <text x="778" y="400" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="17" fill="#C9D4E5">screen</text>
-      <path d="M892 394 C 940 394, 940 301, 972 301" fill="none" stroke="#FB7185" stroke-opacity=".7" stroke-width="2.5"/>
-    </g>
+  <text x="72" y="574" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="19" fill="#636B65">github.com/BlitzJB/claude-code-driver</text>
   <g>
-    <rect x="972" y="261" width="132" height="80" rx="16" fill="#0F2A2A" stroke="#2DD4BF" stroke-width="2"/>
-    <text x="1038" y="296" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="18" font-weight="700" fill="#5EEAD4">step()</text>
-    <text x="1038" y="321" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="13" fill="#8FB8B2">pure core</text>
-    <path d="M1038 341 V 400" stroke="#2DD4BF" stroke-width="2.5" stroke-dasharray="4 5"/>
-    <rect x="958" y="400" width="160" height="40" rx="10" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".6"/>
-    <text x="1038" y="426" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="16" fill="#C9D4E5">events · state</text>
+    <rect x="658" y="72" width="550" height="496" rx="16" fill="#191F1A"/>
+    <line x1="658" y1="305" x2="1208" y2="305" stroke="#62D378" stroke-width="1.5"/>
+    <text x="680" y="112" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#62D378">❯ </tspan><tspan fill="#F0F4F0">refactor the auth module</tspan></text>
+    <text x="680" y="140" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#8C958E">⏺ </tspan><tspan fill="#D3D9D4">Edit(src/auth.ts)</tspan></text>
+    <text x="680" y="162" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#636B65">  ⎿ </tspan><tspan fill="#8C958E">Do you want to make this edit?</tspan></text>
+    <text x="680" y="190" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#EEBB58">✻ </tspan><tspan fill="#EEBB58">Working… </tspan><tspan fill="#636B65">(12s · 2.1k tokens)</tspan></text>
+    <text x="680" y="339" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">toolStarted</text><text x="862.7" y="339" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">Edit</text><text x="958.4" y="339" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">hook</text>
+    <text x="680" y="365" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">permissionRequested</text><text x="862.7" y="365" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">allow</text><text x="958.4" y="365" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">policy</text>
+    <text x="680" y="391" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">text</text><text x="862.7" y="391" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">"Done. Tests pass."</text>
+    <text x="680" y="417" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">turnEnded</text><text x="862.7" y="417" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">completed</text><text x="958.4" y="417" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">41s</text>
+    <path d="M658 538H1208V552a16 16 0 0 1 -16 16H674a16 16 0 0 1 -16 -16Z" fill="#62D378"/>
+    <text x="680" y="558" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#111511"><tspan font-weight="700">[ccd]</tspan>  0:claude*  1:events</text>
+    <text x="1186" y="558" text-anchor="end" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#111511">"auth" 14:02</text>
   </g>
-  <line x1="72" y1="520" x2="1128" y2="520" stroke="#1C2840"/>
-  <text x="72" y="565" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="20" fill="#8B9BB4">github.com/BlitzJB/claude-code-driver</text>
-  <text x="1128" y="565" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,monospace" font-size="20" fill="#5B6B85">MIT · TypeScript · 0 runtime deps</text>
 </svg>

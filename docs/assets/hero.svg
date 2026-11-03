@@ -1,56 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 440" width="560" height="440" role="img" aria-label="A tmux pane running Claude Code beside the typed event stream it produces">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#080D19"/></linearGradient>
-    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
-    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#18233A" stroke-width="1"/></pattern>
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6B85"/></marker>
-    <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2DD4BF"/></marker>
-  </defs>
-  <g transform="translate(8 24)">
-    <rect width="330" height="300" rx="16" fill="url(#bg)" stroke="#24324D" stroke-width="1.5"/>
-    <rect width="330" height="34" rx="16" fill="#111A2E"/><rect y="18" width="330" height="16" fill="#111A2E"/>
-    <circle cx="20" cy="17" r="5" fill="#FB7185"/><circle cx="36" cy="17" r="5" fill="#FBBF24"/><circle cx="52" cy="17" r="5" fill="#60A5FA"/>
-    <text x="170" y="22" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="11.5" fill="#6B7C98">tmux -L ccd-…  claude</text>
-    <g font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5">
-      <text x="18" y="66" fill="#5EEAD4">❯ <tspan fill="#E6EDF7">refactor the auth module</tspan></text>
-      <text x="18" y="96" fill="#9FB0C8">⏺ Read(src/auth.ts)</text>
-      <text x="18" y="118" fill="#9FB0C8">⏺ Edit(src/auth.ts)</text>
-      <text x="30" y="138" fill="#6B7C98">⎿ Do you want to make this edit?</text>
-      <text x="18" y="168" fill="#9FB0C8">⏺ Bash(pnpm test)</text>
-      <text x="18" y="208" fill="#FBBF24">✻ Working… <tspan fill="#6B7C98">(12s · ↓ 2.1k tokens)</tspan></text>
-      <line x1="16" x2="314" y1="236" y2="236" stroke="#24324D"/>
-      <text x="18" y="258" fill="#5EEAD4">❯ <tspan fill="#2DD4BF">▍</tspan></text>
-      <line x1="16" x2="314" y1="272" y2="272" stroke="#24324D"/>
-      <text x="18" y="290" fill="#5B6B85" font-size="11">⏸ manual mode on · esc to interrupt</text>
-    </g>
-  </g>
-  <g font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12">
-    <path d="M338 100 C 360 100, 360 80, 382 80" fill="none" stroke="#2DD4BF" stroke-opacity=".6" stroke-width="2"/>
-    <path d="M338 160 C 360 160, 360 170, 382 170" fill="none" stroke="#60A5FA" stroke-opacity=".6" stroke-width="2"/>
-    <path d="M338 230 C 360 230, 360 260, 382 260" fill="none" stroke="#FBBF24" stroke-opacity=".6" stroke-width="2"/>
-    <g transform="translate(382 40)">
-      <rect width="170" height="70" rx="12" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".6"/>
-      <text x="14" y="24" fill="#5EEAD4" font-weight="700">toolStarted</text>
-      <text x="14" y="44" fill="#9FB0C8">name: "Edit"</text>
-      <text x="14" y="60" fill="#6B7C98">confirmed · hook</text>
-    </g>
-    <g transform="translate(382 130)">
-      <rect width="170" height="70" rx="12" fill="#111A2E" stroke="#60A5FA" stroke-opacity=".6"/>
-      <text x="14" y="24" fill="#93C5FD" font-weight="700">permissionRequested</text>
-      <text x="14" y="44" fill="#9FB0C8">→ policy: allow</text>
-      <text x="14" y="60" fill="#6B7C98">answered by code</text>
-    </g>
-    <g transform="translate(382 220)">
-      <rect width="170" height="70" rx="12" fill="#111A2E" stroke="#FBBF24" stroke-opacity=".6"/>
-      <text x="14" y="24" fill="#FCD34D" font-weight="700">status</text>
-      <text x="14" y="44" fill="#9FB0C8">modelRequest</text>
-      <text x="14" y="60" fill="#6B7C98">phase: streaming</text>
-    </g>
-    <g transform="translate(382 310)">
-      <rect width="170" height="70" rx="12" fill="#0F2A2A" stroke="#2DD4BF"/>
-      <text x="14" y="24" fill="#5EEAD4" font-weight="700">turnEnded</text>
-      <text x="14" y="44" fill="#9FB0C8">outcome: completed</text>
-      <text x="14" y="60" fill="#6B7C98">tools: 3 · 41s</text>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 380" width="520" height="380" role="img" aria-label="A tmux window: Claude Code's TUI in the top pane, the typed events your program receives in the bottom pane">
+  <g>
+    <rect x="0" y="0" width="520" height="380" rx="16" fill="#191F1A"/>
+    <line x1="0" y1="175" x2="520" y2="175" stroke="#62D378" stroke-width="1.5"/>
+    <text x="22" y="40" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#62D378">❯ </tspan><tspan fill="#F0F4F0">refactor the auth module</tspan></text>
+    <text x="22" y="68" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#8C958E">⏺ </tspan><tspan fill="#D3D9D4">Edit(src/auth.ts)</tspan></text>
+    <text x="22" y="90" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#636B65">  ⎿ </tspan><tspan fill="#8C958E">Do you want to make this edit?</tspan></text>
+    <text x="22" y="118" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5"><tspan fill="#EEBB58">✻ </tspan><tspan fill="#EEBB58">Working… </tspan><tspan fill="#636B65">(12s · 2.1k tokens)</tspan></text>
+    <text x="22" y="209" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">toolStarted</text><text x="204.7" y="209" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">Edit</text><text x="300.4" y="209" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">hook</text>
+    <text x="22" y="235" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">permissionRequested</text><text x="204.7" y="235" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">allow</text><text x="300.4" y="235" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">policy</text>
+    <text x="22" y="261" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">text</text><text x="204.7" y="261" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">"Done. Tests pass."</text>
+    <text x="22" y="287" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#62D378" font-weight="600">turnEnded</text><text x="204.7" y="287" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#F0F4F0">completed</text><text x="300.4" y="287" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="14.5" fill="#636B65">41s</text>
+    <path d="M0 350H520V364a16 16 0 0 1 -16 16H16a16 16 0 0 1 -16 -16Z" fill="#62D378"/>
+    <text x="22" y="370" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#111511"><tspan font-weight="700">[ccd]</tspan>  0:claude*  1:events</text>
+    <text x="498" y="370" text-anchor="end" font-family="'Geist Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace" font-size="13.5" fill="#111511">"auth" 14:02</text>
   </g>
 </svg>
