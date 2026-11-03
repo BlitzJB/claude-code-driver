@@ -1,0 +1,75 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {},
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "paneId": "%0",
+    "pid": 50000,
+    "version": "2.1.316"
+  },
+  "exit": {
+    "exitStatus": null,
+    "reason": "startupFailed",
+    "signal": null
+  },
+  "gate": {
+    "kind": "trust",
+    "text": "Accessing workspace:"
+  },
+  "generations": {},
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": true,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 7,
+  "libraryQueue": [],
+  "lifecycle": "exited",
+  "messages": {},
+  "pendingInputs": {},
+  "permissions": {},
+  "selfTest": {
+    "state": "idle"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "exitStatus": null,
+    "kind": "exited",
+    "signal": null,
+    "since": 1550
+  },
+  "tools": {},
+  "turnOrder": [],
+  "turns": {},
+  "usage": {
+    "tokensTotal": {
+      "inputTokens": 0,
+      "outputTokens": 0
+    }
+  },
+  "v": 1
+}

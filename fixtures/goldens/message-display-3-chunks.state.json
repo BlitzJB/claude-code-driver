@@ -1,0 +1,213 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 382177,
+      "key": "c1",
+      "requestRefs": [
+        "b9d2c6f9-44d0-4ab2-a323-57c62dbbadfb"
+      ],
+      "startedAt": 374155,
+      "state": {
+        "at": 382177,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 42,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 58,
+        "cacheReadInputTokens": 59037,
+        "inputTokens": 4,
+        "outputTokens": 531
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 4,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+      "source": "startup",
+      "startedAt": 1250,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 33,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "blocks": 0,
+      "confirmed": false,
+      "final": true,
+      "finalBy": "flag",
+      "key": "m1",
+      "retracted": false,
+      "text": "Ocean tides come mostly from the Moon's gravity. The Moon pulls harder on the side of Earth facing it than on Earth's center, and harder on the center than on the far side. That difference in pull, called the tidal force, stretches the oceans into two bulges. One faces the Moon. The other sits on the opposite side, where the water is pulled less than the Earth beneath it and gets \"left behind.\"\n\nEarth turns through these bulges once a day, so most coastlines get two high tides and two low tides. The Moon also moves along its orbit as Earth spins, so a full tidal cycle takes about 24 hours and 50 minutes. That's why high tide comes roughly 50 minutes later each day. The Sun causes tides too, but its effect is a bit less than half the Moon's. When the Sun, Moon and Earth line up at new and full moon, their pulls combine into extra-large spring tides. When they sit at right angles, during the quarter moons, they partly cancel and give milder neap tides.\n\nReal tides are messier than this simple picture. The shape of coastlines, ocean basins and the seafloor can slow tides down, amplify them or redirect them. Some places get only one high tide a day, and Canada's Bay of Fundy has tides over 15 meters high.",
+      "turn": "t1",
+      "uiMessageId": "3297f42a-203c-42ab-91be-2133a86d66dc",
+      "usageCounted": false,
+      "uuids": []
+    },
+    "m2": {
+      "apiMessageId": "msg_011CgevZqt9TtUr8UHxot3zd",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m2",
+      "retracted": false,
+      "text": "Ocean tides come mostly from the Moon's gravity. The Moon pulls harder on the side of Earth facing it than on Earth's center, and harder on the center than on the far side. That difference in pull, called the tidal force, stretches the oceans into two bulges. One faces the Moon. The other sits on the opposite side, where the water is pulled less than the Earth beneath it and gets \"left behind.\"\n\nEarth turns through these bulges once a day, so most coastlines get two high tides and two low tides. The Moon also moves along its orbit as Earth spins, so a full tidal cycle takes about 24 hours and 50 minutes. That's why high tide comes roughly 50 minutes later each day. The Sun causes tides too, but its effect is a bit less than half the Moon's. When the Sun, Moon and Earth line up at new and full moon, their pulls combine into extra-large spring tides. When they sit at right angles, during the quarter moons, they partly cancel and give milder neap tides.\n\nReal tides are messier than this simple picture. The shape of coastlines, ocean basins and the seafloor can slow tides down, amplify them or redirect them. Some places get only one high tide a day, and Canada's Bay of Fundy has tides over 15 meters high.",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "b51679d9-afd8-4c7a-a46e-3a590a85d5d8",
+        "880ee08e-a7cf-47c5-b79f-fb92a55a00fe"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {},
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "lastTurn": {
+      "outcome": "completed"
+    },
+    "queued": 0,
+    "quiescent": true,
+    "since": 382177
+  },
+  "tools": {},
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 2769,
+      "backgroundPending": [],
+      "calls": [
+        "c1"
+      ],
+      "durationMs": 8128,
+      "endedAt": 382177,
+      "endedBy": "stop",
+      "finalText": {
+        "at": 374155,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 40,
+        "src": "hook",
+        "value": "Ocean tides come mostly from the Moon's gravity. The Moon pulls harder on the side of Earth facing it than on Earth's center, and harder on the center than on the far side. That difference in pull, called the tidal force, stretches the oceans into two bulges. One faces the Moon. The other sits on the opposite side, where the water is pulled less than the Earth beneath it and gets \"left behind.\"\n\nEarth turns through these bulges once a day, so most coastlines get two high tides and two low tides. The Moon also moves along its orbit as Earth spins, so a full tidal cycle takes about 24 hours and 50 minutes. That's why high tide comes roughly 50 minutes later each day. The Sun causes tides too, but its effect is a bit less than half the Moon's. When the Sun, Moon and Earth line up at new and full moon, their pulls combine into extra-large spring tides. When they sit at right angles, during the quarter moons, they partly cancel and give milder neap tides.\n\nReal tides are messier than this simple picture. The shape of coastlines, ocean basins and the seafloor can slow tides down, amplify them or redirect them. Some places get only one high tide a day, and Canada's Bay of Fundy has tides over 15 meters high."
+      },
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1",
+        "m2"
+      ],
+      "origin": {
+        "at": 2769,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 9,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Without using any tools, write about 200 words explaining how ocean tides work, in 3 short paragraphs.",
+      "promptId": "3da55ef2-0825-4fa4-a127-3e6807d9ed22",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 9,
+        "lastSeq": 42,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 2769,
+      "state": {
+        "at": 382177,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 42,
+        "src": "hook",
+        "value": "completed"
+      },
+      "tools": []
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 58,
+      "cacheReadInputTokens": 59037,
+      "inputTokens": 4,
+      "outputTokens": 531
+    }
+  },
+  "v": 1
+}

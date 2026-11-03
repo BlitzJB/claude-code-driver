@@ -1,0 +1,3 @@
+B dir=/private/var/folders/yj/g_x6cnk53n7dsdr1bkv34x840000gn/T/ccd-verify-b sid=a0ced02a-76f4-4aa8-b509-6d0ca235aceb
+launch 1793660122918
+trust-accept-Enter 1793660136454

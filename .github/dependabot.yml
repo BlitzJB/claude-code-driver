@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ['*']
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    ignore:
+      # The Claude Code pin moves only with a new version profile (ARCHITECTURE.md §8).
+      - dependency-name: '@anthropic-ai/claude-code'
+    groups:
+      dev-tooling:
+        dependency-type: development
+        update-types: [minor, patch]

@@ -1,0 +1,356 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 220090,
+      "key": "c1",
+      "requestRefs": [
+        "bf175f01-3d21-44c9-a8ae-624592802871"
+      ],
+      "startedAt": 216138,
+      "state": {
+        "at": 220090,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 35,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 43,
+        "cacheReadInputTokens": 58883,
+        "inputTokens": 4,
+        "outputTokens": 83
+      }
+    },
+    "c2": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "endedAt": 222099,
+      "key": "c2",
+      "requestRefs": [
+        "463e76c3-ae51-4e37-af86-c805bda6f3d1"
+      ],
+      "startedAt": 220090,
+      "state": {
+        "at": 222099,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 52,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 111,
+        "cacheReadInputTokens": 58926,
+        "inputTokens": 2,
+        "outputTokens": 21
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 4,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+      "source": "startup",
+      "startedAt": 1250,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 40,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgevNC5zbCatzuUmqBkTD",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "b79b46ad-59ba-4408-b74a-ecdce4409f80"
+      ]
+    },
+    "m2": {
+      "blocks": 0,
+      "confirmed": false,
+      "final": true,
+      "finalBy": "flag",
+      "key": "m2",
+      "retracted": false,
+      "text": "Denied.",
+      "turn": "t1",
+      "uiMessageId": "fd9708c6-7ec5-4d75-8d5a-53d4fba10977",
+      "usageCounted": false,
+      "uuids": []
+    },
+    "m3": {
+      "apiMessageId": "msg_011CgevNVBeJZ6UvGaNPJksi",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m3",
+      "retracted": false,
+      "text": "Denied.",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "8b9eae86-0a38-4866-8684-f18ad263c2ad",
+        "425be447-492e-40e0-ace0-d260db614169"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": true,
+      "binding": {
+        "confirmed": true,
+        "kind": "unique"
+      },
+      "hookSeq": 4,
+      "input": {
+        "command": "touch p4.txt",
+        "description": "Create empty file p4.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 33,
+        "lastSeq": 37,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "requestedAt": 216138,
+      "resolved": {
+        "decider": "hook",
+        "decision": "deny",
+        "overridden": false
+      },
+      "state": {
+        "at": 220090,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 37,
+        "src": "transcript",
+        "value": "resolved"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "directories": [
+            "/TMP/claude-501/ccd-verify/a"
+          ],
+          "type": "addDirectories"
+        },
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "tool": "u1",
+      "toolName": "Bash"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "lastTurn": {
+      "outcome": "completed"
+    },
+    "queued": 0,
+    "quiescent": true,
+    "since": 222099
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011CgevNC5zbCatzuUmqBkTD",
+      "blockIndex": 0,
+      "endedAt": 220090,
+      "input": {
+        "command": "touch p4.txt",
+        "description": "Create empty file p4.txt"
+      },
+      "key": "u1",
+      "name": "Bash",
+      "outcomeFrom": "permission_deny",
+      "permission": "p1",
+      "preAt": 216138,
+      "preSeq": 30,
+      "promptIdAtPre": "206ed725-d4af-4b5a-9ebc-d302e14370ae",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 30,
+        "lastSeq": 37,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "responseRef": {
+        "bytes": 26,
+        "preview": "CCD-VERIFY: denied by hook",
+        "sha256_16": "91d7831576292798",
+        "truncated": false
+      },
+      "startedAt": 216138,
+      "state": {
+        "at": 220090,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 37,
+        "src": "transcript",
+        "value": "denied"
+      },
+      "toolUseId": "toolu_01JgL5h4YCCxsWUgqmtXs2X7",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 2790,
+      "backgroundPending": [],
+      "calls": [
+        "c1",
+        "c2"
+      ],
+      "durationMs": 6051,
+      "endedAt": 222099,
+      "endedBy": "stop",
+      "finalText": {
+        "at": 220110,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 49,
+        "src": "hook",
+        "value": "Denied."
+      },
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "origin": {
+        "at": 2790,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 9,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Use the Bash tool to run: touch p4.txt   If it fails, do not retry; just reply with one word.",
+      "promptId": "206ed725-d4af-4b5a-9ebc-d302e14370ae",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 9,
+        "lastSeq": 52,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 2790,
+      "state": {
+        "at": 222099,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 52,
+        "src": "hook",
+        "value": "completed"
+      },
+      "tools": [
+        "u1"
+      ]
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 154,
+      "cacheReadInputTokens": 117809,
+      "inputTokens": 6,
+      "outputTokens": 104
+    }
+  },
+  "v": 1
+}

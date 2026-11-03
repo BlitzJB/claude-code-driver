@@ -1,0 +1,327 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 33978,
+      "key": "c1",
+      "requestRefs": [
+        "384590c9-ee02-4b77-8f51-ce3f3b184f36"
+      ],
+      "startedAt": 29790,
+      "state": {
+        "at": 33978,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 28,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "usage": {
+        "cacheCreationInputTokens": 30035,
+        "cacheReadInputTokens": 28472,
+        "inputTokens": 2,
+        "outputTokens": 83
+      }
+    },
+    "c2": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "endedAt": 54060,
+      "key": "c2",
+      "requestRefs": [
+        "7d770417-66fc-4ad4-89a5-b4cd9eda6b0a"
+      ],
+      "startedAt": 51663,
+      "state": {
+        "at": 54060,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 85,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 98,
+        "cacheReadInputTokens": 58507,
+        "inputTokens": 2,
+        "outputTokens": 35
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "degraded",
+      "reasons": [
+        "hookError:UserPromptSubmit",
+        "hookGap:UserPromptSubmit",
+        "hookGap:PreToolUse",
+        "hookError:PreToolUse",
+        "hookError:PostToolUse",
+        "hookError:Stop"
+      ]
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1221,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1371,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 5,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "700e2d5a-5dfa-4e2e-a921-ad1ca9916dbb",
+    "transcriptPath": "/HOME/.claude/projects/-private-var-folders-yj-g-x6cnk53n7dsdr1bkv34x840000gn-T-ccd-verify-c/700e2d5a-5dfa-4e2e-a921-ad1ca9916dbb.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "700e2d5a-5dfa-4e2e-a921-ad1ca9916dbb",
+      "source": "startup",
+      "startedAt": 1221,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-private-var-folders-yj-g-x6cnk53n7dsdr1bkv34x840000gn-T-ccd-verify-c/700e2d5a-5dfa-4e2e-a921-ad1ca9916dbb.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 38,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgevkeHhSTVj7xDaEQUt5",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "691db55e-4972-4956-b0e5-8a024cbc097f"
+      ]
+    },
+    "m2": {
+      "apiMessageId": "msg_011CgevnEeSW7TvwWka9iXSz",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m2",
+      "retracted": false,
+      "text": "I ran `touch p6.txt` and it worked: `p6.txt` now exists in the working directory.",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "5f38f2bc-5165-41ec-9516-3d6f0759d7c6"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": false,
+      "binding": {
+        "confirmed": false,
+        "kind": "unbound"
+      },
+      "hookSeq": 2,
+      "input": {
+        "command": "touch p6.txt",
+        "description": "Create empty file p6.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 29,
+        "lastSeq": 91,
+        "sources": [
+          "hook",
+          "clock"
+        ]
+      },
+      "requestedAt": 34038,
+      "state": {
+        "at": 54560,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 91,
+        "src": "clock",
+        "value": "abandoned"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "directories": [
+            "/TMP/ccd-verify-c"
+          ],
+          "type": "addDirectories"
+        },
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "toolName": "Bash"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "lastTurn": {
+      "outcome": "completed"
+    },
+    "queued": 0,
+    "quiescent": true,
+    "since": 54560
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011CgevkeHhSTVj7xDaEQUt5",
+      "blockIndex": 0,
+      "endedAt": 51663,
+      "input": {
+        "command": "touch p6.txt",
+        "description": "Create empty file p6.txt"
+      },
+      "key": "u1",
+      "name": "Bash",
+      "outcomeFrom": "transcript",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 28,
+        "lastSeq": 69,
+        "sources": [
+          "transcript"
+        ]
+      },
+      "responseRef": {
+        "bytes": 31,
+        "preview": "(Bash completed with no output)",
+        "sha256_16": "cac1685585590361",
+        "truncated": false
+      },
+      "startedAt": 33978,
+      "state": {
+        "at": 51663,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 69,
+        "src": "transcript",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01Hyk5YrQAVyWh57PHBVH1Cs",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 31790,
+      "backgroundPending": [],
+      "calls": [
+        "c2"
+      ],
+      "durationMs": 9720,
+      "endedAt": 54560,
+      "endedBy": "turn_duration",
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1",
+        "m2"
+      ],
+      "origin": {
+        "at": 31790,
+        "corroborated": [],
+        "provisional": true,
+        "seq": 19,
+        "src": "clock",
+        "value": "unknown"
+      },
+      "prompt": "Use the Bash tool to run: touch p6.txt   If it fails, do not retry; reply with one word.",
+      "promptId": "b8717e2c-e1c7-4ce5-88ba-8766b8362b80",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 19,
+        "lastSeq": 91,
+        "sources": [
+          "clock",
+          "transcript"
+        ]
+      },
+      "queuedAt": 31790,
+      "state": {
+        "at": 54560,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 91,
+        "src": "transcript",
+        "value": "completed"
+      },
+      "tools": [
+        "u1"
+      ]
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 30133,
+      "cacheReadInputTokens": 86979,
+      "inputTokens": 4,
+      "outputTokens": 118
+    }
+  },
+  "v": 1
+}

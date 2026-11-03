@@ -1,0 +1,40 @@
+   Settings  Status   Config   Usage   Stats
+   Session
+   Total cost:            $0.0000
+   Total duration (API):  0s
+   Total duration (wall): 9s
+   Total code changes:    0 lines added, 0 lines removed
+   Usage:                 0 input, 0 output, 0 cache read, 0 cache write
+   Plugin skill-listing footprint
+   What each plugin's skill descriptions add to the system prompt (cached input after the first turn). Agents and MCP tools not yet counted.
+   product-management          1 skill · ~42 tok/turn
+   Total                       ~42 tok/turn
+   Current session
+                                                      0% used
+   Resets 9:50pm (Etc/UTC)
+   Current week (all models)
+   █████████████████████████████████████████████████  98% used
+   Resets Nov 3 at 7:30pm (Etc/UTC)
+   Current week (Fable)
+   ████████████████████████████                       56% used
+   Resets Nov 3 at 7:29pm (Etc/UTC)
+   What's contributing to your usage?
+   Approximate · sessions on this machine only
+   Last 24h · shares overlap
+   98%  Give "workflow-authoring" subagents a cheaper model
+   89%  Stop sessions you no longer need · some ran 8 hours or more
+   87%  Save workflows for big tasks · 250 agents ran, mostly in
+        ~/Projects/claude-code-driver
+   66%  Start fresh when you switch tasks · run /clear
+   Subagents               % of usage
+   workflow-subagent              75%
+   workflow-authoring             13%
+   general-purpose                 6%
+   docs-claim-checker              1%
+   fork                            1%
+   Loops                                      every  runs  tokens  per run last run
+   LIVENESS CHECK for the claude-code-tm…17,47 * *…    20    8.3m   416.3k   2h ago
+   f to fix 1 of 4 · d to day · w to week
+   Usage credits
+   Usage credits are off · /usage-credits to turn them on
+   Esc to cancel

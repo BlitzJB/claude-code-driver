@@ -1,0 +1,8 @@
+tool_use_id | PreToolUse(http) | tool_use line seen - Pre | entry.timestamp - Pre | PostToolUse(http) | tool_result seen - Post | entry.timestamp - Post
+toolu_018wbPRJE2n71Bw1NRtQNn7Z 1793659698891 181 -20 1793659700711 155 34 cmdPre-httpPre 33
+toolu_013BTncrzgzSFoHpu91Fgezw 1793659706860 None None None None None cmdPre-httpPre 37
+toolu_01NYZjyRnGSvqvBoobge4ATN 1793659756123 222 -28 1793659791389 220 39 cmdPre-httpPre 91
+toolu_01PBH9xo4N87kumqB66MUu15 1793659817190 152 -16 1793659887882 178 33 cmdPre-httpPre 25
+toolu_01JgL5h4YCCxsWUgqmtXs2X7 1793659904788 111 -25 None None None cmdPre-httpPre 26
+toolu_011JzLE4hPdA2QGpLUfepYy3 1793660310648 119 -57 1793660318296 3177 3003 cmdPre-httpPre 114
+toolu_01Hyk5YrQAVyWh57PHBVH1Cs None None None None None None cmdPre-httpPre None

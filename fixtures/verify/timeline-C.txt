@@ -1,0 +1,10 @@
+C dir=/private/var/folders/yj/g_x6cnk53n7dsdr1bkv34x840000gn/T/ccd-verify-c sid=700e2d5a-5dfa-4e2e-a921-ad1ca9916dbb (pre-seeded trust)
+readiness-start(launch) 1793660175670 (+0)
+sent:a 1793660176098 (+428)
+saw-SessionStart 1793660176371 (+701)
+sent:b 1793660176384 (+714)
+sent:c 1793660176681 (+1011)
+sent:d 1793660176695 (+1025)
+server-killed 1793660198197
+P6-enter(server-down) 1793660204757
+P6-keypress-Enter(Yes) 1793660224163

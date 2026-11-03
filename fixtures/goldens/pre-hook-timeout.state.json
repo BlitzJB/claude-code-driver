@@ -1,0 +1,312 @@
+{
+  "activeTurn": "t1",
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 54955,
+      "key": "c1",
+      "requestRefs": [
+        "4277c0fd-4c89-43fd-bc1f-d09e74943d95"
+      ],
+      "startedAt": 14237,
+      "state": {
+        "at": 54955,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 148,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 28027,
+        "cacheReadInputTokens": 30477,
+        "inputTokens": 2,
+        "outputTokens": 83
+      }
+    },
+    "c2": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "key": "c2",
+      "requestRefs": [
+        "b2032e19-8d46-4447-83e2-444d2d4094b7"
+      ],
+      "startedAt": 65661,
+      "state": {
+        "at": 65661,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 200,
+        "src": "transcript",
+        "value": "started"
+      },
+      "turn": "t1"
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "degraded",
+      "reasons": [
+        "hookError:PreToolUse"
+      ]
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1224,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1824,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 5,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "f92ef1c4-181d-4aa0-9208-dff5730b96f2",
+    "transcriptPath": "/HOME/.claude/projects/-private-var-folders-yj-g-x6cnk53n7dsdr1bkv34x840000gn-T-ccd-verify-c/f92ef1c4-181d-4aa0-9208-dff5730b96f2.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "f92ef1c4-181d-4aa0-9208-dff5730b96f2",
+      "source": "startup",
+      "startedAt": 1224,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-private-var-folders-yj-g-x6cnk53n7dsdr1bkv34x840000gn-T-ccd-verify-c/f92ef1c4-181d-4aa0-9208-dff5730b96f2.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 29,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011Cgevsy9hzeUGTQfnr9zDi",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "1ddd8829-ed69-4cb6-a769-391b708094f4"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": true,
+      "binding": {
+        "confirmed": true,
+        "kind": "unique"
+      },
+      "hookSeq": 4,
+      "input": {
+        "command": "touch p7.txt",
+        "description": "Create empty file p7.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 167,
+        "lastSeq": 183,
+        "sources": [
+          "hook"
+        ]
+      },
+      "requestedAt": 59907,
+      "resolved": {
+        "decider": "user_keys",
+        "decision": "allow",
+        "overridden": true
+      },
+      "state": {
+        "at": 62484,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 183,
+        "src": "hook",
+        "value": "resolved"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "directories": [
+            "/TMP/ccd-verify-c"
+          ],
+          "type": "addDirectories"
+        },
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "tool": "u1",
+      "toolName": "Bash"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "kind": "modelRequest",
+    "phase": "waiting",
+    "provenance": {
+      "confirmed": true,
+      "sources": [
+        "hook",
+        "transcript"
+      ]
+    },
+    "since": 62484
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011Cgevsy9hzeUGTQfnr9zDi",
+      "blockIndex": 0,
+      "durationMs": 2605,
+      "endedAt": 62484,
+      "input": {
+        "command": "touch p7.txt",
+        "description": "Create empty file p7.txt"
+      },
+      "key": "u1",
+      "name": "Bash",
+      "outcomeFrom": "post",
+      "permission": "p1",
+      "preAt": 54836,
+      "preSeq": 146,
+      "promptIdAtPre": "d4179138-8591-453c-9357-3bb671fe7bcf",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 146,
+        "lastSeq": 183,
+        "sources": [
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 85,
+        "preview": "{\"interrupted\":false,\"isImage\":false,\"noOutputExpected\":true,\"stderr\":\"\",\"stdout\":\"\"}",
+        "sha256_16": "ce24791948d57056",
+        "truncated": false
+      },
+      "startedAt": 54836,
+      "state": {
+        "at": 62484,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 183,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_011JzLE4hPdA2QGpLUfepYy3",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 13766,
+      "backgroundPending": [],
+      "calls": [
+        "c1",
+        "c2"
+      ],
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1"
+      ],
+      "origin": {
+        "at": 13766,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 12,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Use the Bash tool to run: touch p7.txt   If it fails, do not retry; reply with one word.",
+      "promptId": "d4179138-8591-453c-9357-3bb671fe7bcf",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 12,
+        "lastSeq": 18,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 13766,
+      "state": {
+        "at": 13766,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 12,
+        "src": "hook",
+        "value": "running"
+      },
+      "tools": [
+        "u1"
+      ]
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 28027,
+      "cacheReadInputTokens": 30477,
+      "inputTokens": 2,
+      "outputTokens": 83
+    }
+  },
+  "v": 1
+}

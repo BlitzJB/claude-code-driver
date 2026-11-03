@@ -1,0 +1,376 @@
+// cli/launchd.ts — `ccd lifecheck install|uninstall|status`: the state-dir shim, the LaunchAgent plist, the Linux
+// systemd/cron text, and the status probe (DESIGN.md §3.12, rev 2 §10 F1; SEC §10; LC §14.A).
+//
+// Pitfalls mitigated here:
+// - P-REV-32: nothing absolute about node or the package is baked into the plist. The plist runs `/bin/sh <shim>`; the shim
+//   resolves node and `dist/cli/main.js` at run time from `<stateDir>/lifecheck-target.json`, which every `start()` rewrites
+//   (self-healing after reinstall / upgrade / nvm switch). A shim that cannot resolve them writes `lastRunOk:false` so
+//   `ccd lifecheck status` reports it instead of failing silently.
+// - P-SEC-25: plist, crontab line, systemd units and shim hold only paths, never tokens (argv and `launchctl print` are
+//   world-readable). Shim 0700, logs and target 0600, plist 0644 (launchd refuses group/world-writable plists).
+// - P-LIFE-30 / P-LIFE-57: launchd `StartInterval 300` (re-fires after wake; UNVERIFIED, manual M-01), cron `*/5`.
+// - P-TMUX-49 (launchd half): `LC_ALL=en_US.UTF-8` and a fixed PATH in the job env, so tmux never sees a C locale.
+// - P-REV-34: the shim never computes runtime paths (they are absolute in the registry, D-38), so launchd's TMPDIR is moot.
+
+import type { InstallHost } from './host.js';
+import { classifyStatus, type StatusProbe, type StatusResult } from './lifecheck.js';
+
+export const LAUNCHD_LABEL = 'com.claude-code-driver.lifecheck';
+export const JOB_PATH = '/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin';
+export const JOB_LOCALE = 'en_US.UTF-8';
+export const START_INTERVAL_S = 300;
+export const MIN_NODE_MAJOR = 20;
+export const SYSTEMD_UNIT = 'ccd-lifecheck';
+/** `launchctl bootout` returns before the job is fully removed; an immediate `bootstrap` then fails with EIO (code 5). */
+export const BOOTSTRAP_ATTEMPTS = 5;
+export const BOOTSTRAP_RETRY_MS = 500;
+
+export class InstallError extends Error {
+  override readonly name = 'InstallError';
+}
+
+/**
+ * Paths baked into the shim / plist / units / crontab. Conservative on purpose: no quotes, backslashes, `%` (cron and
+ * systemd specifiers), `$`, backticks, `&<>` or control characters. Spaces are allowed and quoted per format.
+ */
+const SAFE_PATH = /^\/[A-Za-z0-9/._@+, -]*$/;
+
+export function assertSafePath(p: string, what: string): string {
+  if (!SAFE_PATH.test(p) || p.includes('/../') || p.endsWith('/..'))
+    throw new InstallError(`${what} ${JSON.stringify(p)} is not a plain absolute path (allowed: A-Z a-z 0-9 / . _ @ + , - space)`);
+  return p;
+}
+
+export interface LifecheckPaths {
+  stateDir: string;
+  home: string;
+  shim: string;
+  target: string;
+  report: string;
+  outLog: string;
+  errLog: string;
+  plist: string;
+}
+
+export function lifecheckPaths(stateDir: string, homeDir: string): LifecheckPaths {
+  const sd = assertSafePath(stateDir.replace(/\/+$/, ''), 'state dir');
+  const home = assertSafePath(homeDir.replace(/\/+$/, ''), 'home dir');
+  return {
+    stateDir: sd,
+    home,
+    shim: `${sd}/bin/ccd-lifecheck`,
+    target: `${sd}/lifecheck-target.json`,
+    report: `${sd}/lifecheck.json`,
+    outLog: `${sd}/lifecheck.out.log`,
+    errLog: `${sd}/lifecheck.err.log`,
+    plist: `${home}/Library/LaunchAgents/${LAUNCHD_LABEL}.plist`,
+  };
+}
+
+/**
+ * `lifecheck-target.json`, same shape as `session/registry-store.ts` `writeLifecheckTarget` (every `start()` rewrites it
+ * with its own dist path and `process.execPath`; `$CCD_NODE` of §3.12 is `nodePath`). The shim also accepts `CCD_NODE`/`node`.
+ */
+export interface LifecheckTarget {
+  distPath: string;
+  nodePath: string;
+  libVersion: string;
+  writtenAt: number;
+}
+
+/** Paths are SAFE_PATH-checked so the shim's sed extraction (no quotes, no backslashes) is exact. */
+export function lifecheckTargetText(t: LifecheckTarget): string {
+  assertSafePath(t.distPath, 'distPath');
+  assertSafePath(t.nodePath, 'node path');
+  return JSON.stringify(t, null, 2) + '\n';
+}
+
+export function parseLifecheckTarget(text: string | undefined): { distPath?: string; node?: string } | undefined {
+  if (text === undefined) return undefined;
+  try {
+    const j: unknown = JSON.parse(text);
+    if (typeof j !== 'object' || j === null) return undefined;
+    const o = j as Record<string, unknown>;
+    const out: { distPath?: string; node?: string } = {};
+    if (typeof o['distPath'] === 'string') out.distPath = o['distPath'];
+    for (const k of ['CCD_NODE', 'nodePath', 'node']) {
+      const v = o[k];
+      if (typeof v === 'string') {
+        out.node = v;
+        break;
+      }
+    }
+    return out;
+  } catch {
+    return undefined;
+  }
+}
+
+const sq = (s: string): string => `'${s.replace(/'/g, `'\\''`)}'`;
+
+/** The `/bin/sh` shim (0700). Pure text; see the file header for the resolution order (§3.12). */
+export function shimText(o: { stateDir: string; homeDir: string; libVersion: string }): string {
+  const p = lifecheckPaths(o.stateDir, o.homeDir);
+  return `#!/bin/sh
+# ccd-lifecheck — generated by \`ccd lifecheck install\` (claude-code-driver ${o.libVersion}). Do not edit; reinstall instead.
+# Resolves node and claude-code-driver's dist/cli/main.js at run time from lifecheck-target.json, which every
+# ClaudeSession.start() rewrites (self-healing after upgrades and nvm switches). Holds no tokens.
+umask 077
+STATE_DIR=${sq(p.stateDir)}
+TARGET="$STATE_DIR/lifecheck-target.json"
+PATH=${JOB_PATH}
+LC_ALL=${JOB_LOCALE}
+export PATH LC_ALL
+
+# json_str KEY: the string value of "KEY": "..." in lifecheck-target.json (its paths never contain quotes or backslashes).
+json_str() {
+  [ -r "$TARGET" ] || return 0
+  tr -d '\\r\\n' < "$TARGET" | sed -n "s/.*\\"$1\\"[[:space:]]*:[[:space:]]*\\"\\([^\\"\\\\\\\\]*\\)\\".*/\\1/p" | head -n 1
+}
+
+# node_ok PATH: an executable node whose major version is >= ${MIN_NODE_MAJOR}.
+node_ok() {
+  [ -n "$1" ] && [ -x "$1" ] || return 1
+  major=$("$1" -p 'process.versions.node.split(".")[0]' 2>/dev/null) || return 1
+  [ "$major" -ge ${MIN_NODE_MAJOR} ] 2>/dev/null
+}
+
+fail() {
+  echo "ccd-lifecheck: $1" >&2
+  tmp="$STATE_DIR/.lifecheck.json.shim.$$"
+  printf '{"ranAt":%s000,"lastRunOk":false,"error":"%s","via":"shim"}\\n' "$(date +%s)" "$1" > "$tmp" && mv -f "$tmp" "$STATE_DIR/lifecheck.json"
+  exit 1
+}
+
+NODE=
+for cand in "$(json_str CCD_NODE)" "$(json_str nodePath)" "$(json_str node)" "\${CCD_NODE:-}"; do
+  if node_ok "$cand"; then NODE=$cand; break; fi
+done
+if [ -z "$NODE" ]; then
+  cand=$(command -v node 2>/dev/null)
+  if node_ok "$cand"; then NODE=$cand; fi
+fi
+if [ -z "$NODE" ]; then
+  NVM_VERSIONS="\${HOME:-${p.home}}/.nvm/versions/node"
+  if [ -d "$NVM_VERSIONS" ]; then
+    NODE=$(ls "$NVM_VERSIONS" 2>/dev/null \\
+      | sed -n 's/^v\\([0-9][0-9]*\\.[0-9][0-9]*\\.[0-9][0-9]*\\)$/\\1/p' \\
+      | sort -t. -k1,1nr -k2,2nr -k3,3nr \\
+      | while IFS= read -r v; do
+          [ "\${v%%.*}" -ge ${MIN_NODE_MAJOR} ] || continue
+          if node_ok "$NVM_VERSIONS/v$v/bin/node"; then printf '%s\\n' "$NVM_VERSIONS/v$v/bin/node"; break; fi
+        done)
+  fi
+fi
+[ -n "$NODE" ] || fail "node-not-found"
+
+DIST=$(json_str distPath)
+[ -n "$DIST" ] || fail "no-distPath"
+[ -f "$DIST" ] || fail "distPath-missing"
+
+exec "$NODE" "$DIST" lifecheck --state-dir "$STATE_DIR" "$@"
+`;
+}
+
+const xml = (s: string): string =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+/** The LaunchAgent plist (0644). Only `/bin/sh`, the shim path and log paths: no node, no dist path, no token. */
+export function plistText(o: { stateDir: string; homeDir: string }): string {
+  const p = lifecheckPaths(o.stateDir, o.homeDir);
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>${LAUNCHD_LABEL}</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/sh</string>
+    <string>${xml(p.shim)}</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>${START_INTERVAL_S}</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>${JOB_PATH}</string>
+    <key>LC_ALL</key>
+    <string>${JOB_LOCALE}</string>
+  </dict>
+  <key>StandardOutPath</key>
+  <string>${xml(p.outLog)}</string>
+  <key>StandardErrorPath</key>
+  <string>${xml(p.errLog)}</string>
+</dict>
+</plist>
+`;
+}
+
+/** Linux: a `systemd --user` service + timer pair (printed, not installed). */
+export function systemdUnits(o: { stateDir: string; homeDir: string }): { service: string; timer: string } {
+  const p = lifecheckPaths(o.stateDir, o.homeDir);
+  return {
+    service: `[Unit]
+Description=claude-code-driver lifecheck (reap orphaned sessions, report hung owners)
+
+[Service]
+Type=oneshot
+Environment="PATH=${JOB_PATH}"
+Environment="LC_ALL=${JOB_LOCALE}"
+ExecStart=/bin/sh "${p.shim}"
+`,
+    timer: `[Unit]
+Description=Run the claude-code-driver lifecheck every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target
+`,
+  };
+}
+
+/** Linux alternative: one crontab line. */
+export function cronLine(o: { stateDir: string; homeDir: string }): string {
+  const p = lifecheckPaths(o.stateDir, o.homeDir);
+  return `*/5 * * * * /bin/sh ${sq(p.shim)}`;
+}
+
+const domain = (uid: number): string => `gui/${uid}`;
+
+export interface InstallResult {
+  lines: string[];
+  exitCode: number;
+}
+
+async function writeShimAndTarget(h: InstallHost, libVersion: string): Promise<LifecheckPaths> {
+  const p = lifecheckPaths(h.stateDir, h.homeDir);
+  await h.writeFile(
+    p.target,
+    lifecheckTargetText({ distPath: h.distPath, nodePath: h.nodePath, libVersion, writtenAt: h.nowWall() }),
+    0o600,
+  );
+  await h.writeFile(p.shim, shimText({ stateDir: h.stateDir, homeDir: h.homeDir, libVersion }), 0o700);
+  await h.touch(p.outLog, 0o600);
+  await h.touch(p.errLog, 0o600);
+  return p;
+}
+
+export async function installLifecheck(h: InstallHost, libVersion: string): Promise<InstallResult> {
+  if (h.platform === 'other') return { lines: ['ccd lifecheck install: unsupported platform (darwin or linux only)'], exitCode: 1 };
+  const p = await writeShimAndTarget(h, libVersion);
+  const lines = [`wrote ${p.shim} (0700)`, `wrote ${p.target} (0600)`];
+  if (h.platform === 'linux') {
+    const u = systemdUnits(h);
+    lines.push(
+      '',
+      `# systemd --user: save as ~/.config/systemd/user/${SYSTEMD_UNIT}.service`,
+      u.service,
+      `# and ~/.config/systemd/user/${SYSTEMD_UNIT}.timer, then: systemctl --user daemon-reload && systemctl --user enable --now ${SYSTEMD_UNIT}.timer`,
+      u.timer,
+      '# or, with cron (crontab -e):',
+      cronLine(h),
+    );
+    return { lines, exitCode: 0 };
+  }
+  await h.writeFile(p.plist, plistText(h), 0o644);
+  lines.push(`wrote ${p.plist} (0644)`);
+  // Re-install = bootout (ignore "not loaded") + bootstrap, so a changed plist takes effect.
+  const out = await h.run('launchctl', ['bootout', `${domain(h.uid)}/${LAUNCHD_LABEL}`]);
+  // A job that was loaded (bootout code 0) is torn down asynchronously: retry the bootstrap a few times before failing.
+  const attempts = out.code === 0 ? BOOTSTRAP_ATTEMPTS : 1;
+  let r = await h.run('launchctl', ['bootstrap', domain(h.uid), p.plist]);
+  for (let i = 1; i < attempts && r.code !== 0; i++) {
+    await h.sleep(BOOTSTRAP_RETRY_MS);
+    r = await h.run('launchctl', ['bootstrap', domain(h.uid), p.plist]);
+  }
+  if (r.code !== 0) {
+    lines.push(`launchctl bootstrap ${domain(h.uid)} failed (code ${String(r.code)}): ${r.stderr.trim()}`);
+    return { lines, exitCode: 1 };
+  }
+  lines.push(`loaded ${LAUNCHD_LABEL} in ${domain(h.uid)} (every ${START_INTERVAL_S} s)`);
+  return { lines, exitCode: 0 };
+}
+
+export async function uninstallLifecheck(h: InstallHost): Promise<InstallResult> {
+  const p = lifecheckPaths(h.stateDir, h.homeDir);
+  const lines: string[] = [];
+  let exitCode = 0;
+  if (h.platform === 'darwin') {
+    const r = await h.run('launchctl', ['bootout', `${domain(h.uid)}/${LAUNCHD_LABEL}`]);
+    lines.push(r.code === 0 ? `unloaded ${LAUNCHD_LABEL}` : `${LAUNCHD_LABEL} was not loaded`);
+    if (await h.exists(p.plist)) {
+      await h.remove(p.plist);
+      lines.push(`removed ${p.plist}`);
+    }
+  } else if (h.platform === 'linux') {
+    lines.push(
+      `disable the timer with: systemctl --user disable --now ${SYSTEMD_UNIT}.timer (or remove the crontab line naming ${p.shim})`,
+    );
+  } else {
+    lines.push('unsupported platform');
+    exitCode = 1;
+  }
+  if (await h.exists(p.shim)) {
+    await h.remove(p.shim);
+    lines.push(`removed ${p.shim}`);
+  }
+  return { lines, exitCode };
+}
+
+/** Parses `launchctl print gui/$UID/<label>` output (`state = running`, `last exit code = 0`). */
+export function parseLaunchctlPrint(stdout: string): { state?: string; lastExitCode?: string } {
+  const out: { state?: string; lastExitCode?: string } = {};
+  const st = /^\s*state = (.+)$/m.exec(stdout);
+  if (st?.[1] !== undefined) out.state = st[1].trim();
+  const lec = /^\s*last exit code = (.+)$/m.exec(stdout);
+  if (lec?.[1] !== undefined) out.lastExitCode = lec[1].trim();
+  return out;
+}
+
+export function parseLifecheckJson(text: string | undefined): StatusProbe['last'] {
+  if (text === undefined) return undefined;
+  try {
+    const j: unknown = JSON.parse(text);
+    if (typeof j !== 'object' || j === null) return undefined;
+    const o = j as Record<string, unknown>;
+    const last: NonNullable<StatusProbe['last']> = {};
+    if (typeof o['ranAt'] === 'number' && Number.isFinite(o['ranAt'])) last.ranAt = o['ranAt'];
+    if (typeof o['lastRunOk'] === 'boolean') last.lastRunOk = o['lastRunOk'];
+    if (typeof o['error'] === 'string') last.error = o['error'];
+    else if (Array.isArray(o['errors']) && typeof o['errors'][0] === 'string') last.error = o['errors'][0];
+    return last;
+  } catch {
+    return { lastRunOk: false, error: 'lifecheck.json is not valid JSON' };
+  }
+}
+
+export async function probeStatus(h: InstallHost): Promise<StatusProbe> {
+  const p = lifecheckPaths(h.stateDir, h.homeDir);
+  const probe: StatusProbe = { platform: h.platform, shimInstalled: await h.exists(p.shim), now: h.nowWall() };
+  if (h.platform === 'darwin') {
+    probe.plistInstalled = await h.exists(p.plist);
+    const r = await h.run('launchctl', ['print', `${domain(h.uid)}/${LAUNCHD_LABEL}`]);
+    probe.launchd = { loaded: r.code === 0, ...(r.code === 0 ? parseLaunchctlPrint(r.stdout) : {}) };
+  }
+  const target = parseLifecheckTarget(await h.readText(p.target));
+  if (target !== undefined) {
+    probe.target = target;
+    if (target.distPath !== undefined) probe.distPathExists = await h.exists(target.distPath);
+  }
+  const last = parseLifecheckJson(await h.readText(p.report));
+  if (last !== undefined) probe.last = last;
+  return probe;
+}
+
+export async function lifecheckStatus(h: InstallHost): Promise<StatusResult> {
+  return classifyStatus(await probeStatus(h));
+}

@@ -1,0 +1,10 @@
+# Prettier formats the code and config owned by the build; prose and recorded data are left as written.
+node_modules/
+dist/
+coverage/
+pnpm-lock.yaml
+fixtures/
+docs/
+etc/
+*.md
+.claude/

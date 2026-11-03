@@ -1,0 +1,3 @@
+D dir=/private/var/folders/yj/g_x6cnk53n7dsdr1bkv34x840000gn/T/ccd-verify-c sid=f92ef1c4-181d-4aa0-9208-dff5730b96f2 settings-D (PreToolUse http timeout 5s, server holds 15s)
+launch 1793660256050
+P7-enter 1793660269486

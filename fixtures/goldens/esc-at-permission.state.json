@@ -1,0 +1,286 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000003",
+      "endedAt": 182318,
+      "key": "c1",
+      "requestRefs": [
+        "1e1261d2-79d0-499b-82fb-397fb7c54c22"
+      ],
+      "startedAt": 178814,
+      "state": {
+        "at": 182318,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 13,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 199,
+        "cacheReadInputTokens": 61978,
+        "inputTokens": 4,
+        "outputTokens": 146
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 4,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "11111111-2222-4333-8444-555555555555",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "endReason": "other",
+      "key": "g1",
+      "sessionId": "11111111-2222-4333-8444-555555555555",
+      "source": "startup",
+      "startedAt": 1250,
+      "startedBy": "SessionStart",
+      "status": "ended",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 27,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgehxUc7BdAAsEHrePAhH",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "ca5b0d05-e062-48d6-88f6-0f10098d610c"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": true,
+      "binding": {
+        "confirmed": true,
+        "kind": "unique"
+      },
+      "hookSeq": 4,
+      "input": {
+        "content": "x",
+        "file_path": "/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/deny.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 16,
+        "lastSeq": 18,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "requestedAt": 182318,
+      "resolved": {
+        "decider": "user_keys",
+        "decision": "deny",
+        "overridden": true
+      },
+      "state": {
+        "at": 182912,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 18,
+        "src": "transcript",
+        "value": "resolved"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "tool": "u1",
+      "toolName": "Write"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "kind": "interrupted",
+    "provenance": {
+      "confirmed": true,
+      "sources": [
+        "hook",
+        "transcript"
+      ]
+    },
+    "since": 182913
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011CgehxUc7BdAAsEHrePAhH",
+      "blockIndex": 0,
+      "endedAt": 182912,
+      "input": {
+        "content": "x",
+        "file_path": "/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/deny.txt"
+      },
+      "key": "u1",
+      "name": "Write",
+      "outcomeFrom": "permission_deny",
+      "permission": "p1",
+      "preAt": 182318,
+      "preSeq": 14,
+      "promptIdAtPre": "57289e99-7584-4ae0-8bfa-5e2a06a1ce3d",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 13,
+        "lastSeq": 18,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 436,
+        "preview": "The user doesn't want to proceed with this tool use. The tool use was rejected (eg. if it was a file edit, the new_string was NOT written to the file). STOP what you are doing and wait for the user to tell you how to proceed.\n\nNote: The user's next message may contain a correction or preference. Pay close attention — if they explain what went wrong or how they'd prefer you to work, consider saving that to memory for future sessions.",
+        "sha256_16": "735cff60fb006a8a",
+        "truncated": false
+      },
+      "startedAt": 182318,
+      "state": {
+        "at": 182912,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 18,
+        "src": "transcript",
+        "value": "denied"
+      },
+      "toolUseId": "toolu_01PKc2z7nZ21rqiQGgkZtPec",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 178760,
+      "backgroundPending": [],
+      "calls": [
+        "c1"
+      ],
+      "durationMs": 3636,
+      "endedAt": 182913,
+      "endedBy": "tool_use_interrupt",
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1"
+      ],
+      "origin": {
+        "at": 178760,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 10,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Use Write to create deny.txt containing x",
+      "promptId": "57289e99-7584-4ae0-8bfa-5e2a06a1ce3d",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 10,
+        "lastSeq": 20,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 178760,
+      "state": {
+        "at": 182913,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 20,
+        "src": "transcript",
+        "value": "interrupted"
+      },
+      "tools": [
+        "u1"
+      ]
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 199,
+      "cacheReadInputTokens": 61978,
+      "inputTokens": 4,
+      "outputTokens": 146
+    }
+  },
+  "v": 1
+}

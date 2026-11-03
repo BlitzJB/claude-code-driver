@@ -1,0 +1,234 @@
+{
+ "hooks": {
+  "MessageDisplay": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/MessageDisplay",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "Notification": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/Notification",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "PermissionDenied": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/PermissionDenied",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs PermissionDenied"
+     }
+    ]
+   }
+  ],
+  "PermissionRequest": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/PermissionRequest",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      },
+      "timeout": 45
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs PermissionRequest"
+     }
+    ]
+   }
+  ],
+  "PostToolUse": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/PostToolUse",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs PostToolUse"
+     }
+    ]
+   }
+  ],
+  "PostToolUseFailure": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/PostToolUseFailure",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "PreToolUse": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/PreToolUse",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      },
+      "timeout": 5
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs PreToolUse"
+     }
+    ]
+   }
+  ],
+  "SessionEnd": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/SessionEnd",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs SessionEnd"
+     }
+    ]
+   }
+  ],
+  "SessionStart": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/SessionStart",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs SessionStart"
+     }
+    ]
+   }
+  ],
+  "Stop": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/Stop",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs Stop"
+     }
+    ]
+   }
+  ],
+  "StopFailure": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/StopFailure",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "SubagentStart": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/SubagentStart",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "SubagentStop": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/SubagentStop",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     }
+    ]
+   }
+  ],
+  "UserPromptSubmit": [
+   {
+    "matcher": "*",
+    "hooks": [
+     {
+      "type": "http",
+      "url": "http://127.0.0.1:47601/UserPromptSubmit",
+      "headers": {
+       "X-Ccd-Probe": "1"
+      }
+     },
+     {
+      "type": "command",
+      "command": "CMDLOG=/Users/dev/Projects/claude-code-driver/fixtures/verify/cmd-hooks.jsonl node /private/tmp/claude-501/-Users-dev-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/verify/cmdlog.mjs UserPromptSubmit"
+     }
+    ]
+   }
+  ]
+ }
+}

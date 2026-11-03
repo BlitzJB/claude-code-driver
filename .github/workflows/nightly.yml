@@ -1,0 +1,25 @@
+# .github/workflows/nightly.yml — nightly CI (DESIGN.md §7 "CI"; rev 2 §10 G24/C9; owned by WP-CI).
+#
+# Runs the whole ci.yml matrix (linux × Node 20.19.x/22.x/24.x with distro tmux 3.4, macos-14 with brew tmux) and widens
+# linux-tmux-min to every tmux release built from source that the caveats ask for: 3.2a (minimum), 3.5a (the version the
+# research was verified on) and 3.6a (the version of the community Claude Code report), P-TMUX-42. With 3.4 from the distro
+# that covers 3.2a / 3.4 / 3.5a / 3.6a.
+#
+# Live tests are NEVER run in CI: they need the user's own Claude subscription (DESIGN.md §6.5). A self-hosted runner may run
+# them by hand (`CCD_LIVE=1 pnpm test:live`, see docs/MANUAL-TESTS.md "Self-hosted live runs"); that is documented, not
+# configured here. A self-hosted runner must give each session its own runner user or container (P-SEC-43).
+name: nightly
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    with:
+      tmux-min-versions: '["3.2a", "3.5a", "3.6a"]'

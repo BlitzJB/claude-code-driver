@@ -1,0 +1,317 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 82335,
+      "key": "c1",
+      "requestRefs": [
+        "40aa20a8-d700-44f8-ba1f-64fafb06c54c"
+      ],
+      "retry": {
+        "attempt": 1,
+        "errorHint": "proxy",
+        "max": 10,
+        "retryInMs": 1000
+      },
+      "startedAt": 4505,
+      "state": {
+        "at": 82335,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 95,
+        "src": "clock",
+        "value": "ended"
+      },
+      "turn": "t1"
+    },
+    "c2": {
+      "attempts": 8,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 80005,
+      "key": "c2",
+      "requestRefs": [
+        "7292dedd-d5a7-4923-a611-4306667b16f1",
+        "d9f94450-7b9d-49c3-9db9-4d415732366a",
+        "9cfe8c99-01b6-45a3-9e34-c53e78651bcc",
+        "3bfc6b7c-e55b-4ddf-8af8-ae27bc0edc51",
+        "db06d249-e9a6-4865-b5f5-bbaeb33ad786",
+        "14d7a8a0-10df-48bd-a851-a927530c9b8d",
+        "4c17f6cb-2307-436f-ae86-49eaa0c5dc34",
+        "5d9da63f-21a2-4480-b246-cc8ae07d1264"
+      ],
+      "retry": {
+        "attempt": 7,
+        "errorHint": "proxy",
+        "max": 10,
+        "retryInMs": 0
+      },
+      "startedAt": 4605,
+      "state": {
+        "at": 80005,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 93,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 29618,
+        "cacheReadInputTokens": 36979,
+        "inputTokens": 2,
+        "outputTokens": 5
+      }
+    },
+    "c3": {
+      "attempts": 3,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "endedAt": 218005,
+      "key": "c3",
+      "requestRefs": [
+        "0871dfc1-389b-49f8-9419-4728489fd64b",
+        "977ba4c3-d075-4ef8-bb43-0e02de68b719",
+        "c2c9cd0b-4c66-4464-aef3-4dd152d033da"
+      ],
+      "startedAt": 113505,
+      "state": {
+        "at": 218005,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 269,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "usage": {
+        "cacheCreationInputTokens": 0,
+        "cacheReadInputTokens": 66625,
+        "inputTokens": 4,
+        "outputTokens": 2661
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "degraded",
+      "reasons": [
+        "hookGap:UserPromptSubmit"
+      ]
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1200,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 2000,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 8,
+      "src": "transcript",
+      "value": "auto"
+    },
+    "pid": 50000,
+    "sessionId": "5019220d-0000-4000-8000-000000000002",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-faultproxy-ws/5019220d-0000-4000-8000-000000000002.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "5019220d-0000-4000-8000-000000000002",
+      "source": "startup",
+      "startedAt": 1200,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-faultproxy-ws/5019220d-0000-4000-8000-000000000002.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 201,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgemTpkxa5WjdxYyLTv68",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "PONG",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "50b4fa68-b268-44a4-bcd3-91b6d04d11df"
+      ]
+    },
+    "m2": {
+      "apiMessageId": "msg_011Cgemc8aFBWS6oV9xtjJdc",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m2",
+      "retracted": false,
+      "text": "**The Keeper's Last Light**\n\nFor forty-one years, Mara Okafor climbed the hundred and twelve steps of Gull Point Light every evening at dusk. She knew each one by its complaint: the seventh groaned, the fortieth rang like a struck bell, the ninety-third had a crack shaped like a heron.\n\nThe letter from the Coast Guard arrived in March. Automation, it said. A solar array, a sensor, a bulb that would never need her. They thanked her for her service in a font too cheerful for the news.\n\nOn her final night, a storm came in hard from the northeast. Rain hammered the glass. Mara lit the lamp the old way, though the new equipment hummed beside it, waiting.\n\nAround midnight, the power failed along the coast. The solar batteries, untested in winter, flickered and died. Only her lamp, fed by kerosene and wound by hand, kept turning, its beam sweeping the black water in slow, patient arcs.\n\nThen she saw it: a fishing boat, lights out, drifting toward the rocks below the point. Mara grabbed the brass signal lantern and flashed the old code her father had taught her. Turn south. Turn south. Turn south.\n\nThe boat turned.\n\nIn the morning, a young man knocked at the keeper's cottage, soaked and shaking. His radio had died, his engine flooded, and he'd been certain he would drown until he saw a light that seemed to speak to him.\n\n\"Who taught you to read that code?\" Mara asked.\n\n\"My grandfather,\" he said. \"He said a keeper saved him once, out here. Said she never let the light go dark.\"\n\nMara smiled. That had been her mother.\n\nThat afternoon, the Coast Guard finished the installation. Mara handed them the keys, then kept one small thing for herself: the brass lantern, still warm.\n\nSome lights, she decided, should never be automatic.",
+      "turn": "t2",
+      "usageCounted": true,
+      "uuids": [
+        "36490bc6-dc02-4835-99ca-f717473ae548",
+        "d8299de5-04a3-41cc-ae92-8e0444d8a4eb"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {},
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "lastTurn": {
+      "outcome": "completed"
+    },
+    "queued": 0,
+    "quiescent": true,
+    "since": 222760
+  },
+  "tools": {},
+  "turnOrder": [
+    "t1",
+    "t2"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 4505,
+      "backgroundPending": [],
+      "calls": [
+        "c1",
+        "c2"
+      ],
+      "durationMs": 77852,
+      "endedAt": 82335,
+      "endedBy": "turn_duration",
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1"
+      ],
+      "origin": {
+        "at": 4505,
+        "corroborated": [],
+        "provisional": true,
+        "seq": 10,
+        "src": "clock",
+        "value": "unknown"
+      },
+      "prompt": "Reply with just the word PONG.",
+      "promptId": "d486c494-814b-4755-a76b-91dc36181f2c",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 10,
+        "lastSeq": 95,
+        "sources": [
+          "clock",
+          "transcript"
+        ]
+      },
+      "queuedAt": 4505,
+      "state": {
+        "at": 82335,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 95,
+        "src": "transcript",
+        "value": "completed"
+      },
+      "tools": []
+    },
+    "t2": {
+      "acceptedAt": 115505,
+      "backgroundPending": [],
+      "calls": [],
+      "durationMs": 109090,
+      "endedAt": 222760,
+      "endedBy": "turn_duration",
+      "gen": "g1",
+      "key": "t2",
+      "messages": [
+        "m2"
+      ],
+      "origin": {
+        "at": 115505,
+        "corroborated": [],
+        "provisional": true,
+        "seq": 108,
+        "src": "clock",
+        "value": "unknown"
+      },
+      "prompt": "Think carefully, then write a 300-word story about a lighthouse.",
+      "promptId": "e842e006-7e57-4da8-b18f-9ae791d7a994",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 108,
+        "lastSeq": 278,
+        "sources": [
+          "clock",
+          "transcript"
+        ]
+      },
+      "queuedAt": 115505,
+      "state": {
+        "at": 222760,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 278,
+        "src": "transcript",
+        "value": "completed"
+      },
+      "tools": []
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 29618,
+      "cacheReadInputTokens": 103604,
+      "inputTokens": 6,
+      "outputTokens": 2666
+    }
+  },
+  "v": 1
+}

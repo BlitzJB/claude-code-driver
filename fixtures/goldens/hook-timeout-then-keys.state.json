@@ -1,0 +1,342 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 132533,
+      "key": "c1",
+      "requestRefs": [
+        "39c14703-054f-49dd-8591-e2102676251c"
+      ],
+      "startedAt": 128878,
+      "state": {
+        "at": 132533,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 31,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 34,
+        "cacheReadInputTokens": 58749,
+        "inputTokens": 4,
+        "outputTokens": 83
+      }
+    },
+    "c2": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "endedAt": 205112,
+      "key": "c2",
+      "requestRefs": [
+        "49fd965b-1906-4fc9-8f08-241b6275c329"
+      ],
+      "startedAt": 203251,
+      "state": {
+        "at": 205112,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 53,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 100,
+        "cacheReadInputTokens": 58783,
+        "inputTokens": 2,
+        "outputTokens": 5
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 4,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "59129e0d-0328-40d1-93bb-5312bc731f39",
+      "source": "startup",
+      "startedAt": 1250,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/59129e0d-0328-40d1-93bb-5312bc731f39.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 47,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgevFm1hcDgJBmCc5NXFs",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "85aadf70-87c7-4c9b-afe8-622999852261"
+      ]
+    },
+    "m2": {
+      "apiMessageId": "msg_011CgevMF1aACsFr3KsK9Vq7",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "finalBy": "flag",
+      "key": "m2",
+      "retracted": false,
+      "text": "Done.",
+      "turn": "t1",
+      "uiMessageId": "85798f83-816c-4925-9bd2-ce4d6e8086ff",
+      "usageCounted": true,
+      "uuids": [
+        "2f2c9c00-c9c5-4e21-a7e3-1ca362650702"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": true,
+      "binding": {
+        "confirmed": true,
+        "kind": "unique"
+      },
+      "hookSeq": 4,
+      "input": {
+        "command": "touch p3.txt",
+        "description": "Create empty file p3.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 28,
+        "lastSeq": 35,
+        "sources": [
+          "hook"
+        ]
+      },
+      "requestedAt": 128878,
+      "resolved": {
+        "decider": "user_keys",
+        "decision": "allow",
+        "overridden": true
+      },
+      "state": {
+        "at": 132533,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 35,
+        "src": "hook",
+        "value": "resolved"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "directories": [
+            "/TMP/claude-501/ccd-verify/a"
+          ],
+          "type": "addDirectories"
+        },
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "tool": "u1",
+      "toolName": "Bash"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "lastTurn": {
+      "outcome": "completed"
+    },
+    "queued": 0,
+    "quiescent": true,
+    "since": 205112
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011CgevFm1hcDgJBmCc5NXFs",
+      "blockIndex": 0,
+      "durationMs": 99,
+      "endedAt": 132533,
+      "input": {
+        "command": "touch p3.txt",
+        "description": "Create empty file p3.txt"
+      },
+      "key": "u1",
+      "name": "Bash",
+      "outcomeFrom": "post",
+      "permission": "p1",
+      "preAt": 128878,
+      "preSeq": 26,
+      "promptIdAtPre": "f2da3b26-e50c-4405-8012-c081efcd1ad8",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 26,
+        "lastSeq": 35,
+        "sources": [
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 85,
+        "preview": "{\"interrupted\":false,\"isImage\":false,\"noOutputExpected\":true,\"stderr\":\"\",\"stdout\":\"\"}",
+        "sha256_16": "ce24791948d57056",
+        "truncated": false
+      },
+      "startedAt": 128878,
+      "state": {
+        "at": 132533,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 35,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01PBH9xo4N87kumqB66MUu15",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 2750,
+      "backgroundPending": [],
+      "calls": [
+        "c1",
+        "c2"
+      ],
+      "durationMs": 5807,
+      "endedAt": 205112,
+      "endedBy": "stop",
+      "finalText": {
+        "at": 203251,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 50,
+        "src": "hook",
+        "value": "Done."
+      },
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1",
+        "m2"
+      ],
+      "origin": {
+        "at": 2750,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 9,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Use the Bash tool to run: touch p3.txt   Then reply with one word.",
+      "promptId": "f2da3b26-e50c-4405-8012-c081efcd1ad8",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 9,
+        "lastSeq": 53,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 2750,
+      "state": {
+        "at": 205112,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 53,
+        "src": "hook",
+        "value": "completed"
+      },
+      "tools": [
+        "u1"
+      ]
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 134,
+      "cacheReadInputTokens": 117532,
+      "inputTokens": 6,
+      "outputTokens": 88
+    }
+  },
+  "v": 1
+}

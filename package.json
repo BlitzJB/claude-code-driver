@@ -1,0 +1,101 @@
+{
+  "name": "claude-code-driver",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Drive the interactive Claude Code TUI inside tmux from Node.js, with hook, transcript, screen and network observation channels.",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "anthropic",
+    "tmux",
+    "tui",
+    "agent",
+    "automation",
+    "hooks",
+    "sdk",
+    "typescript"
+  ],
+  "homepage": "https://blitzjb.github.io/claude-code-driver/",
+  "bugs": {
+    "url": "https://github.com/BlitzJB/claude-code-driver/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlitzJB/claude-code-driver.git"
+  },
+  "license": "MIT",
+  "author": "BlitzJB (https://github.com/BlitzJB)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@11.21.0",
+  "claudeCodeVersion": "2.1.316",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "!dist/**/*.test.*"
+  ],
+  "bin": {
+    "ccd": "./dist/cli/main.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/api/index.d.ts",
+      "default": "./dist/api/index.js"
+    },
+    "./kernel": {
+      "types": "./dist/runtime/kernel-entry.d.ts",
+      "default": "./dist/runtime/kernel-entry.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "default": "./dist/testing/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "gen-version": "node scripts/gen-version.mjs",
+    "build": "rm -rf dist && node scripts/gen-version.mjs && tsc -p tsconfig.build.json && tsc -p tsconfig.testing.json && chmod +x dist/cli/main.js",
+    "typecheck": "node scripts/gen-version.mjs --check && tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . && depcruise src --config .dependency-cruiser.cjs && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run --project unit --project arch --project kernel --project replay",
+    "test:unit": "vitest run --project unit",
+    "test:arch": "vitest run --project arch",
+    "test:kernel": "vitest run --project kernel",
+    "test:replay": "vitest run --project replay",
+    "test:contract": "vitest run --project contract",
+    "test:live": "CCD_LIVE=1 vitest run --project live",
+    "fixtures:scrub": "node scripts/fixtures-scrub.mjs",
+    "fixtures:lint": "node scripts/fixtures-lint.mjs",
+    "check:pkg": "publint && attw --pack . --profile esm-only",
+    "check:api": "node scripts/api-report.mjs",
+    "check:tables": "node scripts/check-table-coverage.mjs",
+    "check:window-size": "node scripts/check-no-global-window-size.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm test:contract && pnpm build && pnpm check:pkg && pnpm check:api && pnpm check:tables && knip",
+    "docs:api": "typedoc",
+    "docs:dev": "pnpm docs:api && vitepress dev site",
+    "docs:build": "pnpm docs:api && vitepress build site",
+    "docs:preview": "vitepress preview site"
+  },
+  "devDependencies": {
+    "@anthropic-ai/claude-code": "2.1.316",
+    "@arethetypeswrong/cli": "0.18.5",
+    "@types/node": "^20",
+    "@vitest/coverage-v8": "4.1.12",
+    "dependency-cruiser": "17.4.3",
+    "eslint": "10.14.0",
+    "fast-check": "4.10.2",
+    "knip": "6.44.1",
+    "prettier": "3.9.10",
+    "publint": "0.3.25",
+    "typedoc": "0.28.20",
+    "typedoc-plugin-markdown": "4.14.1",
+    "typedoc-vitepress-theme": "1.1.4",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vitepress": "1.6.4",
+    "vitest": "4.1.12"
+  }
+}

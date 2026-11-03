@@ -1,0 +1,45 @@
+name: Bug report
+description: Something behaves differently from the docs
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Security problems go to [private reporting](https://github.com/BlitzJB/claude-code-driver/security/advisories/new), not here.**
+        Before posting a trace or screen capture, check it for secrets and personal data.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: The smallest code that shows the problem.
+      render: ts
+    validations:
+      required: true
+  - type: textarea
+    id: events
+    attributes:
+      label: Events, status and errors
+      description: The relevant `SessionEvent`s, `session.status`, and any `ClaudeSessionError` (`code`, `details.reason`). A redacted trace (`debug.tracePath`) helps most.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: claude-code-driver version
+      placeholder: 0.1.0 or a commit sha
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node version, tmux version (`tmux -V`), Claude Code version (`claude --version`).
+      placeholder: macOS 15.5, Node 22.23, tmux 3.5a, Claude Code 2.1.316
+    validations:
+      required: true

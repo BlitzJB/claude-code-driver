@@ -1,0 +1,14 @@
+  Ran 1 shell command
+  ⎿  PreToolUse:Bash hook error
+  ⎿  connect ECONNREFUSED 127.0.0.1:47601
+  ⎿  PostToolUse:Bash hook error
+  ⎿  connect ECONNREFUSED 127.0.0.1:47601
+⏺ I ran touch p6.txt and it worked: p6.txt now exists in the working directory.
+⏺ Ran 3 stop hooks
+  ⎿  Stop hook error: connect ECONNREFUSED 127.0.0.1:47601
+✻ Brewed for 9s · done 4:27 AM
+                                                                                           ◐ medium · /effort
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ 
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts

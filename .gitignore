@@ -1,0 +1,32 @@
+# build output
+dist/
+coverage/
+*.tsbuildinfo
+
+# dependencies
+node_modules/
+
+# raw (unscrubbed) recordings never get committed (DESIGN.md §6.6, §7)
+fixtures/raw/
+*.ccd.jsonl
+!fixtures/traces/**/*.ccd.jsonl
+
+# local tooling state
+.claude/scheduled_tasks.lock
+.DS_Store
+*.log
+!fixtures/**/*.log
+
+# machine/account-specific build notes and raw probe material (kept locally, never published)
+PROGRESS.md
+docs/BRIEF.md
+docs/research/
+docs/caveats/
+docs/critique/
+.claude/
+fixtures/raw/
+
+# docs site build output (generated in CI)
+site/api/
+site/.vitepress/dist/
+site/.vitepress/cache/

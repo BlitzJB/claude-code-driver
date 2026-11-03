@@ -1,0 +1,1132 @@
+{
+  "activeTurn": "t3",
+  "agents": {
+    "a1": {
+      "agentId": "a1028a887bdb3ce93",
+      "agentType": "general-purpose",
+      "background": true,
+      "depth": 1,
+      "endedAt": 52055,
+      "fileMissing": false,
+      "gen": "g1",
+      "key": "a1",
+      "kind": "subagent",
+      "lastAssistantMessage": "I ran `sleep 5 && echo A` and it printed `A`.",
+      "notifications": [
+        "t3"
+      ],
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 33,
+        "lastSeq": 115,
+        "sources": [
+          "hook"
+        ]
+      },
+      "runs": 1,
+      "spawnLinkConfirmed": true,
+      "spawnTool": "u2",
+      "startedAt": 39176,
+      "state": {
+        "at": 52055,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 115,
+        "src": "hook",
+        "value": "stopped"
+      },
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/subagents/agent-a1028a887bdb3ce93.jsonl"
+    },
+    "a2": {
+      "agentId": "a573b9447668a3ed7",
+      "agentType": "general-purpose",
+      "background": true,
+      "depth": 1,
+      "endedAt": 50602,
+      "fileMissing": false,
+      "gen": "g1",
+      "key": "a2",
+      "kind": "subagent",
+      "lastAssistantMessage": "The file exists. Its `\"name\"` field is `\"probe\"`.\n\nThe whole file is one line: `{\"name\":\"probe\"}`.\n\nPath: /TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json",
+      "notifications": [
+        "t2"
+      ],
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 43,
+        "lastSeq": 98,
+        "sources": [
+          "hook"
+        ]
+      },
+      "runs": 1,
+      "spawnLinkConfirmed": true,
+      "spawnTool": "u3",
+      "startedAt": 40281,
+      "state": {
+        "at": 50602,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 98,
+        "src": "hook",
+        "value": "stopped"
+      },
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/subagents/agent-a573b9447668a3ed7.jsonl"
+    },
+    "a3": {
+      "agentId": "a85e113ec6a013b43",
+      "agentType": "",
+      "background": false,
+      "depth": 1,
+      "endedAt": 52131,
+      "fileMissing": false,
+      "gen": "g1",
+      "key": "a3",
+      "kind": "internal",
+      "lastAssistantMessage": "The Bash step printed `bashdone`. I created `hello.txt` containing `hi`. Both subagents are still running in the background, and I'll reply \"ALLDONE\" once they report back.",
+      "notifications": [],
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 121,
+        "lastSeq": 121,
+        "sources": [
+          "hook"
+        ]
+      },
+      "runs": 1,
+      "spawnLinkConfirmed": false,
+      "startedAt": 52131,
+      "state": {
+        "at": 52131,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 121,
+        "src": "hook",
+        "value": "stopped"
+      },
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/subagents/agent-a85e113ec6a013b43.jsonl"
+    }
+  },
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {
+    "a1028a887bdb3ce93": {
+      "agent": "a1",
+      "gen": "g1",
+      "id": "a1028a887bdb3ce93",
+      "status": "completed",
+      "type": "subagent",
+      "updatedAt": 52055
+    },
+    "a573b9447668a3ed7": {
+      "agent": "a2",
+      "id": "a573b9447668a3ed7",
+      "status": "completed",
+      "type": "local_agent",
+      "updatedAt": 50899
+    }
+  },
+  "calls": {
+    "c1": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000004",
+      "endedAt": 27486,
+      "key": "c1",
+      "requestRefs": [
+        "321c7daf-4522-4700-a69f-39adc1a1d3f8"
+      ],
+      "startedAt": 20750,
+      "state": {
+        "at": 27486,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 14,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 30202,
+        "cacheReadInputTokens": 28472,
+        "inputTokens": 2,
+        "outputTokens": 94
+      }
+    },
+    "c10": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000020",
+      "key": "c10",
+      "requestRefs": [
+        "1e8fc731-2ae3-4cc8-a32b-4262c7583b5a"
+      ],
+      "startedAt": 56533,
+      "state": {
+        "at": 56533,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 133,
+        "src": "transcript",
+        "value": "started"
+      },
+      "turn": "t3"
+    },
+    "c2": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000007",
+      "endedAt": 39131,
+      "key": "c2",
+      "requestRefs": [
+        "d2044123-3b0a-43db-a67a-ee9f0a676e08"
+      ],
+      "startedAt": 35061,
+      "state": {
+        "at": 39131,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 29,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 103,
+        "cacheReadInputTokens": 58674,
+        "inputTokens": 2,
+        "outputTokens": 335
+      }
+    },
+    "c3": {
+      "agent": "a1",
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe00000000000000000000000000000000000000000000000000000000000b",
+      "endedAt": 42586,
+      "key": "c3",
+      "requestRefs": [
+        "e7221eeb-ab9a-4538-a889-97c6a6fe4a56"
+      ],
+      "startedAt": 39281,
+      "state": {
+        "at": 42586,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 55,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 41538,
+        "cacheReadInputTokens": 0,
+        "inputTokens": 2,
+        "outputTokens": 88
+      }
+    },
+    "c4": {
+      "agent": "a2",
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe00000000000000000000000000000000000000000000000000000000000f",
+      "endedAt": 46733,
+      "key": "c4",
+      "requestRefs": [
+        "003875f3-65f3-4386-8dad-13ae5b52b307"
+      ],
+      "startedAt": 40339,
+      "state": {
+        "at": 46733,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 75,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 41613,
+        "cacheReadInputTokens": 0,
+        "inputTokens": 2,
+        "outputTokens": 123
+      }
+    },
+    "c5": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000010",
+      "endedAt": 44104,
+      "key": "c5",
+      "requestRefs": [
+        "56687c35-18ed-4232-890c-c1b2fafebb64"
+      ],
+      "startedAt": 40387,
+      "state": {
+        "at": 44104,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 59,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 1230,
+        "cacheReadInputTokens": 58777,
+        "inputTokens": 2,
+        "outputTokens": 226
+      }
+    },
+    "c6": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000013",
+      "endedAt": 50806,
+      "key": "c6",
+      "requestRefs": [
+        "76d7afb9-fc4d-4e4d-bd15-01a7c1ec564f"
+      ],
+      "startedAt": 45452,
+      "state": {
+        "at": 50806,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 101,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 333,
+        "cacheReadInputTokens": 60007,
+        "inputTokens": 2,
+        "outputTokens": 85
+      }
+    },
+    "c7": {
+      "agent": "a2",
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe000000000000000000000000000000000000000000000000000000000017",
+      "endedAt": 50598,
+      "key": "c7",
+      "requestRefs": [
+        "e8d274c3-db0c-401e-8117-cfd1a98c0511"
+      ],
+      "startedAt": 46878,
+      "state": {
+        "at": 50598,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 96,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 4987,
+        "cacheReadInputTokens": 41613,
+        "inputTokens": 2,
+        "outputTokens": 140
+      }
+    },
+    "c8": {
+      "agent": "a1",
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe00000000000000000000000000000000000000000000000000000000001a",
+      "endedAt": 52055,
+      "key": "c8",
+      "requestRefs": [
+        "597629ad-239d-4ff2-a71f-820ab9a43e18"
+      ],
+      "startedAt": 47780,
+      "state": {
+        "at": 52055,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 114,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t1",
+      "usage": {
+        "cacheCreationInputTokens": 4939,
+        "cacheReadInputTokens": 41538,
+        "inputTokens": 2,
+        "outputTokens": 25
+      }
+    },
+    "c9": {
+      "attempts": 1,
+      "bytesDown": 0,
+      "digest": "cafe00000000000000000000000000000000000000000000000000000000001d",
+      "endedAt": 56423,
+      "key": "c9",
+      "requestRefs": [
+        "51991376-b678-4780-9e4d-8c410cc82e84"
+      ],
+      "startedAt": 50945,
+      "state": {
+        "at": 56423,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 124,
+        "src": "transcript",
+        "value": "ended"
+      },
+      "turn": "t2",
+      "usage": {
+        "cacheCreationInputTokens": 775,
+        "cacheReadInputTokens": 60340,
+        "inputTokens": 4,
+        "outputTokens": 69
+      }
+    }
+  },
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1250,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 4,
+      "src": "screen",
+      "value": "default"
+    },
+    "pid": 50000,
+    "sessionId": "11111111-2222-4333-8444-555555555555",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "11111111-2222-4333-8444-555555555555",
+      "source": "startup",
+      "startedAt": 1250,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 109,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {
+    "m1": {
+      "apiMessageId": "msg_011CgehkpVqump5WSz1UKZZi",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m1",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "69f21bb5-e99c-4d95-83a0-4747b7347301"
+      ]
+    },
+    "m10": {
+      "apiMessageId": "msg_011Cgeho8PgE4TbDgDvLH7rD",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m10",
+      "retracted": false,
+      "text": "Agent B is done: the `name` in `package.json` is `\"probe\"`. Agent A (`sleep 5 && echo A`) is still running, so I'll reply \"ALLDONE\" once it finishes.",
+      "turn": "t2",
+      "usageCounted": true,
+      "uuids": [
+        "4546c71d-412f-4348-8224-01ef214169c9"
+      ]
+    },
+    "m11": {
+      "blocks": 0,
+      "confirmed": false,
+      "final": true,
+      "finalBy": "flag",
+      "key": "m11",
+      "retracted": false,
+      "text": "Agent B is done: the `name` in `package.json` is `\"probe\"`. Agent A (`sleep 5 && echo A`) is still running, so I'll reply \"ALLDONE\" once it finishes.",
+      "turn": "t2",
+      "uiMessageId": "dc6a33f3-110f-499d-a39a-aa52c966da68",
+      "usageCounted": false,
+      "uuids": []
+    },
+    "m2": {
+      "apiMessageId": "msg_011Cgehmu2UUGonC9YS3cYra",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m2",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "57fc568a-0db4-4b8c-87dd-b822084510f9",
+        "e12e8117-dcb5-4e13-88a3-8383ec78d4ab"
+      ]
+    },
+    "m3": {
+      "agent": "a1",
+      "apiMessageId": "msg_011Cgehn9rhSbM8eBmRFnq3h",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m3",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "65714c45-bd2a-40d7-bd95-0a2042213f82"
+      ]
+    },
+    "m4": {
+      "apiMessageId": "msg_011CgehnEqLsHVKpkTqAurbo",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m4",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "f6249a7e-ca0a-408b-add0-7d98eb55115d",
+        "bdb12b65-19cc-4759-b52a-22ca2ef63af1"
+      ]
+    },
+    "m5": {
+      "agent": "a2",
+      "apiMessageId": "msg_011CgehnEbD1aEdFGNhXrB3T",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m5",
+      "retracted": false,
+      "text": "",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "6e2b8612-2ffb-4f63-b200-79c534eae666"
+      ]
+    },
+    "m6": {
+      "agent": "a2",
+      "apiMessageId": "msg_011Cgehnipb4NerznoAWP7se",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m6",
+      "retracted": false,
+      "text": "The file exists. Its `\"name\"` field is `\"probe\"`.\n\nThe whole file is one line: `{\"name\":\"probe\"}`.\n\nPath: /TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "8f90cc30-2a65-42cb-9fe2-7add3127302c",
+        "0d3af94e-1c13-4a85-8fd8-377be3c14e1e"
+      ]
+    },
+    "m7": {
+      "apiMessageId": "msg_011CgehncS7UfMvPRNqBz6Z4",
+      "blocks": 2,
+      "confirmed": true,
+      "final": true,
+      "key": "m7",
+      "retracted": false,
+      "text": "The Bash step printed `bashdone`. I created `hello.txt` containing `hi`. Both subagents are still running in the background, and I'll reply \"ALLDONE\" once they report back.",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "bce05df8-6993-4f0a-9087-23ea3a8592b0",
+        "f9471b45-0a52-45a7-8285-f24f1e7cea4b"
+      ]
+    },
+    "m8": {
+      "blocks": 0,
+      "confirmed": false,
+      "final": true,
+      "finalBy": "flag",
+      "key": "m8",
+      "retracted": false,
+      "text": "The Bash step printed `bashdone`. I created `hello.txt` containing `hi`. Both subagents are still running in the background, and I'll reply \"ALLDONE\" once they report back.",
+      "turn": "t1",
+      "uiMessageId": "37ff51bd-d4ca-40a0-b111-d3920c0c1ac5",
+      "usageCounted": false,
+      "uuids": []
+    },
+    "m9": {
+      "agent": "a1",
+      "apiMessageId": "msg_011CgehnqcsT1bKKGsEHQ9tC",
+      "blocks": 1,
+      "confirmed": true,
+      "final": true,
+      "key": "m9",
+      "retracted": false,
+      "text": "I ran `sleep 5 && echo A` and it printed `A`.",
+      "turn": "t1",
+      "usageCounted": true,
+      "uuids": [
+        "4de68e90-b8b5-4e62-b425-13162695cf7b"
+      ]
+    }
+  },
+  "pendingInputs": {},
+  "permissions": {
+    "p1": {
+      "adopted": false,
+      "autoAnswerAllowed": true,
+      "binding": {
+        "confirmed": true,
+        "kind": "unique"
+      },
+      "hookSeq": 15,
+      "input": {
+        "content": "hi",
+        "file_path": "/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/hello.txt"
+      },
+      "key": "p1",
+      "needs": "decision",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 63,
+        "lastSeq": 67,
+        "sources": [
+          "hook"
+        ]
+      },
+      "requestedAt": 44523,
+      "resolved": {
+        "decider": "user_keys",
+        "decision": "allow",
+        "overridden": true
+      },
+      "state": {
+        "at": 44523,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 67,
+        "src": "hook",
+        "value": "resolved"
+      },
+      "suggestions": [
+        {
+          "destination": "session",
+          "mode": "acceptEdits",
+          "type": "setMode"
+        }
+      ],
+      "suspect": false,
+      "tool": "u5",
+      "toolName": "Write"
+    }
+  },
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "kind": "modelRequest",
+    "phase": "waiting",
+    "provenance": {
+      "confirmed": true,
+      "sources": [
+        "hook"
+      ]
+    },
+    "since": 44523
+  },
+  "tools": {
+    "u1": {
+      "apiMessageId": "msg_011CgehkpVqump5WSz1UKZZi",
+      "blockIndex": 0,
+      "durationMs": 7389,
+      "endedAt": 27486,
+      "input": {
+        "command": "sleep 6 && echo bashdone",
+        "description": "Wait 6 seconds then print bashdone"
+      },
+      "key": "u1",
+      "name": "Bash",
+      "outcomeFrom": "post",
+      "preAt": 27486,
+      "preSeq": 15,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 14,
+        "lastSeq": 17,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 94,
+        "preview": "{\"interrupted\":false,\"isImage\":false,\"noOutputExpected\":false,\"stderr\":\"\",\"stdout\":\"bashdone\"}",
+        "sha256_16": "89d5cb5a88f4c938",
+        "truncated": false
+      },
+      "startedAt": 27486,
+      "state": {
+        "at": 27486,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 17,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_0141yADDxeqr4afTEhmu4QUA",
+      "turn": "t1"
+    },
+    "u2": {
+      "apiMessageId": "msg_011Cgehmu2UUGonC9YS3cYra",
+      "blockIndex": 0,
+      "durationMs": 12,
+      "endedAt": 39176,
+      "input": {
+        "description": "Run sleep and echo A",
+        "prompt": "Use Bash to run exactly: sleep 5 && echo A\nReport the output.",
+        "subagent_type": "general-purpose"
+      },
+      "key": "u2",
+      "name": "Agent",
+      "outcomeFrom": "post",
+      "preAt": 39131,
+      "preSeq": 30,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 29,
+        "lastSeq": 34,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 476,
+        "preview": "{\"agentId\":\"a1028a887bdb3ce93\",\"canContinueAgent\":true,\"canReadOutputFile\":true,\"description\":\"Run sleep and echo A\",\"isAsync\":true,\"outputFile\":\"/TMP/claude-501/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/tasks/a1028a887bdb3ce93.output\",\"prompt\":\"Use Bash to run exactly: sleep 5 && echo A\\nReport the output.\",\"resolvedModel\":\"claude-opus-5-5\",\"status\":\"async_launched\"}",
+        "sha256_16": "58152bada68c7ea1",
+        "truncated": false
+      },
+      "spawned": "a1",
+      "startedAt": 39131,
+      "state": {
+        "at": 39176,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 34,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01GK1TfYL18atb7tDyZGzXsK",
+      "turn": "t1"
+    },
+    "u3": {
+      "apiMessageId": "msg_011Cgehmu2UUGonC9YS3cYra",
+      "blockIndex": 1,
+      "durationMs": 3,
+      "endedAt": 40281,
+      "input": {
+        "description": "Read package.json name",
+        "prompt": "Read /TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json and report the value of its \"name\" field. If the file doesn't exist, say so.",
+        "subagent_type": "general-purpose"
+      },
+      "key": "u3",
+      "name": "Agent",
+      "outcomeFrom": "post",
+      "preAt": 40223,
+      "preSeq": 40,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 39,
+        "lastSeq": 44,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 623,
+        "preview": "{\"agentId\":\"a573b9447668a3ed7\",\"canContinueAgent\":true,\"canReadOutputFile\":true,\"description\":\"Read package.json name\",\"isAsync\":true,\"outputFile\":\"/TMP/claude-501/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/tasks/a573b9447668a3ed7.output\",\"prompt\":\"Read /TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json and report the value of its \\\"name\\\" field. If the file doesn't exist, say so.\",\"resolvedModel\":\"claude-opus-5-5\",\"status\":\"async_launched\"}",
+        "sha256_16": "fca05c824479747f",
+        "truncated": false
+      },
+      "spawned": "a2",
+      "startedAt": 40223,
+      "state": {
+        "at": 40281,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 44,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01EosBNtb385zzTVg8iuUZ9R",
+      "turn": "t1"
+    },
+    "u4": {
+      "agent": "a1",
+      "apiMessageId": "msg_011Cgehn9rhSbM8eBmRFnq3h",
+      "blockIndex": 0,
+      "durationMs": 5045,
+      "endedAt": 46878,
+      "input": {
+        "command": "sleep 5 && echo A",
+        "description": "Wait 5 seconds then print A"
+      },
+      "key": "u4",
+      "name": "Bash",
+      "outcomeFrom": "post",
+      "preAt": 42586,
+      "preSeq": 56,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 55,
+        "lastSeq": 86,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 87,
+        "preview": "{\"interrupted\":false,\"isImage\":false,\"noOutputExpected\":false,\"stderr\":\"\",\"stdout\":\"A\"}",
+        "sha256_16": "58886a9c7d623204",
+        "truncated": false
+      },
+      "startedAt": 42586,
+      "state": {
+        "at": 46878,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 86,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01WQ8zpYV7X5hAiEsX1s3bwb",
+      "turn": "t1"
+    },
+    "u5": {
+      "apiMessageId": "msg_011CgehnEqLsHVKpkTqAurbo",
+      "blockIndex": 1,
+      "durationMs": 21,
+      "endedAt": 44523,
+      "input": {
+        "content": "hi",
+        "file_path": "/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/hello.txt"
+      },
+      "key": "u5",
+      "name": "Write",
+      "outcomeFrom": "post",
+      "permission": "p1",
+      "preAt": 44523,
+      "preSeq": 61,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 60,
+        "lastSeq": 67,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 228,
+        "preview": "{\"content\":\"hi\",\"filePath\":\"/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/hello.txt\",\"originalFile\":null,\"structuredPatch\":[],\"type\":\"create\",\"userModified\":false}",
+        "sha256_16": "59cd45bf1aa9b5cd",
+        "truncated": false
+      },
+      "startedAt": 44523,
+      "state": {
+        "at": 44523,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 67,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01YWSVhwWUu5hmCretUkKdKW",
+      "turn": "t1"
+    },
+    "u6": {
+      "agent": "a2",
+      "apiMessageId": "msg_011CgehnEbD1aEdFGNhXrB3T",
+      "blockIndex": 0,
+      "durationMs": 1,
+      "endedAt": 46733,
+      "input": {
+        "file_path": "/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json"
+      },
+      "key": "u6",
+      "name": "Read",
+      "outcomeFrom": "post",
+      "preAt": 46733,
+      "preSeq": 77,
+      "promptIdAtPre": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 75,
+        "lastSeq": 79,
+        "sources": [
+          "transcript",
+          "hook"
+        ]
+      },
+      "responseRef": {
+        "bytes": 238,
+        "preview": "{\"file\":{\"content\":\"{\\\"name\\\":\\\"probe\\\"}\\n\",\"filePath\":\"/TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json\",\"numLines\":2,\"startLine\":1,\"totalLines\":2},\"type\":\"text\"}",
+        "sha256_16": "cb7dcd3116c7de40",
+        "truncated": false
+      },
+      "startedAt": 46733,
+      "state": {
+        "at": 46733,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 79,
+        "src": "hook",
+        "value": "succeeded"
+      },
+      "toolUseId": "toolu_01UDxe7vCfTvSHdeBUEriaMN",
+      "turn": "t1"
+    }
+  },
+  "turnOrder": [
+    "t1",
+    "t2",
+    "t3"
+  ],
+  "turns": {
+    "t1": {
+      "acceptedAt": 20654,
+      "backgroundPending": [
+        "a1028a887bdb3ce93"
+      ],
+      "calls": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "durationMs": 29557,
+      "endedAt": 50899,
+      "endedBy": "stop",
+      "finalText": {
+        "at": 50808,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 104,
+        "src": "hook",
+        "value": "The Bash step printed `bashdone`. I created `hello.txt` containing `hi`. Both subagents are still running in the background, and I'll reply \"ALLDONE\" once they report back."
+      },
+      "gen": "g1",
+      "key": "t1",
+      "messages": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9"
+      ],
+      "origin": {
+        "at": 20654,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 11,
+        "src": "hook",
+        "value": "unknown"
+      },
+      "prompt": "Do these steps: 1) Use Bash to run: sleep 6 && echo bashdone   2) Then launch TWO Agent subagents in parallel in one message: agent A uses Bash to run \"sleep 5 && echo A\", agent B reads package.json and reports the name.  3) Then use Write to create hello.txt containing hi. Then reply \"ALLDONE\".",
+      "promptId": "cbb1902c-617b-4d34-8ce8-2b41c0478926",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 11,
+        "lastSeq": 110,
+        "sources": [
+          "hook",
+          "transcript"
+        ]
+      },
+      "queuedAt": 20654,
+      "state": {
+        "at": 50899,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 110,
+        "src": "hook",
+        "value": "completed"
+      },
+      "tools": [
+        "u1",
+        "u2",
+        "u3",
+        "u4",
+        "u5",
+        "u6"
+      ]
+    },
+    "t2": {
+      "acceptedAt": 50899,
+      "backgroundPending": [],
+      "calls": [
+        "c9"
+      ],
+      "causedBy": {
+        "agent": "a2",
+        "taskId": "a573b9447668a3ed7",
+        "tool": "u3"
+      },
+      "durationMs": 5586,
+      "endedAt": 56490,
+      "endedBy": "stop",
+      "finalText": {
+        "at": 56423,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 126,
+        "src": "hook",
+        "value": "Agent B is done: the `name` in `package.json` is `\"probe\"`. Agent A (`sleep 5 && echo A`) is still running, so I'll reply \"ALLDONE\" once it finishes."
+      },
+      "gen": "g1",
+      "key": "t2",
+      "messages": [
+        "m10",
+        "m11"
+      ],
+      "origin": {
+        "at": 50899,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 110,
+        "src": "hook",
+        "value": "task_notification"
+      },
+      "prompt": "<task-notification>\n<task-id>a573b9447668a3ed7</task-id>\n<tool-use-id>toolu_01EosBNtb385zzTVg8iuUZ9R</tool-use-id>\n<output-file>/TMP/claude-501/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/tasks/a573b9447668a3ed7.output</output-file>\n<status>completed</status>\n<summary>Agent \"Read package.json name\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>The file exists. Its `\"name\"` field is `\"probe\"`.\n\nThe whole file is one line: `{\"name\":\"probe\"}`.\n\nPath: /TMP/claude-501/-HOME-Projects-claude-code-driver/59d96283-d197-463c-a72c-130a0ed22dc6/scratchpad/hookprobe/ws/package.json</result>\n<usage><subagent_tokens>46834</subagent_tokens><tool_uses>1</tool_uses><duration_ms>10411</duration_ms></usage>\n</task-notification>",
+      "promptId": "ab6278e5-e13b-4230-8c44-994bff520e21",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 110,
+        "lastSeq": 131,
+        "sources": [
+          "hook"
+        ]
+      },
+      "queuedAt": 50899,
+      "state": {
+        "at": 56490,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 131,
+        "src": "hook",
+        "value": "completed"
+      },
+      "tools": []
+    },
+    "t3": {
+      "acceptedAt": 56490,
+      "backgroundPending": [],
+      "calls": [
+        "c10"
+      ],
+      "causedBy": {
+        "agent": "a1",
+        "taskId": "a1028a887bdb3ce93",
+        "tool": "u2"
+      },
+      "gen": "g1",
+      "key": "t3",
+      "messages": [],
+      "origin": {
+        "at": 56490,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 131,
+        "src": "hook",
+        "value": "task_notification"
+      },
+      "prompt": "<task-notification>\n<task-id>a1028a887bdb3ce93</task-id>\n<tool-use-id>toolu_01GK1TfYL18atb7tDyZGzXsK</tool-use-id>\n<output-file>/TMP/claude-501/-TMP-claude-501--HOME-Projects-claude-code-driver-59d96283-d197-463c-a72c-130a0ed22dc6-scratchpad-hookprobe-ws/11111111-2222-4333-8444-555555555555/tasks/a1028a887bdb3ce93.output</output-file>\n<status>completed</status>\n<summary>Agent \"Run sleep and echo A\" finished</summary>\n<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>\n<result>I ran `sleep 5 &amp;&amp; echo A` and it printed `A`.</result>\n<usage><subagent_tokens>46531</subagent_tokens><tool_uses>1</tool_uses><duration_ms>12957</duration_ms></usage>\n</task-notification>",
+      "promptId": "eec367ca-9c7d-47a4-ac50-e4f69860482e",
+      "provenance": {
+        "confirmed": true,
+        "firstSeq": 131,
+        "lastSeq": 131,
+        "sources": [
+          "hook"
+        ]
+      },
+      "queuedAt": 56490,
+      "state": {
+        "at": 56490,
+        "corroborated": [],
+        "provisional": false,
+        "seq": 131,
+        "src": "hook",
+        "value": "running"
+      },
+      "tools": []
+    }
+  },
+  "usage": {
+    "tokensTotal": {
+      "cacheCreationInputTokens": 125720,
+      "cacheReadInputTokens": 349421,
+      "inputTokens": 20,
+      "outputTokens": 1185
+    }
+  },
+  "v": 1
+}

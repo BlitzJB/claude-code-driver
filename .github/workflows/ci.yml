@@ -1,0 +1,199 @@
+# .github/workflows/ci.yml — push/PR CI (DESIGN.md §7 "CI", §6.1; rev 2 §10 G24/C9; owned by WP-CI).
+#
+# Jobs:
+#   linux           ubuntu-24.04 × Node 20.19.x / 22.x / 24.x, distro tmux (3.4 on 24.04; fails when < 3.2):
+#                   install, lint, typecheck, test, test:contract, fixtures:lint, build, check:pkg, check:api, check:tables;
+#                   the Node 22 cell also runs the coverage gate (unit+kernel+replay+contract merged) and knip.
+#   linux-tmux-min  Node 22, tmux built from the release tarball by scripts/ci/build-tmux.sh (3.2a = the supported minimum,
+#                   P-TMUX-42), cached by version; runs test:contract with CCD_TMUX_BIN pointing at the built binary.
+#   macos           macos-14, Node 22, brew tmux (current): test, test:contract.
+#
+# nightly.yml calls this workflow with more tmux versions (3.2a, 3.5a, 3.6a). Live tests (`test:live`, CCD_LIVE=1) never run
+# here: they need the user's own Claude subscription (DESIGN.md §6.5, §7).
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      tmux-min-versions:
+        description: JSON array of tmux release versions built from source for the linux-tmux-min job
+        type: string
+        required: false
+        default: '["3.2a"]'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  FORCE_COLOR: '0'
+
+jobs:
+  linux:
+    name: linux (node ${{ matrix.node }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        # 20.19.x: oldest Node the toolchain supports (eslint/knip need ^20.19) and the Symbol.asyncDispose guard (P-API-29).
+        node: ['20.19.x', '22.x', '24.x']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # the job runs PR code; do not leave the token in .git/config
+          persist-credentials: false
+
+      - name: Install tmux (distro)
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends tmux
+
+      - name: Check tmux version (>= 3.2, P-TMUX-42)
+        run: bash scripts/ci/build-tmux.sh --check "$(command -v tmux)" 3.2
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          # version comes from package.json#packageManager; the standalone build carries its own Node, so pnpm itself
+          # runs on every matrix Node while scripts run on the matrix Node from setup-node.
+          standalone: true
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install dependencies (incl. the pinned Claude binary via allowBuilds postinstall)
+        run: pnpm install --frozen-lockfile
+
+      - name: Tool versions
+        run: |
+          node --version
+          pnpm --version
+          tmux -V
+          node_modules/@anthropic-ai/claude-code/bin/claude.exe --version || echo 'claude.exe not runnable here: the real-client hook test is skipped'
+
+      - name: Lint (eslint, dependency-cruiser, prettier)
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit, arch, kernel and replay tests
+        run: pnpm test
+
+      - name: Contract tests (real tmux, fs, sockets, worker, sidecar)
+        run: pnpm test:contract
+
+      - name: Fixture lint (no personal data or secrets, P-SEC-23)
+        run: pnpm fixtures:lint
+
+      - name: Build
+        run: pnpm build
+
+      - name: Package checks (publint, attw)
+        run: pnpm check:pkg
+
+      - name: Public API report
+        run: pnpm check:api
+
+      - name: Table-row coverage (§4.3/§4.4/§4.10)
+        run: pnpm check:tables
+
+      - name: Coverage gate (unit + kernel + replay + contract merged)
+        if: startsWith(matrix.node, '22')
+        run: pnpm exec vitest run --coverage --project unit --project kernel --project replay --project contract
+
+      - name: Unused files and exports (knip)
+        if: startsWith(matrix.node, '22')
+        run: pnpm exec knip
+
+  linux-tmux-min:
+    name: linux tmux ${{ matrix.tmux }} (node 22)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        tmux: ${{ fromJSON(inputs.tmux-min-versions || '["3.2a"]') }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # the job runs PR code; do not leave the token in .git/config
+          persist-credentials: false
+
+      - name: Cache tmux ${{ matrix.tmux }} build
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ~/.cache/ccd-tmux/${{ matrix.tmux }}
+          key: tmux-${{ runner.os }}-ubuntu-24.04-${{ matrix.tmux }}-${{ hashFiles('scripts/ci/build-tmux.sh') }}
+
+      - name: Build tmux ${{ matrix.tmux }} from the release tarball
+        id: tmux
+        run: bash scripts/ci/build-tmux.sh --prefix "$HOME/.cache/ccd-tmux/${{ matrix.tmux }}" "${{ matrix.tmux }}"
+
+      - name: Check the built tmux is the one under test
+        env:
+          WANT: ${{ matrix.tmux }}
+          BIN: ${{ steps.tmux.outputs.tmux-bin }}
+        run: |
+          bash scripts/ci/build-tmux.sh --check "$BIN" 3.2
+          test "$("$BIN" -V)" = "tmux $WANT"
+          test "$CCD_TMUX_BIN" = "$BIN"
+          test "$(command -v tmux)" = "$BIN"
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          standalone: true
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.x'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Contract tests against tmux ${{ matrix.tmux }}
+        run: pnpm test:contract
+
+  macos:
+    name: macos (node 22)
+    runs-on: macos-14
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # the job runs PR code; do not leave the token in .git/config
+          persist-credentials: false
+
+      - name: Install tmux (brew, current)
+        run: HOMEBREW_NO_AUTO_UPDATE=1 brew install tmux
+
+      - name: Check tmux version (>= 3.2, P-TMUX-42)
+        run: bash scripts/ci/build-tmux.sh --check "$(command -v tmux)" 3.2
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          standalone: true
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.x'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Unit, arch, kernel and replay tests
+        run: pnpm test
+
+      - name: Contract tests
+        run: pnpm test:contract

@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest a capability or an API change
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what stops you today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The API or behaviour you would like. Code sketches welcome.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Where the information would come from
+      description: If it is about observing Claude Code, which signal carries it (hook, transcript, screen, network)? Screen strings or payloads help.

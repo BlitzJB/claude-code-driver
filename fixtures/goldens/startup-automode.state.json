@@ -1,0 +1,96 @@
+{
+  "agents": {},
+  "auth": {
+    "polling": false,
+    "state": "ok"
+  },
+  "bgTasks": {},
+  "calls": {},
+  "channels": {
+    "hooks": {
+      "health": "up",
+      "reasons": []
+    },
+    "network": {
+      "health": "off",
+      "reasons": []
+    },
+    "screen": {
+      "health": "up",
+      "reasons": []
+    },
+    "transcript": {
+      "health": "up",
+      "reasons": []
+    }
+  },
+  "claude": {
+    "currentGen": "g1",
+    "model": {
+      "at": 1157,
+      "corroborated": [],
+      "provisional": false,
+      "seq": 3,
+      "src": "hook",
+      "value": "claude-opus-5-5"
+    },
+    "paneId": "%0",
+    "permissionMode": {
+      "at": 1457,
+      "corroborated": [],
+      "provisional": true,
+      "seq": 6,
+      "src": "screen",
+      "value": "auto"
+    },
+    "pid": 50000,
+    "sessionId": "1bdfed2c-dba1-4ebd-a4d2-8da91df886b0",
+    "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/1bdfed2c-dba1-4ebd-a4d2-8da91df886b0.jsonl",
+    "version": "2.1.316"
+  },
+  "generations": {
+    "g1": {
+      "key": "g1",
+      "sessionId": "1bdfed2c-dba1-4ebd-a4d2-8da91df886b0",
+      "source": "startup",
+      "startedAt": 1157,
+      "startedBy": "SessionStart",
+      "status": "active",
+      "transcriptPath": "/HOME/.claude/projects/-TMP-claude-501-ccd-verify-a/1bdfed2c-dba1-4ebd-a4d2-8da91df886b0.jsonl"
+    }
+  },
+  "inputBlocked": {
+    "copyMode": false,
+    "dialog": false,
+    "input": false,
+    "permission": false,
+    "startup": false
+  },
+  "lastEventSeq": 8,
+  "libraryQueue": [],
+  "lifecycle": "ready",
+  "messages": {},
+  "pendingInputs": {},
+  "permissions": {},
+  "selfTest": {
+    "state": "skipped"
+  },
+  "sessionKey": "sc9d59a04",
+  "status": {
+    "backgroundAgents": 0,
+    "kind": "idle",
+    "queued": 0,
+    "quiescent": true,
+    "since": 1757
+  },
+  "tools": {},
+  "turnOrder": [],
+  "turns": {},
+  "usage": {
+    "tokensTotal": {
+      "inputTokens": 0,
+      "outputTokens": 0
+    }
+  },
+  "v": 1
+}
