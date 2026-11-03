@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="claude-code-driver: drive the interactive Claude Code TUI from Node.js">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#080D19"/></linearGradient>
+    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#18233A" stroke-width="1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6B85"/></marker>
+    <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2DD4BF"/></marker>
+  </defs>
+  <radialGradient id="glow" cx="80%" cy="50%" r="55%"><stop offset="0" stop-color="#2DD4BF" stop-opacity=".16"/><stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/></radialGradient>
+  <rect width="1200" height="300" rx="22" fill="url(#bg)"/>
+  <rect width="1200" height="300" rx="22" fill="url(#grid)" opacity=".6"/>
+  <rect width="1200" height="300" rx="22" fill="url(#glow)"/>
+  <g transform="translate(64 70) scale(1.25)">
+    <rect x="2" y="2" width="60" height="60" rx="14" fill="#101A2F"/>
+    <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="13.25" fill="none" stroke="#2DD4BF" stroke-opacity=".45" stroke-width="1.5"/>
+    <circle cx="13" cy="13" r="2.6" fill="#FB7185"/><circle cx="21" cy="13" r="2.6" fill="#FBBF24"/><circle cx="29" cy="13" r="2.6" fill="#60A5FA"/>
+    <path d="M16 26 L28 35 L16 44" fill="none" stroke="url(#sig)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="33" y="40" width="16" height="5.5" rx="2.2" fill="url(#sig)"/>
+  </g>
+  <text x="170" y="128" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="46" font-weight="700" letter-spacing="-1"><tspan fill="#E6EDF7">claude-code-</tspan><tspan fill="url(#sig)">driver</tspan></text>
+  <text x="170" y="172" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="23" fill="#C9D4E5">Drive the interactive Claude Code TUI from Node.js: typed events,</text>
+  <text x="170" y="202" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="23" fill="#C9D4E5">live state, permissions and interrupts, on your subscription.</text>
+  <g font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="14" fill="#9FB0C8">
+    <rect x="170" y="230" width="128" height="32" rx="16" fill="#111A2E" stroke="#24324D"/><text x="234" y="251" text-anchor="middle">hooks</text>
+    <rect x="308" y="230" width="128" height="32" rx="16" fill="#111A2E" stroke="#24324D"/><text x="372" y="251" text-anchor="middle">transcript</text>
+    <rect x="446" y="230" width="128" height="32" rx="16" fill="#111A2E" stroke="#24324D"/><text x="510" y="251" text-anchor="middle">screen</text>
+    <rect x="584" y="230" width="128" height="32" rx="16" fill="#111A2E" stroke="#24324D"/><text x="648" y="251" text-anchor="middle">network</text>
+    <text x="728" y="251" fill="#5EEAD4">→ one pure core</text>
+  </g>
+</svg>

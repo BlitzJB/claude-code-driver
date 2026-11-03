@@ -4,6 +4,9 @@ hero:
   name: claude-code-driver
   text: Drive interactive Claude Code from Node.js
   tagline: Typed events, live state, permissions and interrupts for the real Claude Code TUI, on your Claude subscription.
+  image:
+    src: /hero.svg
+    alt: A tmux pane running Claude Code beside the typed event stream it produces
   actions:
     - theme: brand
       text: Get started

@@ -20,5 +20,8 @@ All notable changes to this project are documented here. The format follows
 - `ccd` CLI: `lifecheck`, `view`, `trace replay|explain`.
 - Subpaths `claude-code-driver/kernel` and `claude-code-driver/testing` (experimental).
 - Documentation site, architecture guide, contribution guide and security policy.
+- Brand identity (terminal-tile mark, wordmark, favicons, Open Graph and GitHub social cards) and SVG diagrams of the
+  layers, observation channels and step cycle, used across the README, `ARCHITECTURE.md` and the site
+  ([docs/BRAND.md](docs/BRAND.md)).
 
 [Unreleased]: https://github.com/BlitzJB/claude-code-driver/commits/main

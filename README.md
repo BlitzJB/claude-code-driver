@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/assets/banner.svg" alt="claude-code-driver: drive the interactive Claude Code TUI from Node.js" width="100%"></p>
+
 # claude-code-driver
 
 [![CI](https://github.com/BlitzJB/claude-code-driver/actions/workflows/ci.yml/badge.svg)](https://github.com/BlitzJB/claude-code-driver/actions/workflows/ci.yml)
@@ -31,6 +33,8 @@ const result = await turn.done; // { outcome: 'completed', text, tools, duration
 ```
 
 ## How it works
+
+![Observation channels feeding the pure core](docs/assets/channels.svg)
 
 Claude Code is started in a tmux pane on a private socket (`tmux -L ccd-<pid>-<hex>`). The library observes it through
 four independent channels and reconciles them into one state machine:

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 606" width="920" height="606" role="img" aria-label="claude-code-driver layer diagram">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1729"/><stop offset="1" stop-color="#080D19"/></linearGradient>
+    <linearGradient id="sig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5EEAD4"/><stop offset="1" stop-color="#14B8A6"/></linearGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#18233A" stroke-width="1"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5B6B85"/></marker>
+    <marker id="arrT" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2DD4BF"/></marker>
+  </defs>
+  <rect width="920" height="606" rx="18" fill="url(#bg)"/>
+  <rect width="920" height="606" rx="18" fill="url(#grid)" opacity=".6"/>
+  <rect x=".75" y=".75" width="918.5" height="604.5" rx="17.25" fill="none" stroke="#24324D" stroke-width="1.5"/>
+  <text x="40" y="52" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="22" font-weight="700" fill="#E6EDF7">Layers</text>
+  <text x="40" y="78" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="15" fill="#8B9BB4">Rows depend only on rows below them. The public API reaches the system through one port.</text>
+  <g>
+    <rect x="40" y="104" width="840" height="62" rx="12" fill="#111A2E" stroke="#2DD4BF" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="104" width="6" height="62" rx="3" fill="#2DD4BF"/>
+    <text x="66" y="142" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#2DD4BF">L4</text>
+    <text x="124" y="131" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">api/</text>
+    <text x="124" y="153" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">ClaudeSession · Turn · options · event/state/error mappers</text>
+    <text x="864" y="142" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">public, semver-stable</text>
+  </g>
+  <g><line x1="60" y1="172" x2="860" y2="172" stroke="#2DD4BF" stroke-width="2" stroke-dasharray="6 6"/>
+    <rect x="356" y="160" width="208" height="24" rx="12" fill="#0F2A2A" stroke="#2DD4BF"/>
+    <text x="460" y="177" text-anchor="middle" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#5EEAD4">SessionKernel port</text></g>
+  <g>
+    <rect x="40" y="192" width="840" height="62" rx="12" fill="#111A2E" stroke="#5EEAD4" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="192" width="6" height="62" rx="3" fill="#5EEAD4"/>
+    <text x="66" y="230" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#5EEAD4">L3.5</text>
+    <text x="124" y="219" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">runtime/</text>
+    <text x="124" y="241" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">composition root: builds real ports, wires the kernel</text>
+    <text x="864" y="230" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">wiring only</text>
+  </g>
+  <g>
+    <rect x="40" y="266" width="840" height="62" rx="12" fill="#111A2E" stroke="#60A5FA" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="266" width="6" height="62" rx="3" fill="#60A5FA"/>
+    <text x="66" y="304" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#60A5FA">L3</text>
+    <text x="124" y="293" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">session/</text>
+    <text x="124" y="315" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">step loop · scheduler · launcher · input executor · permission broker · lifecycle</text>
+    <text x="864" y="304" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">impure, async</text>
+  </g>
+  <g>
+    <rect x="40" y="340" width="840" height="62" rx="12" fill="#111A2E" stroke="#A78BFA" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="340" width="6" height="62" rx="3" fill="#A78BFA"/>
+    <text x="66" y="378" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#A78BFA">L2</text>
+    <text x="124" y="367" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">core/</text>
+    <text x="124" y="389" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">step(core, input) → { core, events, intents }</text>
+    <text x="864" y="378" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">PURE · deterministic · replayable</text>
+  </g>
+  <g>
+    <rect x="40" y="414" width="840" height="62" rx="12" fill="#111A2E" stroke="#FBBF24" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="414" width="6" height="62" rx="3" fill="#FBBF24"/>
+    <text x="66" y="452" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#FBBF24">L1</text>
+    <text x="124" y="441" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">channels/</text>
+    <text x="124" y="463" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">normalizers + version profile (claude-2.1.316)</text>
+    <text x="864" y="452" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">raw → observations</text>
+  </g>
+  <g>
+    <rect x="40" y="488" width="840" height="62" rx="12" fill="#111A2E" stroke="#FB7185" stroke-opacity=".55" stroke-width="1.5"/>
+    <rect x="40" y="488" width="6" height="62" rx="3" fill="#FB7185"/>
+    <text x="66" y="526" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="15" font-weight="700" fill="#FB7185">L0</text>
+    <text x="124" y="515" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="17" font-weight="700" fill="#E6EDF7">platform/</text>
+    <text x="124" y="537" font-family="Inter,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif" font-size="14" fill="#9FB0C8">tmux · fs tail · hook servers · proxy sidecar · processes · settings</text>
+    <text x="864" y="526" text-anchor="end" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="12.5" fill="#6B7C98">OS adapters</text>
+  </g>
+  <text x="40" y="580" font-family="'JetBrains Mono','SF Mono',ui-monospace,Menlo,Consolas,monospace" font-size="13" fill="#6B7C98">model/ — shared types (imports nothing)   ·   testing/ — fakes, replay, scenario DSL (nothing imports it)</text>
+
+</svg>

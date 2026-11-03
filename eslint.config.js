@@ -68,7 +68,7 @@ const coreDeterminism = {
 };
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'coverage/**', 'fixtures/**', 'node_modules/**', 'etc/**', 'docs/**'] },
+  { ignores: ['dist/**', 'coverage/**', 'fixtures/**', 'node_modules/**', 'etc/**', 'docs/**', 'site/**'] },
   {
     files: ['**/*.ts'],
     extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],

@@ -74,10 +74,11 @@
     "check:tables": "node scripts/check-table-coverage.mjs",
     "check:window-size": "node scripts/check-no-global-window-size.mjs",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm test:contract && pnpm build && pnpm check:pkg && pnpm check:api && pnpm check:tables && knip",
-    "docs:api": "typedoc",
+    "docs:api": "node scripts/docs-assets.mjs && typedoc",
     "docs:dev": "pnpm docs:api && vitepress dev site",
     "docs:build": "pnpm docs:api && vitepress build site",
-    "docs:preview": "vitepress preview site"
+    "docs:preview": "vitepress preview site",
+    "brand:render": "node scripts/render-brand.mjs"
   },
   "devDependencies": {
     "@anthropic-ai/claude-code": "2.1.316",

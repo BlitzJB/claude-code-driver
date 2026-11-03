@@ -28,5 +28,6 @@ fixtures/raw/
 
 # docs site build output (generated in CI)
 site/api/
+site/public/
 site/.vitepress/dist/
 site/.vitepress/cache/
