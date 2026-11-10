@@ -87,7 +87,7 @@
     "@fontsource-variable/geist-mono": "5.3.0",
     "@types/node": "^20",
     "@vitest/coverage-v8": "4.1.12",
-    "dependency-cruiser": "17.4.3",
+    "dependency-cruiser": "18.7.2",
     "eslint": "10.14.0",
     "fast-check": "4.10.2",
     "knip": "6.44.1",
